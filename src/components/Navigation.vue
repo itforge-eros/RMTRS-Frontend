@@ -12,9 +12,18 @@ export default {
 
 <style lang="scss" scoped>
     nav {
-        background-color: #252839;
+        background-color: $main-blue;
+        padding: 15px 20px;
+        width: 100%;
+        height: auto;
+        position: fixed;
+        top: 0;
+        left: 0;
+        font-size: 1.3em;
         .brand {
-            color: #f2b632
+            color: $main-yellow;
+            text-decoration: none;
+            font-weight: bold;
         }
     }
 </style>
