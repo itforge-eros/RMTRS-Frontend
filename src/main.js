@@ -3,7 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import 'bootstrap/scss/bootstrap.scss'
+import 'bootstrap/scss/bootstrap-grid.scss'
 
 Vue.config.productionTip = false
 
