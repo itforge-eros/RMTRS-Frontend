@@ -20,6 +20,7 @@ export default {
         top: 0;
         left: 0;
         font-size: 1.3em;
+        z-index: 10;
         .brand {
             color: $main-yellow;
             text-decoration: none;
