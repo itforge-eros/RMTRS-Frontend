@@ -1,5 +1,5 @@
 <template>
-    <nav class="navbar">
+    <nav id="navbar">
         <a class="brand" href="#">Bootstrap</a>
     </nav>
 </template>

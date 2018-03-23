@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <navigation></navigation>
-    <router-view/>
+    <navigation/>
+    <router-view id="dc"/>
   </div>
 </template>
 
@@ -10,8 +10,12 @@ import Navigation from '@/components/Navigation.vue'
 
 export default {
   name: 'App',
-  components: {Navigation}
+  components: {Navigation},
+  mounted () {
+    document.getElementById('dc').style.marginTop = document.getElementById('navbar').scrollHeight + 'px'
+  }
 }
+
 </script>
 
 <style>
