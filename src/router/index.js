@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/pages/Home'
-import Showtime from '@/pages/Showtime'
+import Screening from '@/pages/Screening'
 import Seat from '@/pages/Seat'
 import Payment from '@/pages/Payment'
 import Done from '@/pages/Done'
@@ -16,12 +16,12 @@ export default new Router({
       component: Home
     },
     {
-      path: '/showtime',
-      name: 'Showtime',
-      component: Showtime
+      path: '/movie/:id',
+      name: 'Screening',
+      component: Screening
     },
     {
-      path: '/seat',
+      path: '/movie/:id/screening/:screening_id',
       name: 'Seat Selection',
       component: Seat
     },

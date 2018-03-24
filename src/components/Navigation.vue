@@ -1,6 +1,6 @@
 <template>
     <nav id="navbar">
-        <a class="brand" href="#">Bootstrap</a>
+        <a class="brand" href="#">Skydog Cineplex</a>
     </nav>
 </template>
 
