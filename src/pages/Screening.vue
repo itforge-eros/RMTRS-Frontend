@@ -8,19 +8,25 @@
 </template>
 
 <script>
+import moment from 'moment'
 import MovieHero from '../components/MovieHero'
+import ScreeningFacade from '../facades/ScreeningFacade'
 export default {
   name: 'Screening',
   components: {MovieHero},
   data () {
     return {
       msg: 'Showtime Page',
-      id: 0
+      id: null
     }
   },
   created () {
     this.id = this.$route.params.id // movie id
     this.date = this.$route.query.date // date from query string
+    if (!this.date) this.date = moment()
+    ScreeningFacade
+      .getAvailableScreenings(this.date, this.id)
+      .then(({data}) => console.log(data)) // data is list of screenings
   }
 }
 </script>
