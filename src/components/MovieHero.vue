@@ -43,7 +43,7 @@ export default {
     .detail {
         padding: 1.7em;
         position: relative;
-        background-color: rgba($color: $main-white, $alpha: 0.7);
+        background-color: rgba($color: lighten($color: $main-white, $amount: 20%), $alpha: 1);
         border-radius: $main-round;
     }
     #logo-wall {
