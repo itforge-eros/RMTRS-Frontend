@@ -21,7 +21,7 @@ export default new Router({
       component: Screening
     },
     {
-      path: '/movie/:id/screening/:screening_id',
+      path: '/movie/:id/screening/:screeningId',
       name: 'Seat Selection',
       component: Seat
     },
