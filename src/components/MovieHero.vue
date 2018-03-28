@@ -58,7 +58,7 @@ export default {
 }
 
 #movie-hero-content {
-    margin: 15vh 3em 5vh;
+    margin: 5vh 3em;
 }
 
 @media screen and (max-width:576px) {
