@@ -1,18 +1,18 @@
 <template>
-    <div class="movie-card col-12 col-sm-6 col-md-4 col-xl-3">
-        <div class="img-wall">
-            <img :src="img">
-        </div>
-        <div class="detail">
-            <h4>{{ title }}</h4>
-        </div>
-    </div>
+    <router-link :to="'/movie/'+id" class="movie-card col-12 col-sm-6 col-md-4 col-xl-3">
+      <div class="img-wall">
+        <img :src="img">
+      </div>
+      <div class="detail">
+        <h4>{{ title }}</h4>
+      </div>
+    </router-link>
 </template>
 
 <script>
 export default {
   name: 'MovieCard',
-  props: ['title', 'img']
+  props: ['id', 'title', 'img']
 }
 </script>
 

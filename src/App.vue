@@ -1,7 +1,8 @@
 <template>
   <div id="app">
-    <navigation/>
-    <router-view id="dc"/>
+    <navigation :ref="'navigation'"/>
+    <div :ref="'space'"></div>
+    <router-view />
   </div>
 </template>
 
@@ -12,7 +13,7 @@ export default {
   name: 'App',
   components: {Navigation},
   mounted () {
-    document.getElementById('dc').style.marginTop = document.getElementById('navbar').scrollHeight + 'px'
+    this.$refs.space.style.marginTop = this.$refs.navigation.$el.scrollHeight + 'px'
   }
 }
 

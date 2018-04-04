@@ -3,7 +3,7 @@
     <Highlight :movieData="movieData" class="row"></Highlight>
     <div class="container">
       <div class="row">
-        <movie-card v-for="movie in movieData" :key="movie.key" :title="movie.title" :img="movie.img"/>
+        <movie-card v-for="movie in movieData" :key="movie.key" :id="movie.key" :title="movie.title" :img="movie.img"/>
       </div>
     </div>
   </div>
