@@ -5,15 +5,28 @@
     title="Guardians Of The Galaxy 2"
     description="Peter Quill and his fellow Guardians are hired by a powerful alien race, the Sovereign, to protect their precious batteries from invaders. When it is discovered that Rocket has stolen the items they were sent to guard, the Sovereign dispatch their armada to search for vengeance. As the Guardians try to escape, the mystery of Peter's parentage is revealed." />
     <div class="container">
-      <div id="chair">
-        <div class="row" v-for="(row, index) in rows" :key="index">
-          <div class="chairs" v-for="column in 10" :key="column">
-            <img @click="handleChairClick(row, column)"
-            :class="['chair',
-            {'this-reserving': seats[row + column].mode === 1},
-            {'others-reserving': seats[row + column].mode === 2},
-            {'reserved': seats[row + column].mode === 3}]" src="../assets/chair.png" alt="">
+      <div id="chair" class="row">
+        <div class="col-12 col-lg-8" id="chair-bg">
+          <div class="date col-12">
+            Date Placeholder
           </div>
+          <div id="chair-place">
+            <div class="row chair-place" v-for="(row, index) in rows" :key="index">
+              <span class="row-letter">{{ row }}</span>
+              <div class="chairs" v-for="column in 10" :key="column">
+                <img @click="handleChairClick(row, column)"
+                :class="['chair',
+                {'selectable': seats[row + column].mode === 0},
+                {'this-reserving': seats[row + column].mode === 1},
+                {'others-reserving': seats[row + column].mode === 2},
+                {'reserved': seats[row + column].mode === 3}]" src="../assets/chair.png" alt="">
+              </div>
+              <span class="row-letter">{{ row }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-lg-4">
+          <selection-detail :count="selectedSeats.length" />
         </div>
       </div>
     </div>
@@ -22,9 +35,10 @@
 
 <script>
 import MovieHero from '../components/MovieHero'
+import SelectionDetail from '../components/SelectionDetail'
 export default {
   name: 'Seat',
-  components: {MovieHero},
+  components: {MovieHero, SelectionDetail},
   data () {
     return {
       selectedSeats: [],
@@ -153,12 +167,48 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+#chair-bg {
+  background-color: rgba($color: $main-white, $alpha: 0.18);
+  margin: 5px 0 40px;
+  padding: 1em;
+  border-radius: $main-round;
+  box-shadow: $main-shadow;
+}
+#chair {
+  overflow-x: auto;
+  padding: 20px;
+  .date {
+    background-color: rgba($color: $main-blue, $alpha: 1);
+    padding: 1em;
+    border-radius: $main-round;
+    box-shadow: $main-shadow;
+    color: #ffffff;
+    width: 100%;
+  }
+  .row-letter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 6px
+  }
+}
+#chair-place {
+  overflow-x: auto;
+}
+.chair-place {
+  width: 550px;
+  margin: 0 auto;
+  overflow-x: auto;
+}
 .chairs {
   filter: brightness(1.3);
   margin: 10px 0;
   .chair {
     padding: 3px;
     width: 50px;
+    filter: hue-rotate(0deg);
+  }
+  .selectable {
     &:hover {
       filter: brightness(2);
     }
@@ -169,23 +219,18 @@ export default {
     opacity: 0.3;
   }
   .this-reserving {
-    animation: this-reserving 0.7s ease infinite;
+    filter: brightness(1.5) hue-rotate(250deg);
+    &:hover {
+      filter: brightness(2) hue-rotate(250deg);
+    }
   }
   .others-reserving {
     cursor: not-allowed;
-    animation: others-reserving 0.7s ease infinite;
+    filter: brightness(1.5) hue-rotate(90deg);
+    &:hover {
+      filter: brightness(2);
+    }
   }
-}
-
-@keyframes this-reserving {
-  0% {filter: brightness(1.0) hue-rotate(250deg)}
-  50% {filter: brightness(1.5) hue-rotate(250deg)}
-  100% {filter: brightness(1.0) hue-rotate(250deg)}
-}
-@keyframes others-reserving {
-  0% {filter: brightness(1.0) hue-rotate(90deg)}
-  50% {filter: brightness(1.5) hue-rotate(90deg)}
-  100% {filter: brightness(1.0) hue-rotate(90deg)}
 }
 
 </style>
