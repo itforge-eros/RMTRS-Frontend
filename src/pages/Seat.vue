@@ -10,6 +10,9 @@
           <div class="date col-12">
             Date Placeholder
           </div>
+          <div class="screen col-12">
+            Screen
+          </div>
           <div id="chair-place">
             <div class="row chair-place" v-for="(row, index) in rows" :key="index">
               <span class="row-letter">{{ row }}</span>
@@ -25,7 +28,7 @@
             </div>
           </div>
         </div>
-        <div class="col-12 col-lg-4">
+        <div class="col-12 col-lg-4 count-detail">
           <selection-detail :count="selectedSeats.length" />
         </div>
       </div>
@@ -169,7 +172,7 @@ export default {
 <style scoped lang="scss">
 #chair-bg {
   background-color: rgba($color: $main-white, $alpha: 0.18);
-  margin: 5px 0 40px;
+  margin: 5px 0 5px;
   padding: 1em;
   border-radius: $main-round;
   box-shadow: $main-shadow;
@@ -233,4 +236,18 @@ export default {
   }
 }
 
+@media screen and (max-width: 992px) {
+  .count-detail {
+    padding: 0!important;
+  }
+}
+
+.screen {
+  text-align: center;
+  padding: 5px 0;
+  background-color: rgba($color: $main-yellow, $alpha: 1);
+  border-radius: $main-round;
+  margin-top: 10px;
+  margin-bottom: 40px;
+}
 </style>
