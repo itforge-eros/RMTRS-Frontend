@@ -8,7 +8,11 @@
       <div id="chair">
         <div class="row" v-for="(row, index) in rows" :key="index">
           <div class="chairs" v-for="column in 10" :key="column">
-            <img @click="handleChairClick(row, column)" :class="['chair', {'this-reserving': selectedSeats.includes(row + column)}]" src="../assets/chair.png" alt="">
+            <img @click="handleChairClick(row, column)"
+            :class="['chair',
+            {'this-reserving': seats[row + column].mode === 1},
+            {'others-reserving': seats[row + column].mode === 2},
+            {'reserved': seats[row + column].mode === 3}]" src="../assets/chair.png" alt="">
           </div>
         </div>
       </div>
