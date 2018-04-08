@@ -1,14 +1,14 @@
 <template>
   <div id="selection-detail">
     <div class="theater col-12">
-      Theater 3
+      Theatre {{ theatre }}
     </div>
     <div class="seat-count col-12">
-        <p>Select Selected</p>
-        <h1>{{count}}</h1>
+        <p>Total Price</p>
+        <h1>{{ totalPrice }}</h1>
     </div>
     <div class="total col-12">
-      <p>Total : {{totalPrice}}</p>
+      <p>Total Seats : {{ selectedSeats.length }}</p>
     </div>
     <div class="payment col-12">
       <div class="row">
@@ -24,7 +24,7 @@
 <script>
 export default {
   name: 'SelectionDetail',
-  props: ['count'],
+  props: ['selectedSeats', 'theatre'],
   data () {
     return {
       price: 180
@@ -32,7 +32,10 @@ export default {
   },
   computed: {
     totalPrice () {
-      return this.count * this.price
+      return this.selectedSeats.reduce((sum, seat) => {
+        sum += seat.seat_type.price
+        return sum
+      }, 0)
     }
   }
 }
