@@ -64,20 +64,11 @@ export default {
     fetchSeats () {
       facade
         .getSeatsAndTheatre(this.$route.params.screeningId)
-        .then(({data}) => {
-          this.rows = [...new Set(data.seats.map(seat => seat.row))].sort()
-          this.theatre = data.name
-          this.seats = data.seats
-            .map(seat => {
-              seat.mode = 0
-              return seat
-            })
-            .reduce((obj, seat) => { // Convert array to object that has row+number (ex. A1, A3) as a key
-              obj[seat.row + seat.number] = seat
-              return obj
-            }, {})
+        .then(({rows, theatre, seats}) => {
+          this.rows = rows
+          this.theatre = theatre
+          this.seats = seats
         })
-        .catch(console.log)
     }
   },
   created () {
