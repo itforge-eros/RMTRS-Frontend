@@ -8,7 +8,7 @@
               </div>
               <div class="col-12 col-md-7">
                 <div class="detail">
-                    <h2>{{ title }}</h2>
+                    <h2>{{ enTitle }}</h2>
                     <p>{{ description }}</p>
                 </div>
               </div>
@@ -20,7 +20,7 @@
 <script>
 export default {
   name: 'MovieHero',
-  props: ['img', 'title', 'description']
+  props: ['img', 'enTitle', 'description']
 }
 </script>
 

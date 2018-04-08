@@ -2,7 +2,7 @@
   <div class="wall">
     <movie-hero
     :img="movie.poster_url"
-    :title="movie.title"
+    :enTitle="movie.en_title"
     :description="movie.synopsis" />
     <div class="container">
       <screening-detail />
@@ -23,12 +23,20 @@ export default {
       movie: null
     }
   },
-  mounted () {
-    facade.getMovie(this.movieId)
-      .then(({data}) => {
-        this.movie = data
-      })
-      .catch(console.log)
+  watch: {
+    '$route': 'fetchMovie'
+  },
+  created () {
+    this.fetchMovie()
+  },
+  methods: {
+    fetchMovie () {
+      facade.getMovie(this.movieId)
+        .then(({data}) => {
+          this.movie = data
+        })
+        .catch(console.log)
+    }
   }
 }
 </script>
