@@ -23,6 +23,8 @@
 </template>
 
 <script>
+import moment from 'moment'
+import facade from '@/facades/ScreeningDetailFacade'
 export default {
   name: 'ScreeningDetail',
   data () {
@@ -37,6 +39,14 @@ export default {
         {no: 6, times: ['12:10', '15:00', '17:30']}
       ]
     }
+  },
+  mounted () {
+    this.id = this.$route.params.id // movie id
+    this.date = this.$route.query.date // date from query string
+    if (!this.date) this.date = moment()
+    facade
+      .getAvailableScreenings(this.date, this.id)
+      .then(({data}) => console.log(data)) // data is list of screenings
   }
 }
 </script>
