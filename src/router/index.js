@@ -5,6 +5,7 @@ import Screening from '@/pages/Screening'
 import Seat from '@/pages/Seat'
 import Payment from '@/pages/Payment'
 import Done from '@/pages/Done'
+import ScreeningDetail from '@/components/ScreeningDetail'
 
 Vue.use(Router)
 
@@ -17,13 +18,19 @@ export default new Router({
     },
     {
       path: '/movie/:id',
-      name: 'Screening',
-      component: Screening
-    },
-    {
-      path: '/movie/:id/screening/:screeningId',
-      name: 'Seat Selection',
-      component: Seat
+      component: Screening,
+      children: [
+        {
+          path: '',
+          name: 'Screening',
+          component: ScreeningDetail
+        },
+        {
+          path: 'screening/:screeningId',
+          name: 'Seat Selection',
+          component: Seat
+        }
+      ]
     },
     {
       path: '/payment',

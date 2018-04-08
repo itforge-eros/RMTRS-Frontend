@@ -5,7 +5,7 @@
     :enTitle="movie.en_title"
     :description="movie.synopsis" />
     <div class="container">
-      <screening-detail />
+      <router-view></router-view>
     </div>
   </div>
 </template>
