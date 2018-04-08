@@ -164,10 +164,12 @@ export default {
         this.$delete(this.selectedSeats, this.selectedSeats.indexOf(row + column))
       }
     }
+  },
+  created () {
+    this.screeningId = this.$route.params.screeningId
   }
 }
 </script>
-
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 #chair-bg {

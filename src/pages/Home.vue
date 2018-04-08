@@ -10,13 +10,16 @@
 </template>
 
 <script>
+import moment from 'moment'
 import Highlight from '../components/Highlight'
 import MovieCard from '../components/MovieCard'
+import HomeFacade from '../facades/HomeFacade'
 export default {
   name: 'Home',
   components: {Highlight, MovieCard},
   data () {
     return {
+      date: moment(),
       movieData: [
         {key: 1, title: 'Kavinny and His Scala', description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto rem, praesentium incidunt ex perspiciatis commodi ducimus sed. Qui reiciendis perspiciatis eveniet impedit, facilis optio corrupti porro dolore ut explicabo totam.', img: 'https://scontent.fbkk9-2.fna.fbcdn.net/v/t31.0-8/18518213_1511152025582555_5313532748935915827_o.jpg?oh=ff0108189976cca30758d2a1c5e61576&oe=5B3F5069'},
         {key: 2, title: 'Knowjeans and The Sony Mobile phone', description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto rem, praesentium incidunt ex perspiciatis commodi ducimus sed. Qui reiciendis perspiciatis eveniet impedit, facilis optio corrupti porro dolore ut explicabo totam.', img: 'https://scontent.fbkk9-2.fna.fbcdn.net/v/t31.0-8/18489733_1508156445882113_715520888840823365_o.jpg?_nc_cat=0&oh=efa6a28a6b683e8217a0ed83656faf84&oe=5B2F94E5'},
@@ -25,6 +28,15 @@ export default {
         {key: 5, title: 'เด็มมี่คนน่ารักกับเพื่อนๆทั้งสี่', description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto rem, praesentium incidunt ex perspiciatis commodi ducimus sed. Qui reiciendis perspiciatis eveniet impedit, facilis optio corrupti porro dolore ut explicabo totam.', img: 'https://scontent.fbkk9-2.fna.fbcdn.net/v/t1.0-0/p206x206/22815607_1672934592737630_1323844413626993099_n.jpg?_nc_eui2=v1%3AAeEP9ZpJZ8t5ikvVMZ9TMYlh7aMWwq-oSgma6gIWkMwt5L2bdBxHpmtjcnkZyz6e-gOOJDk93qGrO6Y3AkUBDwiMeZmdYsf3o5ufX1AQaLez1w&oh=7bf5c5cfa90a148eeabbbff1806cf751&oe=5B37A825'}
       ]
     }
+  },
+  created () {
+    HomeFacade.getAvailableMovies(this.date)
+      .then(({data}) => {
+        console.log(data)
+      })
+      .catch(err => {
+        console.log(err)
+      })
   }
 }
 </script>
