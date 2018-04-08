@@ -4,7 +4,8 @@
       <div id="chair" class="row">
         <div class="col-12 col-lg-8" id="chair-bg">
           <div class="date col-12">
-            Date Placeholder
+            reserved: {{ allReservedSeatsIdList }} <br>
+            selected: {{ allSelectedSeatsIdList }}
           </div>
           <div class="screen col-12">
             Screen
@@ -14,18 +15,14 @@
               <span class="row-letter">{{ row }}</span>
               <div class="chairs" v-for="column in 10" :key="column">
                 <img @click="handleChairClick(row, column)"
-                :class="['chair',
-                {'selectable': seats[row + column].mode === 0},
-                {'this-reserving': seats[row + column].mode === 1},
-                {'others-reserving': seats[row + column].mode === 2},
-                {'reserved': seats[row + column].mode === 3}]" src="../assets/chair.png" alt="">
+                :class="['chair', seatClass(seats[row + column])]" src="../assets/chair.png" alt="">
               </div>
               <span class="row-letter">{{ row }}</span>
             </div>
           </div>
         </div>
         <div class="col-12 col-lg-4 count-detail">
-          <selection-detail :selectedSeats="selectedSeats" :theatre="theatre" />
+          <selection-detail :selectedSeats="mySelectedSeats" :theatre="theatre" />
         </div>
       </div>
     </div>
@@ -36,33 +33,48 @@
 import MovieHero from '../components/MovieHero'
 import SelectionDetail from '../components/SelectionDetail'
 import facade from '../facades/SeatFacade'
+import { db } from '../config/firebase.config'
 export default {
   name: 'Seat',
   components: {MovieHero, SelectionDetail},
   data () {
     return {
-      selectedSeats: [],
+      mySelectedSeats: [],
+      mySelectedSeatsFbKeys: {},
       rows: [],
       theatre: null,
-      seats: {}
+      seats: {},
+      screeningId: this.$route.params.screeningId
     }
   },
-  firebase: {
-
+  computed: {
+    allReservedSeatsIdList () {
+      return this.allReservedSeats.map(seat => seat['.value'])
+    },
+    allSelectedSeatsIdList () {
+      return this.allSelectedSeats.map(seat => seat['.value'])
+    }
   },
-  mounted: function () {
+  firebase () {
+    return {
+      allReservedSeats: db.ref(`screenings/${this.screeningId}/reservedList`),
+      allSelectedSeats: db.ref(`screenings/${this.screeningId}/selectedList`)
+    }
+  },
+  mounted () {
     this.fetchSeats()
   },
   methods: {
     handleChairClick (row, column) {
       const seat = this.seats[row + column]
-      console.log(row + column + ': ' + seat.mode)
-      if (seat.mode === 0) {
-        seat.mode = 1
-        this.selectedSeats.push(seat)
-      } else if (seat.mode === 1) {
-        seat.mode = 0
-        this.$delete(this.selectedSeats, this.selectedSeats.indexOf(seat))
+      if (!this.mySelectedSeats.includes(seat)) {
+        this.mySelectedSeats.push(seat)
+        const ref = this.$firebaseRefs.allSelectedSeats.push() // push in firebase
+        ref.set(seat.id)
+        this.mySelectedSeatsFbKeys[seat.id] = ref.key
+      } else {
+        this.$delete(this.mySelectedSeats, this.mySelectedSeats.indexOf(seat))
+        this.$firebaseRefs.allSelectedSeats.child(this.mySelectedSeatsFbKeys[seat.id]).remove() // remove in firebase
       }
     },
     fetchSeats () {
@@ -73,10 +85,30 @@ export default {
           this.theatre = theatre
           this.seats = seats
         })
+    },
+    isSelectable (seat) {
+      return !this.allReservedSeatsIdList.includes(seat.id) &&
+      !this.allSelectedSeatsIdList.includes(seat.id) &&
+      !this.mySelectedSeats.includes(seat.id)
+    },
+    isSelfSelected (seat) {
+      return this.mySelectedSeats.includes(seat) && !this.allReservedSeatsIdList.includes(seat.id)
+    },
+    isOtherSelected (seat) {
+      return !this.mySelectedSeats.includes(seat) && this.allSelectedSeatsIdList.includes(seat.id)
+    },
+    isReserved (seat) {
+      return this.allReservedSeatsIdList.includes(seat.id) && this.allSelectedSeatsIdList.includes(seat.id)
+    },
+    seatClass (seat) {
+      if (this.isSelectable(seat)) return 'selectable'
+      else if (this.isSelfSelected(seat)) return 'this-reserving'
+      else if (this.isOtherSelected(seat)) return 'others-reserving'
+      else if (this.isReserved) return 'reserved'
+      else {
+        console.log('You failed')
+      }
     }
-  },
-  created () {
-    this.screeningId = this.$route.params.screeningId
   }
 }
 </script>
@@ -141,6 +173,7 @@ export default {
   }
   .others-reserving {
     cursor: not-allowed;
+    color: red;
     filter: brightness(1.5) hue-rotate(90deg);
     &:hover {
       filter: brightness(2);
