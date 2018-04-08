@@ -47,18 +47,22 @@ export default {
       seats: {}
     }
   },
+  firebase: {
+
+  },
   mounted: function () {
     this.fetchSeats()
   },
   methods: {
     handleChairClick (row, column) {
-      console.log(row + column + ': ' + this.seats[row + column].mode)
-      if (this.seats[row + column].mode === 0) {
-        this.seats[row + column].mode = 1
-        this.selectedSeats.push(this.seats[row + column])
-      } else if (this.seats[row + column].mode === 1) {
-        this.seats[row + column].mode = 0
-        this.$delete(this.selectedSeats, this.selectedSeats.indexOf(this.seats[row + column]))
+      const seat = this.seats[row + column]
+      console.log(row + column + ': ' + seat.mode)
+      if (seat.mode === 0) {
+        seat.mode = 1
+        this.selectedSeats.push(seat)
+      } else if (seat.mode === 1) {
+        seat.mode = 0
+        this.$delete(this.selectedSeats, this.selectedSeats.indexOf(seat))
       }
     },
     fetchSeats () {
