@@ -2,16 +2,16 @@
   <div id="screening">
     <div class="row">
       <div class="day-detail col-12">
-          <h3 class="col-12">{{ date }}</h3>
+          <h3 class="col-12">{{ formatDate(datetime) }}</h3>
           <div class="theater">
-            <div class="row a-theater" v-for="theater in theaters" :key="theater.no">
+            <div class="row a-theater" v-for="({theatre, screenings}) in data" :key="theatre.id">
               <div class="id col-2">
-                <h1>{{ theater.no }}</h1>
+                <h1>{{ theatre.name }}</h1>
               </div>
               <div class="detail col-10">
                 <div class="row">
-                  <div class="col-6 col-sm-3 col-lg-2 time-wrap" v-for="(timeData, index) in theater.times" :key="index">
-                    <p class="time">{{timeData}}</p>
+                  <div class="col-6 col-sm-3 col-lg-2 time-wrap" v-for="screening in screenings" :key="screening.id">
+                    <p class="time">{{formatTime(screening.show_time)}}</p>
                   </div>
                 </div>
               </div>
@@ -29,7 +29,8 @@ export default {
   name: 'ScreeningDetail',
   data () {
     return {
-      date: 'Monday, March 26, 2018',
+      movieId: this.$route.params.id,
+      datetime: this.$route.query.date ? moment(this.$route.query.date) : moment(),
       theaters: [
         {no: 1, times: ['12:30', '15:00', '17:30']},
         {no: 2, times: ['12:00', '15:00', '17:30']},
@@ -37,16 +38,27 @@ export default {
         {no: 4, times: ['12:20', '15:00', '17:30']},
         {no: 5, times: ['12:35', '15:00', '17:30']},
         {no: 6, times: ['12:10', '15:00', '17:30']}
-      ]
+      ],
+      data: []
     }
   },
   mounted () {
-    this.id = this.$route.params.id // movie id
-    this.date = this.$route.query.date // date from query string
-    if (!this.date) this.date = moment()
-    facade
-      .getAvailableScreenings(this.date, this.id)
-      .then(({data}) => console.log(data)) // data is list of screenings
+    this.fetchScreenings()
+  },
+  methods: {
+    // str of datetime
+    formatTime (datetime) {
+      return moment(datetime).format('HH:mm')
+    },
+    // moment instances
+    formatDate (datetime) {
+      return moment(datetime).format('dddd, MMMM Do YYYY')
+    },
+    fetchScreenings () {
+      facade
+        .getAvailableScreenings(this.datetime.format('YYYY-MM-DD'), this.movieId)
+        .then(({data}) => { this.data = data }) // data is list of theatres with screenings
+    }
   }
 }
 </script>
