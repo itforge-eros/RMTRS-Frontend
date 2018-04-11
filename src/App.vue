@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <navigation :ref="'navigation'"/>
+    <navigation :text="onNavText" :ref="'navigation'"/>
     <div :ref="'space'"></div>
     <router-view />
   </div>
@@ -13,7 +13,16 @@ export default {
   name: 'App',
   components: {Navigation},
   mounted () {
-    this.$refs.space.style.marginTop = this.$refs.navigation.$el.scrollHeight + 'px'
+    this.$refs.space.style.height = this.$refs.navigation.$el.scrollHeight + 'px'
+  },
+  computed: {
+    onNavText () {
+      if (this.$route.path.indexOf('/console') !== -1) {
+        return ' : Console'
+      } else {
+        return null
+      }
+    }
   }
 }
 

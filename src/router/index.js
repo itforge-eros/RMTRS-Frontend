@@ -7,6 +7,11 @@ import Payment from '@/pages/Payment'
 import Done from '@/pages/Done'
 import ScreeningDetail from '@/components/ScreeningDetail'
 
+// Console
+import ConsolePage from '@/pages/console/ConsolePage'
+import Login from '@/pages/console/Login'
+import Dashboard from '@/pages/console/Dashboard'
+
 Vue.use(Router)
 
 export default new Router({
@@ -41,6 +46,22 @@ export default new Router({
       path: '/done',
       name: 'Done',
       component: Done
+    },
+    {
+      path: '/console',
+      component: ConsolePage,
+      children: [
+        {
+          path: 'login',
+          name: 'Login',
+          component: Login
+        },
+        {
+          path: '',
+          name: 'Dashboard',
+          component: Dashboard
+        }
+      ]
     }
   ]
 })
