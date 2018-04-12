@@ -10,9 +10,9 @@
               </div>
               <div class="detail col-10">
                 <div class="row">
-                  <div class="col-6 col-sm-3 col-lg-2 time-wrap" v-for="screening in screenings" :key="screening.id">
+                  <router-link :to="'/movie/'+movieId+'/screening/'+screening.id" class="col-6 col-sm-3 col-lg-2 time-wrap" v-for="screening in screenings" :key="screening.id">
                     <p class="time">{{formatTime(screening.show_time)}}</p>
-                  </div>
+                  </router-link>
                 </div>
               </div>
             </div>
@@ -31,14 +31,6 @@ export default {
     return {
       movieId: this.$route.params.id,
       datetime: this.$route.query.date ? moment(this.$route.query.date) : moment(),
-      theaters: [
-        {no: 1, times: ['12:30', '15:00', '17:30']},
-        {no: 2, times: ['12:00', '15:00', '17:30']},
-        {no: 3, times: ['12:20', '15:00', '17:30']},
-        {no: 4, times: ['12:20', '15:00', '17:30']},
-        {no: 5, times: ['12:35', '15:00', '17:30']},
-        {no: 6, times: ['12:10', '15:00', '17:30']}
-      ],
       data: []
     }
   },

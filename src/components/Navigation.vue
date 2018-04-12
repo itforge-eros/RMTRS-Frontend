@@ -1,6 +1,6 @@
 <template>
   <nav id="navbar">
-    <a class="brand" href="#">Skydog Cineplex</a><span v-if="text !== null">{{text}}</span>
+    <router-link to="/" class="brand" href="#">Skydog Cineplex</router-link><span v-if="text !== null">{{text}}</span>
   </nav>
 </template>
 

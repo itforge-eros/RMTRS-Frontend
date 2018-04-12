@@ -1,12 +1,12 @@
 <template>
     <carousel :perPage=1>
-        <slide v-for="movie in movieData" :key="movie.key">
+        <slide v-for="movie in movieData" :key="movie.id">
             <div class="highlight">
                 <div class="img-wall">
-                    <img :src="movie.img">
+                    <img :src="movie.poster_url">
                     <div class="detail">
-                        <h2>{{ movie.title }}</h2>
-                        <p>{{ movie.description }}</p>
+                        <h2>{{ movie.en_title }}</h2>
+                        <p>{{ movie.synopsis }}</p>
                     </div>
                 </div>
             </div>

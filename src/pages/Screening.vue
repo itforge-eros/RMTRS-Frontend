@@ -1,6 +1,6 @@
 <template>
   <div class="wall">
-    <movie-hero
+    <movie-hero v-if="movie !== null"
     :img="movie.poster_url"
     :enTitle="movie.en_title"
     :description="movie.synopsis" />
@@ -26,7 +26,7 @@ export default {
   watch: {
     '$route': 'fetchMovie'
   },
-  created () {
+  mounted () {
     this.fetchMovie()
   },
   methods: {
@@ -34,6 +34,7 @@ export default {
       facade.getMovie(this.movieId)
         .then(({data}) => {
           this.movie = data
+          console.log(this.movie)
         })
         .catch(console.log)
     }
