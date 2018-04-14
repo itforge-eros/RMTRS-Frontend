@@ -27,14 +27,9 @@ export default {
 
 <style lang="scss" scoped>
 #console-navigation {
-  background-color: $main-gray;
-  position: fixed;
-  top: 0;
-  right: 0;
   width: auto;
   min-height: 100vh;
   padding-top: 54px;
-  border-left: 5px solid $main-blue;
 }
 .menu {
   display: block;

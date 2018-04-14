@@ -1,11 +1,13 @@
 <template>
   <div id="main">
-      <console-navigation />
-      <div class="container">
+      <div class="container-fluid">
           <div class="row">
-              <div class="col">
-                <vuetable></vuetable>
-              </div>
+            <div class="col-3" id="c-navigation">
+              <console-navigation />
+            </div>
+            <div class="col">
+              <vuetable></vuetable>
+            </div>
           </div>
       </div>
   </div>
@@ -19,3 +21,10 @@ export default {
   components: {ConsoleNavigation, Vuetable}
 }
 </script>
+
+<style lang="scss" scoped>
+  #c-navigation {
+    background-color: $main-gray;
+    border-right: 5px solid $main-blue;
+  }
+</style>

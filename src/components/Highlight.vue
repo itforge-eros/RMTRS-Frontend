@@ -1,24 +1,17 @@
 <template>
     <carousel :perPage=1>
         <slide v-for="movie in movieData" :key="movie.id">
-            <div class="highlight">
-                <div class="img-wall">
-                    <img :src="movie.poster_url">
-                    <div class="detail">
-                        <h2>{{ movie.en_title }}</h2>
-                        <p>{{ movie.synopsis }}</p>
-                    </div>
-                </div>
-            </div>
+            <movie-hero :img="movie.poster_url" :enTitle="movie.en_title" :description="movie.synopsis"/>
         </slide>
     </carousel>
 </template>
 
 <script>
+import MovieHero from '@/components/MovieHero'
 import {Carousel, Slide} from 'vue-carousel'
 export default {
   name: 'Highlight',
-  components: {Carousel, Slide},
+  components: {Carousel, Slide, MovieHero},
   props: ['movieData']
 }
 </script>

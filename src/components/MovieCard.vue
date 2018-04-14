@@ -4,7 +4,7 @@
         <img :src="img">
       </div>
       <div class="detail">
-        <h4>{{ title }}</h4>
+        <p>{{ title }}</p>
       </div>
     </router-link>
 </template>
@@ -20,15 +20,26 @@ export default {
 
     .movie-card {
         width: 320px;
-        height: 400px;
+        max-height: 500px;
         border-radius: $main-round;
         overflow: hidden;
+        text-decoration: none!important;
+        color: #000000;
+        .detail {
+            background-color: adjust-color($color: $main-gray, $lightness: 50%, $alpha: 1.0);
+            border-radius: $main-card-down-round;
+            overflow: hidden;
+            p {
+                margin: 0;
+                padding: 1em 10px;
+            }
+        }
         .img-wall {
             width: 100%;
             height: 73%;
             background: linear-gradient(125deg, rgb(2, 109, 255), rgb(107, 204, 255));
             overflow: hidden;
-            border-radius: $main-round;
+            border-radius: $main-card-up-round;
             img {
                 display: block;
                 min-width: 100%;
