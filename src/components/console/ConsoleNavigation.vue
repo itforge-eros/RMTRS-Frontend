@@ -29,7 +29,6 @@ export default {
 #console-navigation {
   width: auto;
   min-height: 100vh;
-  padding-top: 54px;
 }
 .menu {
   display: block;

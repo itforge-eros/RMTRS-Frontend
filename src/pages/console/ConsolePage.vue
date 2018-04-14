@@ -13,6 +13,12 @@ export default {
         return 'login'
       }
     }
+  },
+  mounted () {
+    document.getElementById('space-main').style.display = 'none'
+  },
+  beforeDestroy () {
+    document.getElementById('space-main').style.display = 'block'
   }
 }
 </script>

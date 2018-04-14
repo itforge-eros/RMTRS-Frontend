@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <navigation :text="onNavText" :ref="'navigation'"/>
-    <div :ref="'space'"></div>
+    <div id="space-main" :ref="'space'"></div>
     <router-view />
   </div>
 </template>
