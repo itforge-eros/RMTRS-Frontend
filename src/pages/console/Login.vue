@@ -6,12 +6,12 @@
     </div>
     <div class="col-12 col-md">
       <div id="login-form">
-        <form action="#" method="post">
+        <form v-on:click.prevent="login" action="#" method="post">
           <div class="aform">
-            <span class="title">Username</span><input type="text">
+            <span class="title">Username</span><input v-model.trim="username" type="text">
           </div>
           <div class="aform">
-            <span class="title">Password</span><input type="password">
+            <span class="title">Password</span><input v-model.trim="password" type="password">
           </div>
           <input type="submit" value="Login">
         </form>
@@ -22,8 +22,26 @@
 </template>
 
 <script>
+import facade from '@/facades/LoginFacade'
 export default {
-  name: 'Login'
+  name: 'Login',
+  data () {
+    return {
+      username: '',
+      password: ''
+    }
+  },
+  methods: {
+    login () {
+      facade.login(this.username, this.password)
+        .then(() => {
+          this.$router.push({ name: 'Dashboard' })
+        })
+        .catch(err => {
+          // Notice user that wrong username or password in here
+        })
+    }
+  }
 }
 </script>
 
