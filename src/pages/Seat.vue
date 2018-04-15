@@ -47,6 +47,18 @@ export default {
       screeningId: this.$route.params.screeningId
     }
   },
+  beforeRouteLeave (to, from, next) {
+    if (this.mySelectedSeats.length === 0) next() // No selected seat, you are free to go!
+    const answer = window.confirm('Do you really want to leave? Your selected seat will be deleted.')
+    if (answer) {
+      Object.values(this.mySelectedSeatsFbKeys).forEach((key) => {
+        this.$firebaseRefs.allSelectedSeats.child(key).remove()
+      })
+      next()
+    } else {
+      next(false)
+    }
+  },
   computed: {
     allReservedSeatsIdList () {
       return this.allReservedSeats.map(seat => seat['.value'])
