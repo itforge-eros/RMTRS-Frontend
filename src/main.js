@@ -4,7 +4,7 @@ import Vue from 'vue'
 import VueFire from 'vuefire'
 import App from './App'
 import router from './router'
-import 'bootstrap/scss/bootstrap-grid.scss'
+import 'bootstrap/scss/bootstrap.scss'
 import './scss/main.scss'
 
 Vue.use(VueFire)

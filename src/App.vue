@@ -13,7 +13,7 @@ export default {
   name: 'App',
   components: {Navigation},
   mounted () {
-    this.$refs.space.style.height = this.$refs.navigation.$el.scrollHeight + 'px'
+    this.$refs.space.style.height = (this.$refs.navigation.$el.scrollHeight - 1) + 'px'
   },
   computed: {
     onNavText () {

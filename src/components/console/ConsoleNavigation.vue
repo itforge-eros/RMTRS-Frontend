@@ -1,5 +1,5 @@
 <template>
-  <div id="console-navigation">
+  <div>
     <div class="menu" v-for="(menu, index) in menus" :key="index">
         <span>{{menu.menu}}</span>
     </div>
@@ -26,10 +26,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#console-navigation {
-  width: auto;
-  min-height: 100vh;
-}
 .menu {
   display: block;
   padding: 1em;

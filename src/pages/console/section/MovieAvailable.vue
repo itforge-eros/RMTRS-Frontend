@@ -1,6 +1,6 @@
 <template>
   <vuetable ref="vuetable"
-    api-url="http://localhost:8888/movie/available"
+    api-url="http://rmtrs.itforge.io:8888/movie/paged?page=0"
     :fields="columns"
     pagination-path=""
   ></vuetable>
@@ -9,6 +9,7 @@
 <script>
 import Vuetable from 'vuetable-2/src/components/Vuetable'
 export default {
+  name: 'MovieAvailable',
   components: {Vuetable},
   data () {
     return {
@@ -19,7 +20,11 @@ export default {
         },
         {
           name: 'release_date',
-          title: 'เข้าฉาย'
+          title: 'Release Date'
+        },
+        {
+          name: 'rate',
+          title: 'Rate'
         }
       ]
     }

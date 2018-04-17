@@ -39,6 +39,7 @@ export default {
         })
         .catch(err => {
           // Notice user that wrong username or password in here
+          console.log(err)
         })
     }
   }
