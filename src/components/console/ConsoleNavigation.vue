@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="menu" v-for="(menu, index) in menus" :key="index">
-        <span>{{menu.menu}}</span>
+        <router-link tag="span" active-class="active" :to="{name: menu.path}">{{menu.menu}}</router-link>
     </div>
     <div class="menu">
       <span>ออกจากระบบ</span>
@@ -15,10 +15,10 @@ export default {
   data () {
     return {
       menus: [
-        {menu: 'จัดการการชำระเงิน', role: 0},
-        {menu: 'ข้อมูลภาพยนตร์', role: 1},
-        {menu: 'โรงฉายภาพยนตร์', role: 2},
-        {menu: 'รอบฉายภาพยนตร์', role: 3}
+        {menu: 'จัดการการชำระเงิน', role: 0, path: 'Manage Payment'},
+        {menu: 'ข้อมูลภาพยนตร์', role: 1, path: 'Manage Movie Available'},
+        {menu: 'โรงฉายภาพยนตร์', role: 2, path: 'Manage Theater'},
+        {menu: 'รอบฉายภาพยนตร์', role: 3, path: 'Manage Screening'}
       ]
     }
   }
@@ -28,7 +28,6 @@ export default {
 <style lang="scss" scoped>
 .menu {
   display: block;
-  padding: 1em;
   &:hover {
     background-color: $main-blue;
   }
@@ -36,6 +35,7 @@ export default {
     color: #ffffff;
     text-align: center;
     display: block;
+    padding: 1em;
   }
 }
 .active {

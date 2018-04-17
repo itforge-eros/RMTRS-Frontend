@@ -5,7 +5,7 @@
           <console-navigation />
         </div>
         <div class="col" id="displayer" :ref="'displayer'">
-          <movie-available />
+          <router-view />
         </div>
       </div>
   </div>
@@ -13,10 +13,9 @@
 
 <script>
 import ConsoleNavigation from '@/components/console/ConsoleNavigation'
-import MovieAvailable from '@/pages/console/section/MovieAvailable'
 export default {
   name: 'Console',
-  components: {ConsoleNavigation, MovieAvailable},
+  components: {ConsoleNavigation},
   mounted () {
     this.$refs.cNavigation.style.paddingTop = document.getElementById('navbar').scrollHeight - 1 + 'px'
     this.$refs.displayer.style.paddingTop = document.getElementById('navbar').scrollHeight - 1 + 'px'

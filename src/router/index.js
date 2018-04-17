@@ -11,6 +11,7 @@ import ScreeningDetail from '@/components/ScreeningDetail'
 import ConsolePage from '@/pages/console/ConsolePage'
 import Login from '@/pages/console/Login'
 import Dashboard from '@/pages/console/Dashboard'
+import MovieAvailable from '@/pages/console/section/MovieAvailable'
 
 Vue.use(Router)
 
@@ -58,8 +59,29 @@ export default new Router({
         },
         {
           path: '',
-          name: 'Dashboard',
-          component: Dashboard
+          component: Dashboard,
+          children: [
+            {
+              path: 'payment',
+              name: 'Manage Payment',
+              component: MovieAvailable
+            },
+            {
+              path: 'available',
+              name: 'Manage Movie Available',
+              component: MovieAvailable
+            },
+            {
+              path: 'theater',
+              name: 'Manage Theater',
+              component: MovieAvailable
+            },
+            {
+              path: 'screening',
+              name: 'Manage Screening',
+              component: MovieAvailable
+            }
+          ]
         }
       ]
     }
