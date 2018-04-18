@@ -2,8 +2,13 @@
   <vuetable ref="vuetable"
     api-url="http://rmtrs.itforge.io:8888/reserve/paged?page=0"
     :fields="columns"
-    pagination-path=""
-  ></vuetable>
+    pagination-path="">
+    <template slot="payment" slot-scope="props">
+        <a class="payment-btn" target="_blank" :href="'#/payment/' + props.rowData.id"> 
+            Pay
+        </a>
+    </template>
+  </vuetable>
 </template>
 
 <script>
@@ -36,10 +41,14 @@ export default {
         },
         {
           name: 'is_checked_in',
-          title: 'Status',
+          title: 'Check In',
           titleClass: 'text-center',
           dataClass: 'text-center status',
           callback: 'formatStatus'
+        },
+        {
+          name: '__slot:payment',
+          title: 'Payment'
         }
       ]
     }
@@ -61,7 +70,7 @@ export default {
     },
     formatStatus (value) {
       if (value) {
-        return '<span class="ch-yes">Checked in</span>'
+        return '<span class="ch-yes">Yes</span>'
       }
       return '<span class="ch-no">No</span>'
     }
@@ -81,6 +90,16 @@ export default {
   }
   .ch-no {
     background-color: rgb(145, 43, 43);
+  }
+}
+.payment-btn {
+  padding: 0.5em 1em;
+  border-radius: $main-round;
+  background-color: #3e71b3;
+  color: #ffffff;
+  &:hover {
+    text-decoration: none;
+    color: #ffffff;
   }
 }
 </style>
