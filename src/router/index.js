@@ -12,6 +12,7 @@ import ConsolePage from '@/pages/console/ConsolePage'
 import Login from '@/pages/console/Login'
 import Dashboard from '@/pages/console/Dashboard'
 import MovieAvailable from '@/pages/console/section/MovieAvailable'
+import ManagePayment from '@/pages/console/section/Payment'
 
 Vue.use(Router)
 
@@ -64,7 +65,7 @@ export default new Router({
             {
               path: 'payment',
               name: 'Manage Payment',
-              component: MovieAvailable
+              component: ManagePayment
             },
             {
               path: 'available',
