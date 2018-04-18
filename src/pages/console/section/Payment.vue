@@ -15,6 +15,12 @@ export default {
     return {
       columns: [
         {
+          name: 'id',
+          title: 'ID',
+          titleClass: 'text-center',
+          dataClass: 'text-center'
+        },
+        {
           name: 'reserved_time',
           title: 'Reserved Time'
         },
