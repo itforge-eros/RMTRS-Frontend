@@ -28,6 +28,7 @@ export default {
 <style lang="scss" scoped>
 .menu {
   display: block;
+  cursor: pointer;
   &:hover {
     background-color: $main-blue;
   }
