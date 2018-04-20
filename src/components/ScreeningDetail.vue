@@ -63,6 +63,7 @@ export default {
   border-radius: $main-round;
   box-shadow: $main-shadow;
   h3 {
+    font-size: 16px;
     margin: 0;
     padding: 1em;
     background-color: $main-blue;

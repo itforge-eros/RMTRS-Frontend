@@ -15,7 +15,9 @@
         <div class="text col-10">
           <p>Process the payment</p>
         </div>
-        <div class="arrow col-2"></div>
+        <div class="arrow col-2">
+          <span>&#8250;</span>
+        </div>
       </div>
     </div>
   </div>
@@ -55,6 +57,7 @@ export default {
   border-radius: $main-round;
   box-shadow: $main-shadow;
   color: #ffffff;
+  margin-bottom: 10px;
 }
 .seat-count {
   text-align: center;
@@ -72,11 +75,16 @@ export default {
     background-color: rgba($color: $main-blue, $alpha: 1);
     color: #ffffff;
     p {
-      padding: 5px 10px;
+      padding: 1em 10px;
+      margin: 0;
     }
   }
   .arrow {
     background-color: rgba($color: $main-yellow, $alpha: 1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2em;
   }
 }
 </style>
