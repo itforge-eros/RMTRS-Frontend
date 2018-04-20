@@ -2,12 +2,19 @@
   <vuetable ref="vuetable"
     api-url="http://rmtrs.itforge.io:8888/movie/paged?page=0"
     :fields="columns"
-    pagination-path=""
-  ></vuetable>
+    pagination-path="">
+
+    <template slot="action" slot-scope="props">
+      <router-link :to="'movie/edit/'+props.rowData.id">Edit</router-link>
+      <router-link style="color: red" class="ml-2" :to="'movie/delete/'+props.rowData.id">Delete</router-link>
+    </template>
+
+  </vuetable>
 </template>
 
 <script>
 import Vuetable from 'vuetable-2/src/components/Vuetable'
+import moment from 'moment'
 export default {
   name: 'MovieAvailable',
   components: {Vuetable},
@@ -20,13 +27,28 @@ export default {
         },
         {
           name: 'release_date',
-          title: 'Release Date'
+          title: 'Release Date',
+          callback: 'formatTime'
+        },
+        {
+          name: 'end_date',
+          title: 'End Date',
+          callback: 'formatTime'
         },
         {
           name: 'rate',
           title: 'Rate'
+        },
+        {
+          name: '__slot:action',
+          title: 'Action'
         }
       ]
+    }
+  },
+  methods: {
+    formatTime (datetime) {
+      return moment(datetime).format('dddd, MMMM Do YYYY')
     }
   }
 }

@@ -13,6 +13,8 @@ import Login from '@/pages/console/Login'
 import Dashboard from '@/pages/console/Dashboard'
 import MovieAvailable from '@/pages/console/section/MovieAvailable'
 import ManagePayment from '@/pages/console/section/Payment'
+import ManageTheatre from '@/pages/console/section/Theatre'
+import ManageScreening from '@/pages/console/section/Screening'
 
 Vue.use(Router)
 
@@ -68,19 +70,19 @@ export default new Router({
               component: ManagePayment
             },
             {
-              path: 'available',
+              path: 'movie',
               name: 'Manage Movie Available',
               component: MovieAvailable
             },
             {
               path: 'theater',
               name: 'Manage Theater',
-              component: MovieAvailable
+              component: ManageTheatre
             },
             {
               path: 'screening',
               name: 'Manage Screening',
-              component: MovieAvailable
+              component: ManageScreening
             }
           ]
         }

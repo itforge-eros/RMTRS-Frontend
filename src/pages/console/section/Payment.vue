@@ -4,15 +4,14 @@
     :fields="columns"
     pagination-path="">
     <template slot="payment" slot-scope="props">
-        <a class="payment-btn" target="_blank" :href="'#/payment/' + props.rowData.id"> 
-            Pay
-        </a>
+      <a class="payment-btn" target="_blank" :href="'#/payment/' + props.rowData.id">Pay</a>
     </template>
   </vuetable>
 </template>
 
 <script>
 import Vuetable from 'vuetable-2/src/components/Vuetable'
+import moment from 'moment'
 export default {
   name: 'Payment',
   components: {Vuetable},
@@ -27,7 +26,8 @@ export default {
         },
         {
           name: 'reserved_time',
-          title: 'Reserved Time'
+          title: 'Reserved Time',
+          callback: 'formatTime'
         },
         {
           name: 'tickets',
@@ -73,6 +73,9 @@ export default {
         return '<span class="ch-yes">Yes</span>'
       }
       return '<span class="ch-no">No</span>'
+    },
+    formatTime (datetime) {
+      return moment(datetime).format('dddd, MMMM Do YYYY HH:MM')
     }
   }
 }
