@@ -15,6 +15,7 @@ import MovieAvailable from '@/pages/console/section/MovieAvailable'
 import ManagePayment from '@/pages/console/section/Payment'
 import ManageTheatre from '@/pages/console/section/Theatre'
 import ManageScreening from '@/pages/console/section/Screening'
+import Editor from '@/pages/console/Editor'
 
 Vue.use(Router)
 
@@ -83,6 +84,11 @@ export default new Router({
               path: 'screening',
               name: 'Manage Screening',
               component: ManageScreening
+            },
+            {
+              path: '*/edit/:id',
+              name: 'Editor',
+              component: Editor
             }
           ]
         }
