@@ -7,15 +7,15 @@
     </div>
     <form class="row">
       <div :class="['data-edit', 'form-group', 'col-12', {'col-md-4': formMode.movie[key][1]}]" v-for="(data, key, index) in movie" :key="index">
-        <div v-if="typeof(data) !== 'object' && key !== 'active'">
+        <div v-if="typeof(data) !== 'object' && !hidden.includes(key)">
           <label :for="key">{{ key }}</label>
           <input v-if="formMode.movie[key][0] === 'text'" type="text" class="form-control" :id="key" :value="data" :disabled="key === 'id'">
           <textarea v-else-if="formMode.movie[key][0] === 'textarea'" type="text" class="form-control" :id="key" :value="data" :disabled="key === 'id'"></textarea>
         </div>
-        <div v-else-if="key !== 'active'">
+        <div v-else-if="!hidden.includes(key)">
           <h2>{{ key }}</h2>
-          <div class="pl-5 row" v-for="(subData, subIndex) in data" :key="subIndex">
-            <div :class="['data-edit', 'form-group', 'col-12', {'col-md-4': formMode.movie[key][2][innerKey]}]" v-if="typeof(subData) === 'object' && innerKey !== 'active'" v-for="(innerData, innerKey) in subData" :key="innerKey">
+          <div class="ml-5 my-1 row part" v-for="(subData, subIndex) in data" :key="subIndex">
+            <div :class="['data-edit', 'form-group', 'col-12', {'col-md-4': formMode.movie[key][2][innerKey]}]" v-if="typeof(subData) === 'object' && !hidden.includes(innerKey)" v-for="(innerData, innerKey) in subData" :key="innerKey">
               <label :for="innerKey">{{ innerKey }}</label>
               <input type="text" class="form-control" :id="innerKey" :value="innerData" :disabled="innerKey === 'id'">
             </div>
@@ -52,7 +52,8 @@ export default {
           genres: ['text', false, {id: true, name: true, active: false}],
           productions: ['text', false, {id: true, name: true, active: false}]
         }
-      }
+      },
+      hidden: ['id', 'active']
     }
   },
   mounted () {
@@ -76,5 +77,9 @@ export default {
 <style lang="scss" scoped>
 #editor {
   padding: 10px;
+}
+.part {
+  padding: 10px;
+  background-color: adjust-color($color: $main-gray, $lightness: 45%, $alpha: 1.0)
 }
 </style>
