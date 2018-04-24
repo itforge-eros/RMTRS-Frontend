@@ -1,0 +1,192 @@
+<template>
+  <div id="editor">
+    <div class="row">
+      <div class="col">
+        <h1>Edit Movie</h1>
+      </div>
+    </div>
+    <form v-if="movie !== null">
+      <div class="row">
+        <div v-if="!exclude.includes(key)" :class="formMeta[key][1]" v-for="(meta, key) in formMeta" :key="key">
+          <label :for="key">{{ formMeta[key][0] }}</label>
+          <input v-if="formMeta[key][2] === 'text'" type="text" class="form-control" :id="key" :value="movie[key]">
+          <datepicker wrapper-class="box-datepicker" calendar-class="design" input-class="form-control read-only-except" v-else-if="formMeta[key][2] === 'date'" :value="new Date(dateFormat(movie[key]).year(), dateFormat(movie[key]).month(), dateFormat(movie[key]).date())"></datepicker>
+        </div>
+        <div class="form-group col-12 col-md-6" v-for="(production, key) in movie.productions" :key="production.id">
+          <label :for="'production-'+key">{{ formMeta.productions.name }}</label>
+          <input type="text" class="form-control" :id="'production-'+key" :value="production.name">
+        </div>
+        <div class="form-group col-12">
+          <label for="synopsis">Synopsis</label>
+          <textarea type="text" class="form-control" id="synopsis" rows="5" :value="movie.synopsis"></textarea>
+        </div>
+      </div>
+      <hr>
+      <section id="actor">
+        <h2>Actors</h2>
+        <div class="row actor my-2" v-for="(actor, key, index) in movie.actors" :key="index">
+          <div class="form-group col-12 col-md-4 pt-2" v-for="(meta, inKey) in formMeta.actors" :key="inKey">
+            <label :for="'actor-'+actor.id">{{ formMeta.actors[inKey] }}</label>
+            <input type="text" class="form-control" :id="'actor-'+actor.id" :value="actor[inKey]">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <button class="btn">Add an Actor</button>
+          </div>
+        </div>
+      </section>
+      <hr>
+      <section id="director">
+        <h2>Directors</h2>
+        <div class="row director my-2" v-for="(director, key, index) in movie.directors" :key="index">
+          <div class="form-group col-12 col-md-4 pt-2" v-for="(meta, inKey) in formMeta.directors" :key="inKey">
+            <label :for="director.id+director.fname">{{ formMeta.directors[inKey] }}</label>
+            <input type="text" class="form-control" :id="director.id+director.fname" :value="director[inKey]">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <button class="btn">Add an Director</button>
+          </div>
+        </div>
+      </section>
+      <hr>
+      <section id="genre">
+        <h2>Genre</h2>
+        <div class="row">
+          <div :class="['p-2', 'col-6', 'col-md-2']" v-for="item in genre" :key="item.id">
+            <div class="btn form-check p-0">
+              <input class="form-check-input" :checked="genreAssigned.includes(item.id)" type="checkbox" value="" :id="item.name">
+              <label class="p-2" :for="item.name">
+                {{ item.name }}
+              </label>
+            </div>
+          </div>
+        </div>
+      </section>
+      <div class="row">
+        <div class="col-12">
+          <button class="float-right btn">Save</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</template>
+
+<script>
+import screeningFacade from '@/facades/ScreeningFacade'
+import genreFacade from '@/facades/GenreFacade'
+import Datepicker from 'vuejs-datepicker'
+import moment from 'moment'
+export default {
+  name: 'MovieEditor',
+  components: {Datepicker},
+  data () {
+    return {
+      movie: null,
+      genre: null,
+      exclude: ['actors', 'directors', 'productions'],
+      formMeta: {
+        th_title: ['ชื่อไทย', 'form-group col-12 col-sm-6', 'text'],
+        en_title: ['English Title', 'form-group col-12 col-sm-6', 'text'],
+        release_date: ['Release Date', 'form-group col-12 col-md-3', 'date'],
+        end_date: ['End Date', 'form-group col-12 col-md-3', 'date'],
+        duration: ['Duration', 'form-group col-6 col-sm-3', 'text'],
+        poster_url: ['Poster URL', 'form-group col-12 col-sm-6', 'text'],
+        trailer_url: ['Trailer URL', 'form-group col-12 col-sm-6', 'text'],
+        rate: ['Rate', 'form-group col-3', 'text'],
+        actors: {
+          fname: 'First Name',
+          mname: 'Middle Name',
+          lname: 'Last Name'
+        },
+        directors: {
+          fname: 'First Name',
+          mname: 'Middle Name',
+          lname: 'Last Name'
+        },
+        productions: {
+          name: 'Name'
+        }
+      }
+    }
+  },
+  mounted () {
+    this.fetchMovie()
+    this.fetchGenre()
+  },
+  methods: {
+    fetchMovie () {
+      screeningFacade.getMovie(this.$route.params.id)
+        .then(({data}) => {
+          this.movie = data
+        })
+        .catch(console.log)
+    },
+    fetchGenre () {
+      genreFacade.getGenre()
+        .then(({data}) => {
+          this.genre = data
+        })
+        .catch(console.log)
+    },
+    dateFormat (date) {
+      return moment(date, 'YYYY-MM-DD')
+    }
+  },
+  computed: {
+    genreAssigned () {
+      return this.movie.genres.map((genre) => {
+        return genre.id
+      })
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+#editor {
+  padding: 10px;
+  section {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+}
+
+.form-check {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: adjust-color($color: $main-blue, $lightness: 0%, $alpha: 1.0);
+  transition: 0.4s ease;
+  color: #ffffff;
+  overflow: hidden;
+  label {
+    width: 100%;
+    height: 100%;
+  }
+  input {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    left: 0;
+    transform: scale(10);
+    visibility: hidden;
+    &:checked {
+      + label {
+        color: $main-yellow;
+      }
+    }
+  }
+  label {
+    margin: 0 auto;
+  }
+}
+
+.actor, .director {
+  background: adjust-color($color: $main-gray, $lightness: 50%, $alpha: 1.0);
+  border-radius: $main-round;
+}
+</style>

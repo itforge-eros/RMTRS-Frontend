@@ -12,3 +12,22 @@ body {
     margin: 0;
     overflow-x: hidden;
 }
+
+#editor {
+    .read-only-except {
+        background: #fff!important;
+    }
+}
+
+.vdp-datepicker {
+    .design {
+        padding: 10px;
+    }
+    .cell, .up, .prev, .next, .design {
+        border-radius: 0.25rem;
+    }
+    .selected {
+        color: #fff;
+        background: $main-blue!important;
+    }
+}

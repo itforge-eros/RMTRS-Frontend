@@ -23,6 +23,7 @@
     "vue-carousel": "^0.6.9",
     "vue-router": "^3.0.1",
     "vuefire": "^1.4.5",
+    "vuejs-datepicker": "^0.9.29",
     "vuetable-2": "^1.7.5"
   },
   "devDependencies": {
