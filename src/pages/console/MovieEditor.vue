@@ -9,8 +9,8 @@
       <div class="row">
         <div v-if="!exclude.includes(key)" :class="formMeta[key][1]" v-for="(meta, key) in formMeta" :key="key">
           <label :for="key">{{ formMeta[key][0] }}</label>
-          <input v-if="formMeta[key][2] === 'text'" type="text" class="form-control" :id="key" :value="movie[key]">
-          <datepicker wrapper-class="box-datepicker" calendar-class="design" input-class="form-control read-only-except" v-else-if="formMeta[key][2] === 'date'" :value="new Date(dateFormat(movie[key]).year(), dateFormat(movie[key]).month(), dateFormat(movie[key]).date())"></datepicker>
+          <input v-model="movie[key]" v-if="formMeta[key][2] === 'text'" type="text" class="form-control" :id="key">
+          <datepicker wrapper-class="box-datepicker" calendar-class="design" input-class="form-control read-only-except" v-else-if="formMeta[key][2] === 'date'" v-model="movie[key]"></datepicker>
         </div>
         <div class="form-group col-12 col-md-6" v-for="(production, key) in movie.productions" :key="production.id">
           <label :for="'production-'+key">{{ formMeta.productions.name }}</label>
@@ -25,7 +25,7 @@
       <section id="actor">
         <h2>Actors</h2>
         <div class="row actor my-2" v-for="(actor, key, index) in movie.actors" :key="index">
-          <div class="form-group col-12 col-md-4 pt-2" v-for="(meta, inKey) in formMeta.actors" :key="inKey">
+          <div class="form-group col-12 col-md-3 pt-2" v-for="(meta, inKey) in formMeta.actors" :key="inKey">
             <label :for="'actor-'+actor.id">{{ formMeta.actors[inKey] }}</label>
             <input type="text" class="form-control" :id="'actor-'+actor.id" :value="actor[inKey]">
           </div>
@@ -40,7 +40,7 @@
       <section id="director">
         <h2>Directors</h2>
         <div class="row director my-2" v-for="(director, key, index) in movie.directors" :key="index">
-          <div class="form-group col-12 col-md-4 pt-2" v-for="(meta, inKey) in formMeta.directors" :key="inKey">
+          <div class="form-group col-12 col-md-3 pt-2" v-for="(meta, inKey) in formMeta.directors" :key="inKey">
             <label :for="director.id+director.fname">{{ formMeta.directors[inKey] }}</label>
             <input type="text" class="form-control" :id="director.id+director.fname" :value="director[inKey]">
           </div>
@@ -79,6 +79,7 @@ import screeningFacade from '@/facades/ScreeningFacade'
 import genreFacade from '@/facades/GenreFacade'
 import Datepicker from 'vuejs-datepicker'
 import moment from 'moment'
+import ConsoleNavigationVue from '../../components/console/ConsoleNavigation.vue';
 export default {
   name: 'MovieEditor',
   components: {Datepicker},
@@ -130,9 +131,6 @@ export default {
           this.genre = data
         })
         .catch(console.log)
-    },
-    dateFormat (date) {
-      return moment(date, 'YYYY-MM-DD')
     }
   },
   computed: {
