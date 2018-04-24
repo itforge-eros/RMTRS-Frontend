@@ -21,6 +21,7 @@
     "popper.js": "^1.12.9",
     "vue": "^2.5.2",
     "vue-carousel": "^0.6.9",
+    "vue-qrcode-component": "^2.1.1",
     "vue-router": "^3.0.1",
     "vuefire": "^1.4.5",
     "vuejs-datepicker": "^0.9.29",

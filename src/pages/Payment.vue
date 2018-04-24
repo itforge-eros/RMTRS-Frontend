@@ -18,7 +18,10 @@
           </div>
           <div class="mt-5 mt-md-0 col-12 col-md-5">
             <div id="qr-code">
-              QR code placeholder
+              <qrcode
+                text="QR Text Data"
+                size="300"
+              ></qrcode>
             </div>
           </div>
         </div>
@@ -42,9 +45,10 @@
 
 <script>
 import MovieHero from '@/components/MovieHero'
+import qrcode from 'vue-qrcode-component'
 export default {
   name: 'Payment',
-  components: {MovieHero},
+  components: {MovieHero, qrcode},
   data () {
     return {
       movie: {
@@ -87,7 +91,6 @@ export default {
 #qr-code {
   width: 300px;
   height: 300px;
-  border: 1px solid #000000;
 }
 
 @media screen and (max-width: 767px) {
