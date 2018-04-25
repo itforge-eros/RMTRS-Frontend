@@ -5998,6 +5998,10 @@ pretty@2.0.0:
     extend-shallow "^2.0.1"
     js-beautify "^1.6.12"
 
+printd@^0.0.11:
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/printd/-/printd-0.0.11.tgz#6719953976aa1ba0854da671bd7c427dac4f3f61"
+
 private@^0.1.6, private@^0.1.7:
   version "0.1.8"
   resolved "https://registry.yarnpkg.com/private/-/private-0.1.8.tgz#2381edb3689f7a53d653190060fcf822d2f368ff"

@@ -1,5 +1,5 @@
 <template>
-<div class="wall">
+<div class="wall" id="x">
   <div class="container-fluid">
     <div class="row">
       <movie-hero v-if="movie !== null"
@@ -24,6 +24,7 @@
                 :size="300"
               ></qrcode>
             </div>
+            <button class="button" @click="print">Print</button>
           </div>
         </div>
         <div class="row mt-5">
@@ -49,6 +50,8 @@ import facade from '@/facades/PaymentDetailFacade'
 import MovieHero from '@/components/MovieHero'
 import qrcode from 'vue-qrcode-component'
 import moment from 'moment'
+import { Printd } from 'printd'
+
 export default {
   name: 'Payment',
   components: {MovieHero, qrcode},
@@ -79,6 +82,14 @@ export default {
     formatTime (datetime) {
       console.log(datetime)
       return moment(datetime).format('dddd, MMMM Do YYYY HH:mm')
+    },
+    print () {
+      const d = new Printd()
+      d.print(document.getElementById('message'), 
+      `.row {
+        display: flex;
+        justify-content: center;
+      }`)
     }
   }
 }
