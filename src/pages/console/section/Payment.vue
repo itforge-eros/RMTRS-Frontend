@@ -75,7 +75,7 @@ export default {
       return '<span class="ch-no">No</span>'
     },
     formatTime (datetime) {
-      return moment(datetime).format('dddd, MMMM Do YYYY HH:MM')
+      return moment(datetime).format('dddd, MMMM Do YYYY HH:mm')
     }
   }
 }

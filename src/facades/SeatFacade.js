@@ -22,4 +22,16 @@ export default new class SeatFacade {
           .catch(console.log)
       })
   }
+
+  reserve = (screeningId, selectedSeats) => {
+    const ticketsPayload = selectedSeats.map((seat, idx) => {
+      return {seat_id: seat.id, item_no: idx + 1}
+    })
+    const reservePayload = {
+      screening_id: screeningId,
+      tickets: ticketsPayload
+    }
+    console.log(reservePayload)
+    return axios.post('/reserve', reservePayload)
+  }
 }()

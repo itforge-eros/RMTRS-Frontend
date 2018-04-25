@@ -14,13 +14,14 @@
             <h2>We have reserved your seat(s)!</h2>
             <p class="mt-1">Please contact our staff to process the payment by showing this page</p>
             <h3 class="mt-5 mt-md-0 text-muted text-center text-md-right">Your theatre is</h3>
-            <h2 class="text-center text-md-right"><b>{{ theatre }}</b></h2>
+            <h2 class="text-center text-md-right"><b>{{ theatre.name }}</b></h2>
+            <p class="mt-1 text-md-right">At {{ formatTime(screening.show_time) }}</p>
           </div>
           <div class="mt-5 mt-md-0 col-12 col-md-5">
             <div id="qr-code">
               <qrcode
-                text="QR Text Data"
-                size="300"
+                :text="`http://rmtrs.itforge.io:8888/checkin/this.$route.params.reserveId`"
+                :size="300"
               ></qrcode>
             </div>
           </div>
@@ -32,7 +33,7 @@
                 <img src="../assets/chair.png" alt="">
               </div>
               <div class="col id">
-                <h3>{{ seat }}</h3>
+                <h3>{{ seat.row + seat.number }}</h3>
               </div>
             </div>
           </div>
@@ -44,20 +45,40 @@
 </template>
 
 <script>
+import facade from '@/facades/PaymentDetailFacade'
 import MovieHero from '@/components/MovieHero'
 import qrcode from 'vue-qrcode-component'
+import moment from 'moment'
 export default {
   name: 'Payment',
   components: {MovieHero, qrcode},
   data () {
     return {
-      movie: {
-        poster_url: 'https://i.imgur.com/SI1rJi8.jpg',
-        en_title: 'The Hitman’s Bodyguard',
-        synopsis: 'The world\'s top bodyguard gets a new client, a hit man who must testify at the International Criminal Court. They must put their differences aside and work together to make it to the trial on time'
-      },
-      theatre: 'T1',
-      seats: ['A2', 'A3', 'A4']
+      movie: {},
+      theatre: {},
+      seats: [],
+      screening: {}
+    }
+  },
+  mounted () {
+    this.fetchData()
+  },
+  methods: {
+    fetchData () {
+      facade.fetchData(this.$route.params.reserveId)
+        .then(({movie, reserve, screening}) => {
+          const seats = reserve.tickets.map(ticket => ticket.seat)
+          const theatre = screening.theatre
+          console.log(movie, reserve, screening)
+          this.movie = movie
+          this.theatre = theatre
+          this.seats = seats
+          this.screening = screening
+        })
+    },
+    formatTime (datetime) {
+      console.log(datetime)
+      return moment(datetime).format('dddd, MMMM Do YYYY HH:mm')
     }
   }
 }

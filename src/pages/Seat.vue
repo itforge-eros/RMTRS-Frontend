@@ -4,8 +4,7 @@
       <div id="chair" class="row">
         <div class="col-12 col-lg-8" id="chair-bg">
           <div class="date col-12">
-            reserved: {{ allReservedSeatsIdList }} <br>
-            selected: {{ allSelectedSeatsIdList }}
+            Please select your seats.
           </div>
           <div class="screen col-12">
             Screen
@@ -22,7 +21,11 @@
           </div>
         </div>
         <div class="col-12 col-lg-4 count-detail">
-          <selection-detail :selectedSeats="mySelectedSeats" :theatre="theatre" />
+          <selection-detail
+            :selectedSeats="mySelectedSeats"
+            :theatre="theatre"
+            :screeningId="screeningId"
+            />
         </div>
       </div>
     </div>
@@ -48,7 +51,14 @@ export default {
     }
   },
   beforeRouteLeave (to, from, next) {
-    if (this.mySelectedSeats.length === 0) next() // No selected seat, you are free to go!
+    if (this.mySelectedSeats.length === 0) { 
+      next() // No selected seat, you are free to go!
+      return
+    }
+    if (to.name === 'Payment') {
+      next()
+      return
+    }
     const answer = window.confirm('Do you really want to leave? Your selected seat will be deleted.')
     if (answer) {
       Object.values(this.mySelectedSeatsFbKeys).forEach((key) => {

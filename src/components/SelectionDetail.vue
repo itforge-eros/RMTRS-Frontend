@@ -12,7 +12,7 @@
     </div>
     <div class="payment col-12">
       <div class="row">
-        <div class="text col-10">
+        <div class="text col-10" @click="reserve" :disabled="isPaymentAvailable">
           <p>Process the payment</p>
         </div>
         <div class="arrow col-2">
@@ -24,12 +24,21 @@
 </template>
 
 <script>
+import facade from '@/facades/SeatFacade'
 export default {
   name: 'SelectionDetail',
-  props: ['selectedSeats', 'theatre'],
+  props: ['selectedSeats', 'theatre', 'screeningId'],
   data () {
     return {
       price: 180
+    }
+  },
+  methods: {
+    reserve () {
+      facade.reserve(this.screeningId, this.selectedSeats)
+        .then(({data}) => {
+          this.$router.push({ name: 'Payment', params: { reserveId: data.id } })
+        })
     }
   },
   computed: {
@@ -38,6 +47,9 @@ export default {
         sum += seat.seat_type.price
         return sum
       }, 0)
+    },
+    isPaymentAvailable () {
+      return this.totalPrice > 0
     }
   }
 }

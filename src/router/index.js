@@ -43,7 +43,7 @@ export default new Router({
       ]
     },
     {
-      path: '/payment',
+      path: '/payment/:reserveId',
       name: 'Payment',
       component: Payment
     },
