@@ -6,8 +6,8 @@
     pagination-path="">
 
     <template slot="action" slot-scope="props">
-      <router-link :to="'movie/edit/'+props.rowData.id">Edit</router-link>
-      <router-link style="color: red" class="ml-2" :to="'movie/delete/'+props.rowData.id">Delete</router-link>
+      <router-link tag="button" class="btn m-1" style="color: blue" :to="'movie/edit/'+props.rowData.id">Edit</router-link>
+      <router-link tag="button" class="btn m-1" style="color: red" :to="'movie/delete/'+props.rowData.id">Delete</router-link>
     </template>
 
   </vuetable>

@@ -2,6 +2,7 @@
   <vuetable ref="vuetable"
     api-url="http://rmtrs.itforge.io:8888/screening/paged?page=0"
     :fields="columns"
+    :css="tableMeta"
     pagination-path="">
 
     <template slot="title" slot-scope="props">
@@ -9,7 +10,7 @@
     </template>
 
     <template slot="action" slot-scope="props">
-      <router-link :to="'screening/edit/'+props.rowData.id">Edit</router-link>
+      <router-link tag="button" style="color: blue" class="btn" :to="'screening/edit/'+props.rowData.id">Edit</router-link>
     </template>
 
   </vuetable>
@@ -23,17 +24,20 @@ export default {
   components: {Vuetable},
   data () {
     return {
+      tableMeta: {
+        tableClass: 'table table-striped'
+      },
       columns: [
+        {
+          name: 'show_time',
+          title: 'Showtime',
+          callback: 'formatShowtime'
+        },
         {
           name: 'theatre.name',
           title: 'Theatre',
           titleClass: 'text-center',
           dataClass: 'text-center'
-        },
-        {
-          name: 'show_time',
-          title: 'Showtime',
-          callback: 'formatShowtime'
         },
         {
           name: '__slot:title',

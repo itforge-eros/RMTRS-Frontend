@@ -2,32 +2,48 @@ $main-blue: #252839;
 $main-gray: #677077;
 $main-white: #b5b5b7;
 $main-yellow: #f2b632;
-
-$main-round: 10px;
+$main-round: 0.25rem;
 $main-card-up-round: 10px 10px 0px 0px;
 $main-card-down-round: 0px 0px 10px 10px;
-$main-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+$main-shadow: 0 3px 6px rgba(0, 0, 0, 0.16),
 
+0 3px 6px rgba(0, 0, 0, 0.23);
 body {
-    margin: 0;
-    overflow-x: hidden;
+  margin: 0;
+  overflow-x: hidden;
 }
 
 #editor {
-    .read-only-except {
-        background: #fff!important;
-    }
+  padding: 10px;
+  .read-only-except {
+    background: #fff !important;
+  }
+  .header {
+    background-color: $main-blue;
+    color: $main-yellow;
+    border-radius: $main-round;
+  }
 }
 
 .vdp-datepicker {
-    .design {
-        padding: 10px;
-    }
-    .cell, .up, .prev, .next, .design {
-        border-radius: 0.25rem;
-    }
-    .selected {
-        color: #fff;
-        background: $main-blue!important;
-    }
+  .design {
+    padding: 10px;
+  }
+  .cell,
+  .up,
+  .prev,
+  .next,
+  .design {
+    border-radius: 0.25rem;
+  }
+  .selected {
+    color: #fff;
+    background: $main-blue !important;
+  }
+}
+
+.center-thing {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

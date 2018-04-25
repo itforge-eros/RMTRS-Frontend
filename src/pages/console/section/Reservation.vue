@@ -2,9 +2,11 @@
   <vuetable ref="vuetable"
     api-url="http://rmtrs.itforge.io:8888/reserve/paged?page=0"
     :fields="columns"
+    :css="tableMeta"
     pagination-path="">
-    <template slot="payment" slot-scope="props">
-      <a class="payment-btn" target="_blank" :href="'#/payment/' + props.rowData.id">Pay</a>
+    <template slot="action" slot-scope="props">
+      <a class="btn btn-info" target="_blank" :href="'#/reservation/' + props.rowData.id">Detail</a>
+      <button class="btn">พิมพ์ตั๋ว</button>
     </template>
   </vuetable>
 </template>
@@ -17,6 +19,9 @@ export default {
   components: {Vuetable},
   data () {
     return {
+      tableMeta: {
+        tableClass: 'table table-striped'
+      },
       columns: [
         {
           name: 'id',
@@ -47,8 +52,8 @@ export default {
           callback: 'formatStatus'
         },
         {
-          name: '__slot:payment',
-          title: 'Payment'
+          name: '__slot:action',
+          title: 'Action'
         }
       ]
     }
@@ -70,9 +75,9 @@ export default {
     },
     formatStatus (value) {
       if (value) {
-        return '<span class="ch-yes">Yes</span>'
+        return 'Yes'
       }
-      return '<span class="ch-no">No</span>'
+      return 'No'
     },
     formatTime (datetime) {
       return moment(datetime).format('dddd, MMMM Do YYYY HH:mm')
@@ -93,16 +98,6 @@ export default {
   }
   .ch-no {
     background-color: rgb(145, 43, 43);
-  }
-}
-.payment-btn {
-  padding: 0.5em 1em;
-  border-radius: $main-round;
-  background-color: #3e71b3;
-  color: #ffffff;
-  &:hover {
-    text-decoration: none;
-    color: #ffffff;
   }
 }
 </style>

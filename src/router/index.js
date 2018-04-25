@@ -15,7 +15,9 @@ import MovieAvailable from '@/pages/console/section/MovieAvailable'
 import ManageReservation from '@/pages/console/section/Reservation'
 import ManageTheatre from '@/pages/console/section/Theatre'
 import ManageScreening from '@/pages/console/section/Screening'
-import MovieEditor from '@/pages/console/MovieEditor'
+import ManageAccount from '@/pages/console/section/Account'
+import MovieEditor from '@/pages/console/editor/MovieEditor'
+import ScreeningEditor from '@/pages/console/editor/ScreeningEditor'
 
 Vue.use(Router)
 
@@ -86,9 +88,19 @@ export default new Router({
               component: ManageScreening
             },
             {
+              path: 'account',
+              name: 'Manage Account',
+              component: ManageAccount
+            },
+            {
               path: 'movie/edit/:id',
               name: 'MovieEditor',
               component: MovieEditor
+            },
+            {
+              path: 'screening/edit/:id',
+              name: 'ScreeningEditor',
+              component: ScreeningEditor
             }
           ]
         }
