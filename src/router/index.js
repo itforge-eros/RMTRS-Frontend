@@ -3,7 +3,7 @@ import Router from 'vue-router'
 import Home from '@/pages/Home'
 import Screening from '@/pages/Screening'
 import Seat from '@/pages/Seat'
-import Payment from '@/pages/Payment'
+import Reservation from '@/pages/Reservation'
 import Done from '@/pages/Done'
 import ScreeningDetail from '@/components/ScreeningDetail'
 
@@ -12,7 +12,7 @@ import ConsolePage from '@/pages/console/ConsolePage'
 import Login from '@/pages/console/Login'
 import Dashboard from '@/pages/console/Dashboard'
 import MovieAvailable from '@/pages/console/section/MovieAvailable'
-import ManagePayment from '@/pages/console/section/Payment'
+import ManageReservation from '@/pages/console/section/Reservation'
 import ManageTheatre from '@/pages/console/section/Theatre'
 import ManageScreening from '@/pages/console/section/Screening'
 import MovieEditor from '@/pages/console/MovieEditor'
@@ -43,9 +43,9 @@ export default new Router({
       ]
     },
     {
-      path: '/payment/:reserveId',
-      name: 'Payment',
-      component: Payment
+      path: '/reservation/:reserveId',
+      name: 'reservation',
+      component: Reservation
     },
     {
       path: '/done',
@@ -66,9 +66,9 @@ export default new Router({
           component: Dashboard,
           children: [
             {
-              path: 'payment',
-              name: 'Manage Payment',
-              component: ManagePayment
+              path: 'reservation',
+              name: 'Manage Reservation',
+              component: ManageReservation
             },
             {
               path: 'movie',
@@ -76,8 +76,8 @@ export default new Router({
               component: MovieAvailable
             },
             {
-              path: 'theater',
-              name: 'Manage Theater',
+              path: 'theatre',
+              name: 'Manage Theatre',
               component: ManageTheatre
             },
             {

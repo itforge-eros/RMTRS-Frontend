@@ -23,6 +23,9 @@ import Vuetable from 'vuetable-2/src/components/Vuetable'
 export default {
   name: 'Theatre',
   components: {Vuetable},
+  mounted () {
+    this.$refs.vuetable.toggleDetailRow(1)
+  },
   data () {
     return {
       columns: [
@@ -51,7 +54,6 @@ export default {
 
 <style lang="scss">
 .theatre-status {
-  padding: 10px 5px;
   color: #ffffff;
   .active {
     background-color: rgb(19, 126, 19);

@@ -2,6 +2,7 @@
   <vuetable ref="vuetable"
     api-url="http://rmtrs.itforge.io:8888/movie/paged?page=0"
     :fields="columns"
+    :css="tableMeta"
     pagination-path="">
 
     <template slot="action" slot-scope="props">
@@ -20,6 +21,9 @@ export default {
   components: {Vuetable},
   data () {
     return {
+      tableMeta: {
+        tableClass: 'table table-striped'
+      },
       columns: [
         {
           name: 'en_title',

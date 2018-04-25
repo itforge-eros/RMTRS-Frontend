@@ -15,10 +15,11 @@ export default {
   data () {
     return {
       menus: [
-        {menu: 'จัดการการชำระเงิน', role: 0, path: 'Manage Payment'},
+        {menu: 'รายการจอง', role: 0, path: 'Manage Reservation'},
         {menu: 'ข้อมูลภาพยนตร์', role: 1, path: 'Manage Movie Available'},
-        {menu: 'โรงฉายภาพยนตร์', role: 2, path: 'Manage Theater'},
-        {menu: 'รอบฉายภาพยนตร์', role: 3, path: 'Manage Screening'}
+        {menu: 'โรงฉายภาพยนตร์', role: 2, path: 'Manage Theatre'},
+        {menu: 'รอบฉายภาพยนตร์', role: 3, path: 'Manage Screening'},
+        {menu: 'จัดการบัญชี', role: 4, path: 'Manage Account'}
       ]
     }
   }
