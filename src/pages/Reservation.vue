@@ -42,7 +42,6 @@
   </div>
 </template>
 
-
 <script>
 import facade from '@/facades/PaymentDetailFacade'
 import MovieHero from '@/components/MovieHero'
@@ -112,7 +111,7 @@ export default {
   }
   .msg, .theatre {
     background-color: adjust-color($color: $main-gray, $lightness: 40%, $alpha: 1.0);
-    border-radius: $main-round;    
+    border-radius: $main-round;
   }
   p {
     margin: 0;
