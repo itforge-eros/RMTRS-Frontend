@@ -85,8 +85,8 @@ export default {
     },
     print () {
       const d = new Printd()
-      d.print(document.getElementById('message'), 
-      `.row {
+      d.print(document.getElementById('message'),
+        `.row {
         display: flex;
         justify-content: center;
       }`)

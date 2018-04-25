@@ -78,8 +78,6 @@
 import screeningFacade from '@/facades/ScreeningFacade'
 import genreFacade from '@/facades/GenreFacade'
 import Datepicker from 'vuejs-datepicker'
-import moment from 'moment'
-import ConsoleNavigationVue from '../../components/console/ConsoleNavigation.vue';
 export default {
   name: 'MovieEditor',
   components: {Datepicker},

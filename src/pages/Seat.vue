@@ -51,7 +51,7 @@ export default {
     }
   },
   beforeRouteLeave (to, from, next) {
-    if (this.mySelectedSeats.length === 0) { 
+    if (this.mySelectedSeats.length === 0) {
       next() // No selected seat, you are free to go!
       return
     }
