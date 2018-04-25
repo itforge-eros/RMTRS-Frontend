@@ -1,40 +1,38 @@
 <template>
-<div class="wall" id="x">
-  <div class="container-fluid">
-    <div class="row">
-      <movie-hero v-if="movie !== null"
-      :img="movie.poster_url"
-      :enTitle="movie.en_title"
-      :description="movie.synopsis" />
-    </div>
-    <div class="row" id="message">
-      <div class="container">
-        <div class="row">
-          <div class="col-12 col-md-7 text-md-right text-left" id="reservation-msg">
-            <h2>We have reserved your seat(s)!</h2>
-            <p class="mt-1">Please contact our staff to process the payment by showing this page</p>
-            <h3 class="mt-5 mt-md-0 text-muted text-center text-md-right">Your theatre is</h3>
-            <h2 class="text-center text-md-right"><b>{{ theatre.name }}</b></h2>
-            <p class="mt-1 text-md-right">At {{ formatTime(screening.show_time) }}</p>
-          </div>
-          <div class="mt-5 mt-md-0 col-12 col-md-5">
-            <div id="qr-code">
-              <qrcode
-                :text="`http://rmtrs.itforge.io:8888/reserve/checkin/${$route.params.reserveId}`"
-                :size="300"
-              ></qrcode>
-            </div>
-            <button class="button" @click="print">Print</button>
-          </div>
-        </div>
-        <div class="row mt-5">
-          <div class="col-12 col-md-3 seat m-1" v-for="(seat, index) in seats" :key="index">
-            <div class="row">
-              <div class="col-6">
-                <img src="../assets/chair.png" alt="">
+  <div class="wall" id="x">
+    <div class="container-fluid">
+      <div class="row">
+        <movie-hero v-if="movie !== null" :img="movie.poster_url" :enTitle="movie.en_title" :description="movie.synopsis" />
+      </div>
+      <div class="row" id="message">
+        <div class="container">
+          <div class="row">
+            <div class="col-12 col-md-7 text-left" id="reservation-msg">
+              <h3 class="header px-3 py-2 text-center">We have reserved your seat{{ pluralControl }}!</h3>
+              <p class="msg px-3 py-2 mt-1">Please contact our staff to process the payment by showing this page</p>
+              <div class="col-12 px-3 py-2 theatre mt-3">
+                <h5 class="text-muted text-center ">Your theatre is
+                  <b>{{ theatre.name }}</b>
+                </h5>
+                <p class="mt-1 text-center">At {{ formatTime(screening.show_time) }}</p>
               </div>
-              <div class="col id">
-                <h3>{{ seat.row + seat.number }}</h3>
+            </div>
+            <div class="mt-5 mt-md-0 col-12 col-md-5">
+              <div id="qr-code">
+                <qrcode :text="`http://rmtrs.itforge.io:8888/reserve/checkin/${$route.params.reserveId}`" :size="300"></qrcode>
+              </div>
+              <button class="mx-md-0 mx-auto btn btn-block" style="width: 300px;" @click="print">Print</button>
+            </div>
+          </div>
+          <div class="row mt-5">
+            <div class="col-12 col-md-3 seat m-1" v-for="(seat, index) in seats" :key="index">
+              <div class="row">
+                <div class="col-6">
+                  <img src="../assets/chair.png" alt="">
+                </div>
+                <div class="col id">
+                  <h3>{{ seat.row + seat.number }}</h3>
+                </div>
               </div>
             </div>
           </div>
@@ -42,8 +40,8 @@
       </div>
     </div>
   </div>
-</div>
 </template>
+
 
 <script>
 import facade from '@/facades/PaymentDetailFacade'
@@ -53,7 +51,7 @@ import moment from 'moment'
 import { Printd } from 'printd'
 
 export default {
-  name: 'Payment',
+  name: 'Reservation',
   components: {MovieHero, qrcode},
   data () {
     return {
@@ -91,6 +89,14 @@ export default {
         justify-content: center;
       }`)
     }
+  },
+  computed: {
+    pluralControl () {
+      if (this.seats.length > 1) {
+        return 's'
+      }
+      return ''
+    }
   }
 }
 </script>
@@ -99,6 +105,18 @@ export default {
 <style lang="scss" scoped>
 #reservation-msg {
   border-right: 5px solid #000000;
+  .header {
+    background-color: adjust-color($color: $main-blue, $lightness: 0%, $alpha: 1.0);
+    color: $main-yellow;
+    border-radius: $main-round;
+  }
+  .msg, .theatre {
+    background-color: adjust-color($color: $main-gray, $lightness: 40%, $alpha: 1.0);
+    border-radius: $main-round;    
+  }
+  p {
+    margin: 0;
+  }
 }
 #message {
   background-color: adjust-color($color: $main-gray, $lightness: 50%, $alpha: 1.0);
