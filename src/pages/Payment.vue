@@ -20,7 +20,7 @@
           <div class="mt-5 mt-md-0 col-12 col-md-5">
             <div id="qr-code">
               <qrcode
-                :text="`http://rmtrs.itforge.io:8888/checkin/this.$route.params.reserveId`"
+                :text="`http://rmtrs.itforge.io:8888/checkin/${$route.params.reserveId}`"
                 :size="300"
               ></qrcode>
             </div>
