@@ -172,6 +172,7 @@ export default {
     &:checked {
       + label {
         color: $main-blue;
+        font-weight: bolder;
         text-decoration: underline;
       }
     }
