@@ -27,21 +27,25 @@ export default {
       columns: [
         {
           name: 'en_title',
-          title: 'Movie Name'
+          title: 'Movie Name',
+          dataClass: 'center-row'
         },
         {
           name: 'release_date',
           title: 'Release Date',
-          callback: 'formatTime'
+          callback: 'formatTime',
+          dataClass: 'center-row'
         },
         {
           name: 'end_date',
           title: 'End Date',
-          callback: 'formatTime'
+          callback: 'formatTime',
+          dataClass: 'center-row'
         },
         {
           name: 'rate',
-          title: 'Rate'
+          title: 'Rate',
+          dataClass: 'center-row'
         },
         {
           name: '__slot:action',

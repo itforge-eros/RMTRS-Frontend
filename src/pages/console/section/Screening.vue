@@ -6,7 +6,7 @@
     pagination-path="">
 
     <template slot="title" slot-scope="props">
-      <p>{{ props.rowData.movie.en_title }}<br>{{ props.rowData.movie.th_title }}</p>
+      <p class="m-0">{{ props.rowData.movie.en_title }}<br>{{ props.rowData.movie.th_title }}</p>
     </template>
 
     <template slot="action" slot-scope="props">
@@ -31,23 +31,25 @@ export default {
         {
           name: 'show_time',
           title: 'Showtime',
-          callback: 'formatShowtime'
+          callback: 'formatShowtime',
+          dataClass: 'center-row'
         },
         {
           name: 'theatre.name',
           title: 'Theatre',
           titleClass: 'text-center',
-          dataClass: 'text-center'
+          dataClass: 'text-center center-row'
         },
         {
           name: '__slot:title',
-          title: 'In This Theatre'
+          title: 'In This Theatre',
+          dataClass: 'center-row'
         },
         {
           name: '__slot:action',
           title: 'Action',
           titleClass: 'text-center',
-          dataClass: 'text-center'
+          dataClass: 'text-center center-row'
         }
       ]
     }

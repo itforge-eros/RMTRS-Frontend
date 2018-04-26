@@ -2,16 +2,24 @@
   <vuetable ref="vuetable"
     api-url="http://rmtrs.itforge.io:8888/theatre/paged?page=0"
     :fields="columns"
+    :css="tableMeta"
     pagination-path="">
 
     <template slot="seat" slot-scope="props">
-        <p>{{ seatCapacity(props) }}</p>
+        <p class="p-2 m-0">{{ seatCapacity(props) }}</p>
     </template>
 
     <template slot="status" slot-scope="props">
-      <div class="theatre-status text-center">
-        <p class="active" v-if="props.rowData.active">Active</p>
-        <p class="n-active" v-else>Not Active</p>
+      <div class="center-row theatre-status text-center">
+        <p class="p-2 active m-1" v-if="props.rowData.active">Active</p>
+        <p class="p-2 n-active m-1" v-else>Not Active</p>
+      </div>
+    </template>
+
+    <template slot="action" slot-scope="props">
+      <div class="text-center">
+        <router-link tag="button" class="btn m-1 center-row" style="color: blue" :to="'movie/edit/'+props.rowData.id">Edit</router-link>
+        <router-link tag="button" class="btn m-1 center-row" style="color: red" :to="'movie/delete/'+props.rowData.id">Delete</router-link>
       </div>
     </template>
 
@@ -23,15 +31,16 @@ import Vuetable from 'vuetable-2/src/components/Vuetable'
 export default {
   name: 'Theatre',
   components: {Vuetable},
-  mounted () {
-    this.$refs.vuetable.toggleDetailRow(1)
-  },
   data () {
     return {
+      tableMeta: {
+        tableClass: 'table table-striped table-spread'
+      },
       columns: [
         {
           name: 'name',
-          title: 'Theatre'
+          title: 'Theatre',
+          dataClass: 'p-2 center-row'
         },
         {
           name: '__slot:seat',
@@ -39,7 +48,13 @@ export default {
         },
         {
           name: '__slot:status',
-          title: 'Status'
+          title: 'Status',
+          titleClass: 'text-center'
+        },
+        {
+          name: '__slot:action',
+          title: 'Action',
+          titleClass: 'text-center'
         }
       ]
     }

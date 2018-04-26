@@ -27,33 +27,37 @@ export default {
           name: 'id',
           title: 'ID',
           titleClass: 'text-center',
-          dataClass: 'text-center'
+          dataClass: 'text-center center-row'
         },
         {
           name: 'reserved_time',
           title: 'Reserved Time',
-          callback: 'formatTime'
+          callback: 'formatTime',
+          dataClass: 'center-row'
         },
         {
           name: 'tickets',
           title: 'Ticket ID(s)',
-          callback: 'formatTicketID'
+          callback: 'formatTicketID',
+          dataClass: 'center-row'
         },
         {
           name: 'tickets',
           title: 'Seat(s)',
-          callback: 'formatTicketSeat'
+          callback: 'formatTicketSeat',
+          dataClass: 'center-row'
         },
         {
           name: 'is_checked_in',
           title: 'Check In',
           titleClass: 'text-center',
-          dataClass: 'text-center status',
+          dataClass: 'text-center status center-row',
           callback: 'formatStatus'
         },
         {
           name: '__slot:action',
-          title: 'Action'
+          title: 'Action',
+          dataClass: 'center-row'
         }
       ]
     }
