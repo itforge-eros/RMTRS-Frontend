@@ -47,3 +47,11 @@ body {
   justify-content: center;
   align-items: center;
 }
+
+.center-row {
+  vertical-align: middle!important;
+}
+
+.table-spread {
+  table-layout: auto;
+}
