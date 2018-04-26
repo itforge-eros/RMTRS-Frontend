@@ -8,7 +8,7 @@
     <form v-if="screening !== null">
       <div class="row">
         <div :class="formMeta[key][1]" v-if="!exclude.includes(key) && formMeta[key][2] === 'date'" v-for="(data, key) in screening" :key="data.id">
-          <label :for="key">{{ formMeta[key][0] }}</label>
+          <label :for="key">{{ formMeta[key][0] }} {{ screening[key] }}</label>
           <datepicker :inline="true" wrapper-class="box-datepicker" calendar-class="design mx-auto" input-class="form-control read-only-except" :id="key"
             v-model="screening[key]" />
         </div>
