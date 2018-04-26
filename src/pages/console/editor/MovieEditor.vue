@@ -1,7 +1,7 @@
 <template>
   <div id="editor">
     <div class="row">
-      <div class="col-12">
+      <div class="col-12 p-0">
         <h3 class="header py-2 px-4">แก้ไขข้อมูลภาพยนตร์</h3>
       </div>
     </div>
@@ -24,45 +24,91 @@
       <hr>
       <section id="actor">
         <div class="row">
-          <div class="col-12">
+          <div class="col-12 p-0">
             <h4 class="header py-2 px-4">นักแสดง</h4>
           </div>
         </div>
         <div class="row actor my-2" v-for="(actor, key, index) in movie.actors" :key="index">
           <div class="form-group col-12 col-md-3 pt-2" v-for="(meta, inKey) in formMeta.actors" :key="inKey">
             <label :for="'actor-'+actor.id">{{ formMeta.actors[inKey] }}</label>
-            <input type="text" class="form-control" :id="'actor-'+actor.id" :value="actor[inKey]">
+            <input disabled type="text" class="form-control" :id="'actor-'+actor.id" :value="actor[inKey]">
+          </div>
+          <div class="col-12 col-md-3 pt-2 mb-3">
+            <label>Action</label>
+            <div class="row">
+              <div class="col">
+                <button class="btn" style="color: blue">Edit</button>
+                <button class="btn" style="color: red">Delete</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row actor my-2 add" v-if="adding.actor.state">
+          <div class="form-group col-12 col-md-3 pt-2" v-for="(meta, inKey) in formMeta.actors" :key="inKey">
+            <label :for="'add-actor-'+inKey">{{ formMeta.actors[inKey] }}</label>
+            <input type="text" class="form-control" :id="'add-actor-'+inKey" v-model="adding.actor[inKey]">
+          </div>
+          <div class="col-12 col-md-3 pt-2 mb-3">
+            <label>Action</label>
+            <div class="row">
+              <div class="col">
+                <button class="btn" style="color: green">เพิ่ม</button>
+              </div>
+            </div>
           </div>
         </div>
         <div class="row">
-          <div class="col-12">
-            <button class="btn">เพิ่มนักแสดง</button>
+          <div class="col-12 p-0">
+            <button @click="addingActor" v-show="!adding.actor.state" class="btn">เพิ่มนักแสดง</button>
           </div>
         </div>
       </section>
       <hr>
       <section id="director">
         <div class="row">
-          <div class="col-12">
+          <div class="col-12 p-0">
             <h4 class="header py-2 px-4">ผู้กำกับ</h4>
           </div>
         </div>
         <div class="row director my-2" v-for="(director, key, index) in movie.directors" :key="index">
           <div class="form-group col-12 col-md-3 pt-2" v-for="(meta, inKey) in formMeta.directors" :key="inKey">
             <label :for="director.id+director.fname">{{ formMeta.directors[inKey] }}</label>
-            <input type="text" class="form-control" :id="director.id+director.fname" :value="director[inKey]">
+            <input disabled type="text" class="form-control" :id="director.id+director.fname" :value="director[inKey]">
+          </div>
+          <div class="col-12 col-md-3 pt-2 mb-3">
+            <label>Action</label>
+            <div class="row">
+              <div class="col">
+                <button class="btn" style="color: blue">Edit</button>
+                <button class="btn" style="color: red">Delete</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row director my-2 add" v-if="adding.director.state">
+          <div class="form-group col-12 col-md-3 pt-2" v-for="(meta, inKey) in formMeta.directors" :key="inKey">
+            <label :for="'add-director-'+inKey">{{ formMeta.directors[inKey] }}</label>
+            <input type="text" class="form-control" :id="'add-director-'+inKey" v-model="adding.director[inKey]">
+          </div>
+          <div class="col-12 col-md-3 pt-2 mb-3">
+            <label>Action</label>
+            <div class="row">
+              <div class="col">
+                <button class="btn" style="color: green">เพิ่ม</button>
+              </div>
+            </div>
           </div>
         </div>
         <div class="row">
-          <div class="col-12">
-            <button class="btn">เพิ่มผู้กำกับ</button>
+          <div class="col-12 p-0">
+            <button @click="addingDirector" v-show="!adding.director.state" class="btn">เพิ่มผู้กำกับ</button>
           </div>
         </div>
       </section>
       <hr>
       <section id="genre">
         <div class="row">
-          <div class="col-12">
+          <div class="col-12 p-0">
             <h4 class="header py-2 px-4">ประเภท</h4>
           </div>
         </div>
@@ -99,6 +145,20 @@ export default {
       selectedDatepicker: null,
       movie: null,
       genre: null,
+      adding: {
+        actor: {
+          state: false,
+          fname: '',
+          mname: '',
+          lname: ''
+        },
+        director: {
+          state: false,
+          fname: '',
+          mname: '',
+          lname: ''
+        }
+      },
       exclude: ['actors', 'directors', 'productions'],
       formMeta: {
         th_title: ['ชื่อไทย', 'form-group col-12 col-sm-6', 'text'],
@@ -149,6 +209,12 @@ export default {
     },
     setSelectedDatepicker (key) {
       this.selectedDatepicker = key
+    },
+    addingDirector () {
+      this.adding.director.state = true
+    },
+    addingActor () {
+      this.adding.actor.state = true
     }
   },
   computed: {
