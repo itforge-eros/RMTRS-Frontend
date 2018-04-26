@@ -1,7 +1,7 @@
 <template>
   <div id="editor">
     <div class="row">
-      <div class="col">
+      <div class="col-12">
         <h3 class="header py-2 px-4">แก้ไขข้อมูลภาพยนตร์</h3>
       </div>
     </div>
@@ -10,7 +10,7 @@
         <div v-if="!exclude.includes(key)" :class="formMeta[key][1]" v-for="(meta, key) in formMeta" :key="key">
           <label :for="key">{{ formMeta[key][0] }}</label>
           <input v-model="movie[key]" v-if="formMeta[key][2] === 'text'" type="text" class="form-control" :id="key">
-          <datepicker wrapper-class="box-datepicker" calendar-class="design" input-class="form-control read-only-except" v-else-if="formMeta[key][2] === 'date'" v-model="movie[key]"></datepicker>
+          <datepicker @opened="setSelectedDatepicker(key)" @selected="setDateData" wrapper-class="box-datepicker" calendar-class="design" input-class="form-control read-only-except" v-else-if="formMeta[key][2] === 'date'" :value="movie[key]"></datepicker>
         </div>
         <div class="form-group col-12 col-md-6" v-for="(production, key) in movie.productions" :key="production.id">
           <label :for="'production-'+key">{{ formMeta.productions.name }}</label>
@@ -23,7 +23,11 @@
       </div>
       <hr>
       <section id="actor">
-        <h4 class="header py-2 px-4">นักแสดง</h4>
+        <div class="row">
+          <div class="col-12">
+            <h4 class="header py-2 px-4">นักแสดง</h4>
+          </div>
+        </div>
         <div class="row actor my-2" v-for="(actor, key, index) in movie.actors" :key="index">
           <div class="form-group col-12 col-md-3 pt-2" v-for="(meta, inKey) in formMeta.actors" :key="inKey">
             <label :for="'actor-'+actor.id">{{ formMeta.actors[inKey] }}</label>
@@ -31,14 +35,18 @@
           </div>
         </div>
         <div class="row">
-          <div class="col">
+          <div class="col-12">
             <button class="btn">เพิ่มนักแสดง</button>
           </div>
         </div>
       </section>
       <hr>
       <section id="director">
-        <h4 class="header py-2 px-4">ผู้กำกับ</h4>
+        <div class="row">
+          <div class="col-12">
+            <h4 class="header py-2 px-4">ผู้กำกับ</h4>
+          </div>
+        </div>
         <div class="row director my-2" v-for="(director, key, index) in movie.directors" :key="index">
           <div class="form-group col-12 col-md-3 pt-2" v-for="(meta, inKey) in formMeta.directors" :key="inKey">
             <label :for="director.id+director.fname">{{ formMeta.directors[inKey] }}</label>
@@ -46,14 +54,18 @@
           </div>
         </div>
         <div class="row">
-          <div class="col">
+          <div class="col-12">
             <button class="btn">เพิ่มผู้กำกับ</button>
           </div>
         </div>
       </section>
       <hr>
       <section id="genre">
-        <h4 class="header py-2 px-4">ประเภท</h4>
+        <div class="row">
+          <div class="col-12">
+            <h4 class="header py-2 px-4">ประเภท</h4>
+          </div>
+        </div>
         <div class="row">
           <div :class="['p-2', 'col-6', 'col-md-2']" v-for="item in genre" :key="item.id">
             <div class="btn form-check p-0">
@@ -78,11 +90,13 @@
 import screeningFacade from '@/facades/ScreeningFacade'
 import genreFacade from '@/facades/GenreFacade'
 import Datepicker from 'vuejs-datepicker'
+import moment from 'moment'
 export default {
   name: 'MovieEditor',
   components: {Datepicker},
   data () {
     return {
+      selectedDatepicker: null,
       movie: null,
       genre: null,
       exclude: ['actors', 'directors', 'productions'],
@@ -129,6 +143,12 @@ export default {
           this.genre = data
         })
         .catch(console.log)
+    },
+    setDateData (date) {
+      this.movie[this.selectedDatepicker] = moment(date).format('YYYY-MM-DD')
+    },
+    setSelectedDatepicker (key) {
+      this.selectedDatepicker = key
     }
   },
   computed: {

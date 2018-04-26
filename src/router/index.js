@@ -18,6 +18,7 @@ import ManageScreening from '@/pages/console/section/Screening'
 import ManageAccount from '@/pages/console/section/Account'
 import MovieEditor from '@/pages/console/editor/MovieEditor'
 import ScreeningEditor from '@/pages/console/editor/ScreeningEditor'
+import TheatreDetail from '@/pages/console/editor/TheatreDetail'
 
 Vue.use(Router)
 
@@ -101,6 +102,11 @@ export default new Router({
               path: 'screening/edit/:id',
               name: 'ScreeningEditor',
               component: ScreeningEditor
+            },
+            {
+              path: 'theatre/detail/:id',
+              name: 'TheatreDetail',
+              component: TheatreDetail
             }
           ]
         }

@@ -1,5 +1,7 @@
 <template>
-  <vuetable ref="vuetable"
+<div class="row">
+  <div class="col-12">
+    <vuetable ref="vuetable"
     api-url="http://rmtrs.itforge.io:8888/screening/paged?page=0"
     :fields="columns"
     :css="tableMeta"
@@ -12,8 +14,12 @@
     <template slot="action" slot-scope="props">
       <router-link tag="button" style="color: blue" class="btn" :to="'screening/edit/'+props.rowData.id">Edit</router-link>
     </template>
-
   </vuetable>
+  </div>
+  <div class="add-btn">
+    <span>+</span>
+  </div>
+</div>
 </template>
 
 <script>

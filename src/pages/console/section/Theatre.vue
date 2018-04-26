@@ -1,5 +1,7 @@
 <template>
-  <vuetable ref="vuetable"
+<div class="row">
+  <div class="col-12">
+    <vuetable ref="vuetable"
     api-url="http://rmtrs.itforge.io:8888/theatre/paged?page=0"
     :fields="columns"
     :css="tableMeta"
@@ -18,12 +20,17 @@
 
     <template slot="action" slot-scope="props">
       <div class="text-center">
-        <router-link tag="button" class="btn m-1 center-row" style="color: blue" :to="'movie/edit/'+props.rowData.id">Edit</router-link>
-        <router-link tag="button" class="btn m-1 center-row" style="color: red" :to="'movie/delete/'+props.rowData.id">Delete</router-link>
+        <router-link tag="button" class="btn m-1 center-row" style="color: blue" :to="'theatre/detail/'+props.rowData.id">Detail</router-link>
+        <button @click="activeMode" class="btn m-1 center-row" style="color: red">{{ activeText }}</button>
       </div>
     </template>
 
   </vuetable>
+  </div>
+  <div class="add-btn">
+    <span>+</span>
+  </div>
+</div>
 </template>
 
 <script>
@@ -62,6 +69,18 @@ export default {
   methods: {
     seatCapacity (seats) {
       return seats.rowData.seats.length
+    },
+    activeMode (el) {
+      console.log(el)
+    }
+  },
+  computed: {
+    activeText (state) {
+      if (state) {
+        return 'Suspect'
+      } else {
+        return 'Active'
+      }
     }
   }
 }
