@@ -61,7 +61,7 @@
             </div>
           </div>
           <div class="form-group col-12">
-            <label for="actor-suggextion">Suggestion</label>
+            <label for="actor-suggextion">Existing Actors</label>
             <select size="6" class="form-control" id="actor-suggextion">
               <option @click="setExistedActor(data)" v-for="data in actor" :key="data.id">{{ data.fname }} {{ data.mname }} {{ data.lname }}</option>
             </select>
@@ -110,6 +110,12 @@
                 <button @click="addingProduction(false)" class="btn" style="color: red">Cancel</button>
               </div>
             </div>
+          </div>
+          <div class="form-group col-12">
+            <label for="production-suggextion">Existing Production</label>
+            <select size="6" class="form-control" id="production-suggextion">
+              <option @click="setExistedProduction(data)" v-for="data in production" :key="data.id">{{ data.name }}</option>
+            </select>
           </div>
         </div>
         <div v-show="!adding.production.state" class="row">
@@ -207,18 +213,21 @@ export default {
       actor: null,
       adding: {
         actor: {
+          id: null,
           state: false,
           fname: '',
           mname: '',
           lname: ''
         },
         director: {
+          id: null,
           state: false,
           fname: '',
           mname: '',
           lname: ''
         },
         production: {
+          id: null,
           state: false,
           name: ''
         }
@@ -305,9 +314,14 @@ export default {
       this.adding.production.state = mode
     },
     setExistedActor (data) {
+      this.adding.actor.id = data.id
       this.adding.actor.fname = data.fname
       this.adding.actor.mname = data.mname
       this.adding.actor.lname = data.lname
+    },
+    setExistedProduction (data) {
+      this.adding.production.id = data.id
+      this.adding.production.name = data.name
     },
     handleSubmitChange () {
       const payload = Object.assign({}, this.movie)
@@ -328,6 +342,7 @@ export default {
         .then(({data}) => {
           this.movie.actors.push(data)
           this.adding.actor = {
+            id: false,
             state: false,
             fname: '',
             mname: '',
@@ -341,6 +356,7 @@ export default {
         .then(({data}) => {
           this.movie.directors.push(data)
           this.adding.director = {
+            id: null,
             state: false,
             fname: '',
             mname: '',
