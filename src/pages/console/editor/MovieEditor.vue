@@ -60,10 +60,18 @@
               </div>
             </div>
           </div>
+          <div class="form-group col-12">
+            <label for="actor-suggextion">Suggestion</label>
+            <select size="6" class="form-control" id="actor-suggextion">
+              <option @click="setExistedActor(data)" v-for="data in actor" :key="data.id">{{ data.fname }} {{ data.mname }} {{ data.lname }}</option>
+            </select>
+          </div>
         </div>
-        <div class="row" v-show="!adding.actor.state">
-          <div class="col-12 p-0">
-            <button @click="addingActor" class="btn">Add an actor</button>
+        <div class="actor-add" v-show="!adding.actor.state">
+          <div class="row">
+            <div class="col-12 p-0">
+              <button @click="addingActor(true)" class="btn">Add an actor</button>
+            </div>
           </div>
         </div>
       </section>
@@ -196,6 +204,7 @@ export default {
       movie: null,
       genre: null,
       production: null,
+      actor: null,
       adding: {
         actor: {
           state: false,
@@ -247,6 +256,7 @@ export default {
     }
   },
   mounted () {
+    this.fetchActor()
     this.fetchProduction()
     this.fetchMovie()
     this.fetchGenre()
@@ -273,6 +283,12 @@ export default {
         })
         .catch(console.log)
     },
+    fetchActor () {
+      movieEditorFacade.getActor()
+        .then(({data}) => {
+          this.actor = data
+        })
+    },
     setDateData (date) {
       this.movie[this.selectedDatepicker] = moment(date).format('YYYY-MM-DD')
     },
@@ -287,6 +303,11 @@ export default {
     },
     addingProduction (mode) {
       this.adding.production.state = mode
+    },
+    setExistedActor (data) {
+      this.adding.actor.fname = data.fname
+      this.adding.actor.mname = data.mname
+      this.adding.actor.lname = data.lname
     },
     handleSubmitChange () {
       const payload = Object.assign({}, this.movie)
