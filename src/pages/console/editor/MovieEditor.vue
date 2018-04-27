@@ -2,7 +2,7 @@
   <div id="editor">
     <div class="row">
       <div class="col-12 p-0">
-        <h3 class="header py-2 px-4">แก้ไขข้อมูลภาพยนตร์</h3>
+        <h3 v-if="movie !== null" class="header py-2 px-4">Editing : {{movie.en_title}}</h3>
       </div>
     </div>
     <form v-if="movie !== null">
@@ -12,9 +12,12 @@
           <input v-model="movie[key]" v-if="formMeta[key][2] === 'text'" type="text" class="form-control" :id="key">
           <datepicker @opened="setSelectedDatepicker(key)" @selected="setDateData" wrapper-class="box-datepicker" calendar-class="design" input-class="form-control read-only-except" v-else-if="formMeta[key][2] === 'date'" :value="movie[key]"></datepicker>
         </div>
-        <div class="form-group col-12 col-md-6" v-for="(production, key) in movie.productions" :key="production.id">
-          <label :for="'production-'+key">{{ formMeta.productions.name }}</label>
-          <input type="text" class="form-control" :id="'production-'+key" :value="production.name">
+        <div class="form-group col-12 col-md-3" v-else-if="key === 'rate'">
+          <label for="rate">Rate</label>
+          <select class="form-control" id="rate">
+            <option selected>Choose...</option>
+            <option v-for="(data, key) in formMeta.rate" :key="key" :value="key">{{ data }}</option>
+          </select>
         </div>
         <div class="form-group col-12">
           <label for="synopsis">Synopsis</label>
@@ -25,7 +28,7 @@
       <section id="actor">
         <div class="row">
           <div class="col-12 p-0">
-            <h4 class="header py-2 px-4">นักแสดง</h4>
+            <h4 class="header py-2 px-4">Actor</h4>
           </div>
         </div>
         <div class="row actor my-2" v-for="(actor, key, index) in movie.actors" :key="index">
@@ -52,14 +55,56 @@
             <label>Action</label>
             <div class="row">
               <div class="col">
-                <button class="btn" style="color: green" @click="persistActor">เพิ่ม</button>
+                <button class="btn" style="color: green" @click="persistActor">Add</button>
               </div>
             </div>
           </div>
         </div>
+        <div class="row" v-show="!adding.actor.state">
+          <div class="col-12 p-0">
+            <button @click="addingActor" class="btn">Add an actor</button>
+          </div>
+        </div>
+      </section>
+      <hr>
+      <section id="production">
         <div class="row">
           <div class="col-12 p-0">
-            <button @click="addingActor" v-show="!adding.actor.state" class="btn">เพิ่มนักแสดง</button>
+            <h4 class="header py-2 px-4">Production</h4>
+          </div>
+        </div>
+        <div class="row director my-2" v-for="(production, index) in movie.productions" :key="index">
+          <div class="form-group col-12 col-md-9 pt-2">
+            <label :for="'production-'+index+1">{{ formMeta.productions.name }} : {{index+1}}</label>
+            <input disabled type="text" class="form-control" :id="'production-'+index" v-model="production.name">
+          </div>
+          <div class="col-12 col-md-3 pt-2 mb-3">
+            <label>Action</label>
+            <div class="row">
+              <div class="col">
+                <button class="btn" style="color: blue">Edit</button>
+                <button class="btn" style="color: red">Delete</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row director my-2 add" v-if="adding.production.state">
+          <div class="form-group col-12 col-md-9 pt-2">
+            <label for="add-production">{{ formMeta.productions.name }}</label>
+            <input type="text" class="form-control" id="add-production" v-model="adding.production.name">
+          </div>
+          <div class="col-12 col-md-3 pt-2 mb-3">
+            <label>Action</label>
+            <div class="row">
+              <div class="col">
+                <button @click="addingProduction" class="btn" style="color: green">Add</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div v-show="!adding.production.state" class="row">
+          <div class="col-12 p-0">
+            <button @click="addingProduction" class="btn">Add an director</button>
           </div>
         </div>
       </section>
@@ -67,7 +112,7 @@
       <section id="director">
         <div class="row">
           <div class="col-12 p-0">
-            <h4 class="header py-2 px-4">ผู้กำกับ</h4>
+            <h4 class="header py-2 px-4">Director</h4>
           </div>
         </div>
         <div class="row director my-2" v-for="(director, key, index) in movie.directors" :key="index">
@@ -94,14 +139,14 @@
             <label>Action</label>
             <div class="row">
               <div class="col">
-                <button class="btn" style="color: green" @click="persistDirector">เพิ่ม</button>
+                <button class="btn" style="color: green" @click="persistDirector">Add</button>
               </div>
             </div>
           </div>
         </div>
-        <div class="row">
+        <div v-show="!adding.director.state" class="row">
           <div class="col-12 p-0">
-            <button @click="addingDirector" v-show="!adding.director.state" class="btn">เพิ่มผู้กำกับ</button>
+            <button @click="addingDirector" class="btn">Add an director</button>
           </div>
         </div>
       </section>
@@ -109,7 +154,7 @@
       <section id="genre">
         <div class="row">
           <div class="col-12 p-0">
-            <h4 class="header py-2 px-4">ประเภท</h4>
+            <h4 class="header py-2 px-4">Genre</h4>
           </div>
         </div>
         <div class="row">
@@ -134,6 +179,7 @@
 
 <script>
 import screeningFacade from '@/facades/ScreeningFacade'
+import movieEditorFacade from '@/facades/MovieEditorFacade'
 import genreFacade from '@/facades/GenreFacade'
 import axios from '@/config/axios.config'
 import Datepicker from 'vuejs-datepicker'
@@ -146,6 +192,7 @@ export default {
       selectedDatepicker: null,
       movie: null,
       genre: null,
+      production: null,
       adding: {
         actor: {
           state: false,
@@ -158,9 +205,13 @@ export default {
           fname: '',
           mname: '',
           lname: ''
+        },
+        production: {
+          state: false,
+          name: ''
         }
       },
-      exclude: ['actors', 'directors', 'productions'],
+      exclude: ['actors', 'directors', 'productions', 'rate'],
       formMeta: {
         th_title: ['ชื่อไทย', 'form-group col-12 col-sm-6', 'text'],
         en_title: ['English Title', 'form-group col-12 col-sm-6', 'text'],
@@ -169,7 +220,6 @@ export default {
         duration: ['Duration', 'form-group col-6 col-sm-3', 'text'],
         poster_url: ['Poster URL', 'form-group col-12 col-sm-6', 'text'],
         trailer_url: ['Trailer URL', 'form-group col-12 col-sm-6', 'text'],
-        rate: ['Rate', 'form-group col-3', 'text'],
         actors: {
           fname: 'First Name',
           mname: 'Middle Name',
@@ -181,12 +231,20 @@ export default {
           lname: 'Last Name'
         },
         productions: {
-          name: 'Name'
+          name: 'Production Name'
+        },
+        rate: {
+          g: 'G',
+          pg: 'PG',
+          pg_13: 'PG 13',
+          r: 'R',
+          nc_17: 'NC 17'
         }
       }
     }
   },
   mounted () {
+    this.fetchProduction()
     this.fetchMovie()
     this.fetchGenre()
   },
@@ -205,6 +263,13 @@ export default {
         })
         .catch(console.log)
     },
+    fetchProduction () {
+      movieEditorFacade.getProduction()
+        .then(({data}) => {
+          this.production = data
+        })
+        .catch(console.log)
+    },
     setDateData (date) {
       this.movie[this.selectedDatepicker] = moment(date).format('YYYY-MM-DD')
     },
@@ -216,6 +281,9 @@ export default {
     },
     addingActor () {
       this.adding.actor.state = true
+    },
+    addingProduction () {
+      this.adding.production.state = true
     },
     handleSubmitChange () {
       const payload = Object.assign({}, this.movie)
