@@ -34,18 +34,18 @@
         <div class="row actor my-2" v-for="(actor, key, index) in movie.actors" :key="index">
           <div class="form-group col-12 col-md-3 pt-2" v-for="(meta, inKey) in formMeta.actors" :key="inKey">
             <label :for="actor.id+inKey">{{ formMeta.actors[inKey] }}</label>
-            <input :disabled="editing.actor !== actor.id" type="text" class="form-control" :id="actor.id+inKey" :value="actor[inKey]">
+            <input :disabled="editing.actor.id !== actor.id" type="text" class="form-control" :id="actor.id+inKey" v-model="actor[inKey]">
           </div>
           <div class="col-12 col-md-3 pt-2 mb-3">
             <label>Action</label>
             <div class="row">
-              <div v-if="editing.actor !== actor.id" class="col">
-                <button @click="editMode('actor', actor.id, true)" class="btn" style="color: blue">Edit</button>
+              <div v-if="editing.actor.id !== actor.id" class="col">
+                <button @click="editMode('actor', actor, true)" class="btn" style="color: blue">Edit</button>
                 <button class="btn" style="color: red">Delete</button>
               </div>
               <div v-else class="col">
                 <button class="btn" style="color: green">Save</button>
-                <button class="btn" style="color: blue">Cancel</button>
+                <button @click="editMode('actor', director, false)" class="btn" style="color: blue">Cancel</button>
               </div>
             </div>
           </div>
@@ -90,18 +90,18 @@
         <div class="row production my-2" v-for="(production, index) in movie.productions" :key="index">
           <div class="form-group col-12 col-md-9 pt-2">
             <label :for="'production-'+production.key">{{ formMeta.productions.name }} : {{index+1}}</label>
-            <input :disabled="editing.production !== production.id" type="text" class="form-control" :id="'production-'+production.key" v-model="production.name">
+            <input :disabled="editing.production.id !== production.id" type="text" class="form-control" :id="'production-'+production.key" v-model="production.name">
           </div>
           <div class="col-12 col-md-3 pt-2 mb-3">
             <label>Action</label>
             <div class="row">
-              <div v-if="editing.production !== production.id" class="col">
-                <button @click="editMode('production', production.id, true)" class="btn" style="color: blue">Edit</button>
+              <div v-if="editing.production.id !== production.id" class="col">
+                <button @click="editMode('production', production, true)" class="btn" style="color: blue">Edit</button>
                 <button class="btn" style="color: red">Delete</button>
               </div>
               <div v-else class="col">
                 <button class="btn" style="color: green">Save</button>
-                <button class="btn" style="color: blue">Cancel</button>
+                <button @click="editMode('production', director, false)" class="btn" style="color: blue">Cancel</button>
               </div>
             </div>
           </div>
@@ -144,18 +144,18 @@
         <div class="row director my-2" v-for="(director, key, index) in movie.directors" :key="index">
           <div class="form-group col-12 col-md-3 pt-2" v-for="(meta, inKey) in formMeta.directors" :key="inKey">
             <label :for="director.id+inKey">{{ formMeta.directors[inKey] }}</label>
-            <input :disabled="editing.director !== director.id" type="text" class="form-control" :id="director.id+inKey" :value="director[inKey]">
+            <input :disabled="editing.director.id !== director.id" type="text" class="form-control" :id="director.id+inKey" :value="director[inKey]">
           </div>
           <div class="col-12 col-md-3 pt-2 mb-3">
             <label>Action</label>
             <div class="row">
-              <div v-if="editing.director !== director.id" class="col">
-                <button @click="editMode('director', director.id, true)" class="btn" style="color: blue">Edit</button>
+              <div v-if="editing.director.id !== director.id" class="col">
+                <button @click="editMode('director', director, true)" class="btn" style="color: blue">Edit</button>
                 <button class="btn" style="color: red">Delete</button>
               </div>
               <div v-else class="col">
                 <button class="btn" style="color: green">Save</button>
-                <button class="btn" style="color: blue">Cancel</button>
+                <button @click="editMode('director', director, false)" class="btn" style="color: blue">Cancel</button>
               </div>
             </div>
           </div>
@@ -234,9 +234,15 @@ export default {
       actor: null,
       director: null,
       editing: {
-        actor: null,
-        director: null,
-        production: null
+        actor: {
+          id: null
+        },
+        director: {
+          id: null
+        },
+        production: {
+          id: null
+        }
       },
       adding: {
         actor: {
@@ -443,11 +449,12 @@ export default {
       }
       this.movie.genres.push(genre)
     },
-    editMode (section, id, mode) {
+    editMode (section, data, mode) {
       if (mode) {
-        this.editing[section] = id        
+        this.editing[section].id = data.id
       } else {
-        this.editing[section] = null
+        this.fetchMovie()
+        this.editing[section].id = null
       }
     }
   },
