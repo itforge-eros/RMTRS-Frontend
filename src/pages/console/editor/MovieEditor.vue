@@ -52,7 +52,7 @@
             <label>Action</label>
             <div class="row">
               <div class="col">
-                <button class="btn" style="color: green">เพิ่ม</button>
+                <button class="btn" style="color: green" @click="persistActor">เพิ่ม</button>
               </div>
             </div>
           </div>
@@ -94,7 +94,7 @@
             <label>Action</label>
             <div class="row">
               <div class="col">
-                <button class="btn" style="color: green">เพิ่ม</button>
+                <button class="btn" style="color: green" @click="persistDirector">เพิ่ม</button>
               </div>
             </div>
           </div>
@@ -115,7 +115,7 @@
         <div class="row">
           <div :class="['p-2', 'col-6', 'col-md-2']" v-for="item in genre" :key="item.id">
             <div class="btn form-check p-0">
-              <input class="form-check-input" :checked="genreAssigned.includes(item.id)" type="checkbox" value="" :id="item.name">
+              <input class="form-check-input" :checked="genreAssigned.includes(item.id)" @change="handleSelectGenre(item)" type="checkbox" value="" :id="item.name">
               <label class="p-2" :for="item.name">
                 {{ item.name }}
               </label>
@@ -125,7 +125,7 @@
       </section>
       <div class="row mb-1 mt-5">
         <div class="col-12 p-2">
-          <button class="float-right btn btn-block">บันทึก</button>
+          <button class="float-right btn btn-block" @click="handleSubmitChange">บันทึก</button>
         </div>
       </div>
     </form>
@@ -135,6 +135,7 @@
 <script>
 import screeningFacade from '@/facades/ScreeningFacade'
 import genreFacade from '@/facades/GenreFacade'
+import axios from '@/config/axios.config'
 import Datepicker from 'vuejs-datepicker'
 import moment from 'moment'
 export default {
@@ -215,6 +216,55 @@ export default {
     },
     addingActor () {
       this.adding.actor.state = true
+    },
+    handleSubmitChange () {
+      const payload = Object.assign({}, this.movie)
+      payload.actors = payload.actors.map(actor => actor.id)
+      payload.directors = payload.directors.map(director => director.id)
+      payload.genres = payload.genres.map(genre => genre.id)
+      payload.productions = payload.productions.map(prod => prod.id)
+      console.log(payload)
+      axios.put(`/movie/${payload.id}`, payload)
+        .then(({data}) => {
+          console.log(data)
+          location.reload()
+        })
+        .catch(console.log)
+    },
+    persistActor () {
+      axios.post('/actor', this.adding.actor)
+        .then(({data}) => {
+          this.movie.actors.push(data)
+          this.adding.actor = {
+            state: false,
+            fname: '',
+            mname: '',
+            lname: ''
+          }
+        })
+        .catch(console.log)
+    },
+    persistDirector () {
+      axios.post('/director', this.adding.director)
+        .then(({data}) => {
+          this.movie.directors.push(data)
+          this.adding.director = {
+            state: false,
+            fname: '',
+            mname: '',
+            lname: ''
+          }
+        })
+        .catch(console.log)
+    },
+    handleSelectGenre (genre) {
+      console.log(genre)
+      if (this.movie.genres.includes(genre)) {
+        const idx = this.movie.genres.indexOf(genre)
+        this.movie.genres.splice(idx)
+        return
+      }
+      this.movie.genres.push(genre)
     }
   },
   computed: {
