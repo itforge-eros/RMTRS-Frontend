@@ -33,15 +33,19 @@
         </div>
         <div class="row actor my-2" v-for="(actor, key, index) in movie.actors" :key="index">
           <div class="form-group col-12 col-md-3 pt-2" v-for="(meta, inKey) in formMeta.actors" :key="inKey">
-            <label :for="'actor-'+actor.id">{{ formMeta.actors[inKey] }}</label>
-            <input disabled type="text" class="form-control" :id="'actor-'+actor.id" :value="actor[inKey]">
+            <label :for="actor.id+inKey">{{ formMeta.actors[inKey] }}</label>
+            <input :disabled="editing.actor !== actor.id" type="text" class="form-control" :id="actor.id+inKey" :value="actor[inKey]">
           </div>
           <div class="col-12 col-md-3 pt-2 mb-3">
             <label>Action</label>
             <div class="row">
-              <div class="col">
-                <button class="btn" style="color: blue">Edit</button>
+              <div v-if="editing.actor !== actor.id" class="col">
+                <button @click="editMode('actor', actor.id, true)" class="btn" style="color: blue">Edit</button>
                 <button class="btn" style="color: red">Delete</button>
+              </div>
+              <div v-else class="col">
+                <button class="btn" style="color: green">Save</button>
+                <button class="btn" style="color: blue">Cancel</button>
               </div>
             </div>
           </div>
@@ -49,7 +53,7 @@
         <div class="row actor my-2 add" v-if="adding.actor.state">
           <div class="form-group col-12 col-md-3 pt-2" v-for="(meta, inKey) in formMeta.actors" :key="inKey">
             <label :for="'add-actor-'+inKey">{{ formMeta.actors[inKey] }}</label>
-            <input type="text" class="form-control" :id="'add-actor-'+inKey" v-model="adding.actor[inKey]">
+            <input :disabled="adding.actor.id !== null" type="text" class="form-control" :id="'add-actor-'+inKey" v-model="adding.actor[inKey]">
           </div>
           <div class="col-12 col-md-3 pt-2 mb-3">
             <label>Action</label>
@@ -61,8 +65,9 @@
             </div>
           </div>
           <div class="form-group col-12">
-            <label for="actor-suggextion">Existing Actors</label>
-            <select size="6" class="form-control" id="actor-suggextion">
+            <label for="actor-suggestion">Existing Actors</label>
+            <select size="6" class="form-control" id="actor-suggestion">
+              <option @click="clearAdding('actor')">Create new one</option>
               <option @click="setExistedActor(data)" v-for="data in actor" :key="data.id">{{ data.fname }} {{ data.mname }} {{ data.lname }}</option>
             </select>
           </div>
@@ -82,17 +87,21 @@
             <h4 class="header py-2 px-4">Production</h4>
           </div>
         </div>
-        <div class="row director my-2" v-for="(production, index) in movie.productions" :key="index">
+        <div class="row production my-2" v-for="(production, index) in movie.productions" :key="index">
           <div class="form-group col-12 col-md-9 pt-2">
-            <label :for="'production-'+index+1">{{ formMeta.productions.name }} : {{index+1}}</label>
-            <input disabled type="text" class="form-control" :id="'production-'+index" v-model="production.name">
+            <label :for="'production-'+production.key">{{ formMeta.productions.name }} : {{index+1}}</label>
+            <input :disabled="editing.production !== production.id" type="text" class="form-control" :id="'production-'+production.key" v-model="production.name">
           </div>
           <div class="col-12 col-md-3 pt-2 mb-3">
             <label>Action</label>
             <div class="row">
-              <div class="col">
-                <button class="btn" style="color: blue">Edit</button>
+              <div v-if="editing.production !== production.id" class="col">
+                <button @click="editMode('production', production.id, true)" class="btn" style="color: blue">Edit</button>
                 <button class="btn" style="color: red">Delete</button>
+              </div>
+              <div v-else class="col">
+                <button class="btn" style="color: green">Save</button>
+                <button class="btn" style="color: blue">Cancel</button>
               </div>
             </div>
           </div>
@@ -100,7 +109,7 @@
         <div class="row director my-2 add" v-if="adding.production.state">
           <div class="form-group col-12 col-md-9 pt-2">
             <label for="add-production">{{ formMeta.productions.name }}</label>
-            <input type="text" class="form-control" id="add-production" v-model="adding.production.name">
+            <input type="text" :disabled="adding.production.id !== null" class="form-control" id="add-production" v-model="adding.production.name">
           </div>
           <div class="col-12 col-md-3 pt-2 mb-3">
             <label>Action</label>
@@ -112,8 +121,9 @@
             </div>
           </div>
           <div class="form-group col-12">
-            <label for="production-suggextion">Existing Production</label>
-            <select size="6" class="form-control" id="production-suggextion">
+            <label for="production-suggestion">Existing Production</label>
+            <select size="6" class="form-control" id="production-suggestion">
+              <option @click="clearAdding('production')">Create new one</option>
               <option @click="setExistedProduction(data)" v-for="data in production" :key="data.id">{{ data.name }}</option>
             </select>
           </div>
@@ -133,15 +143,19 @@
         </div>
         <div class="row director my-2" v-for="(director, key, index) in movie.directors" :key="index">
           <div class="form-group col-12 col-md-3 pt-2" v-for="(meta, inKey) in formMeta.directors" :key="inKey">
-            <label :for="director.id+director.fname">{{ formMeta.directors[inKey] }}</label>
-            <input disabled type="text" class="form-control" :id="director.id+director.fname" :value="director[inKey]">
+            <label :for="director.id+inKey">{{ formMeta.directors[inKey] }}</label>
+            <input :disabled="editing.director !== director.id" type="text" class="form-control" :id="director.id+inKey" :value="director[inKey]">
           </div>
           <div class="col-12 col-md-3 pt-2 mb-3">
             <label>Action</label>
             <div class="row">
-              <div class="col">
-                <button class="btn" style="color: blue">Edit</button>
+              <div v-if="editing.director !== director.id" class="col">
+                <button @click="editMode('director', director.id, true)" class="btn" style="color: blue">Edit</button>
                 <button class="btn" style="color: red">Delete</button>
+              </div>
+              <div v-else class="col">
+                <button class="btn" style="color: green">Save</button>
+                <button class="btn" style="color: blue">Cancel</button>
               </div>
             </div>
           </div>
@@ -159,6 +173,13 @@
                 <button class="btn" style="color: red" @click="addingDirector(false)">Cancel</button>
               </div>
             </div>
+          </div>
+          <div class="form-group col-12">
+            <label for="director-suggestion">Existing Directors</label>
+            <select size="6" class="form-control" id="director-suggestion">
+              <option @click="clearAdding('director')">Create new one</option>
+              <option @click="setExistedDirector(data)" v-for="data in director" :key="data.id">{{ data.fname }} {{ data.mname }} {{ data.lname }}</option>
+            </select>
           </div>
         </div>
         <div v-show="!adding.director.state" class="row">
@@ -211,6 +232,12 @@ export default {
       genre: null,
       production: null,
       actor: null,
+      director: null,
+      editing: {
+        actor: null,
+        director: null,
+        production: null
+      },
       adding: {
         actor: {
           id: null,
@@ -266,6 +293,7 @@ export default {
   },
   mounted () {
     this.fetchActor()
+    this.fetchDirector()
     this.fetchProduction()
     this.fetchMovie()
     this.fetchGenre()
@@ -298,6 +326,13 @@ export default {
           this.actor = data
         })
     },
+    fetchDirector () {
+      movieEditorFacade.getDirector()
+        .then(({data}) => {
+          this.director = data
+        })
+        .catch(console.log)
+    },
     setDateData (date) {
       this.movie[this.selectedDatepicker] = moment(date).format('YYYY-MM-DD')
     },
@@ -306,12 +341,21 @@ export default {
     },
     addingDirector (mode) {
       this.adding.director.state = mode
+      if (!mode) {
+        this.clearAdding('director', false)
+      }
     },
     addingActor (mode) {
       this.adding.actor.state = mode
+      if (!mode) {
+        this.clearAdding('actor', false)
+      }
     },
     addingProduction (mode) {
       this.adding.production.state = mode
+      if (!mode) {
+        this.clearAdding('production', false)
+      }
     },
     setExistedActor (data) {
       this.adding.actor.id = data.id
@@ -322,6 +366,31 @@ export default {
     setExistedProduction (data) {
       this.adding.production.id = data.id
       this.adding.production.name = data.name
+    },
+    setExistedDirector (data) {
+      this.adding.director.id = data.id
+      this.adding.director.fname = data.fname
+      this.adding.director.mname = data.mname
+      this.adding.director.lname = data.lname
+    },
+    clearAdding (key, mode = true) {
+      if (['actor', 'director'].includes(key)) {
+        this.adding[key] = {
+          id: null,
+          state: mode,
+          fname: '',
+          mname: '',
+          lname: ''
+        }
+      } else {
+        if (key === 'production') {
+          this.adding[key] = {
+            id: null,
+            state: mode,
+            name: ''
+          }
+        }
+      }
     },
     handleSubmitChange () {
       const payload = Object.assign({}, this.movie)
@@ -342,7 +411,7 @@ export default {
         .then(({data}) => {
           this.movie.actors.push(data)
           this.adding.actor = {
-            id: false,
+            id: null,
             state: false,
             fname: '',
             mname: '',
@@ -373,6 +442,13 @@ export default {
         return
       }
       this.movie.genres.push(genre)
+    },
+    editMode (section, id, mode) {
+      if (mode) {
+        this.editing[section] = id        
+      } else {
+        this.editing[section] = null
+      }
     }
   },
   computed: {
@@ -425,7 +501,7 @@ export default {
   }
 }
 
-.actor, .director {
+.actor, .director, .production {
   background: adjust-color($color: $main-gray, $lightness: 50%, $alpha: 1.0);
   border-radius: $main-round;
 }

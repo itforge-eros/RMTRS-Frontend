@@ -7,4 +7,7 @@ export default new class MovieEditorFacade {
   getActor () {
     return axios.get(`/actor`)
   }
+  getDirector () {
+    return axios.get(`/director`)
+  }
 }()
