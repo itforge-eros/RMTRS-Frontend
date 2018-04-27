@@ -56,6 +56,7 @@
             <div class="row">
               <div class="col">
                 <button class="btn" style="color: green" @click="persistActor">Add</button>
+                <button class="btn" style="color: red" @click="addingActor(false)">Cancel</button>
               </div>
             </div>
           </div>
@@ -97,14 +98,15 @@
             <label>Action</label>
             <div class="row">
               <div class="col">
-                <button @click="addingProduction" class="btn" style="color: green">Add</button>
+                <button class="btn" style="color: green">Add</button>
+                <button @click="addingProduction(false)" class="btn" style="color: red">Cancel</button>
               </div>
             </div>
           </div>
         </div>
         <div v-show="!adding.production.state" class="row">
           <div class="col-12 p-0">
-            <button @click="addingProduction" class="btn">Add an director</button>
+            <button @click="addingProduction(true)" class="btn">Add an director</button>
           </div>
         </div>
       </section>
@@ -140,13 +142,14 @@
             <div class="row">
               <div class="col">
                 <button class="btn" style="color: green" @click="persistDirector">Add</button>
+                <button class="btn" style="color: red" @click="addingDirector(false)">Cancel</button>
               </div>
             </div>
           </div>
         </div>
         <div v-show="!adding.director.state" class="row">
           <div class="col-12 p-0">
-            <button @click="addingDirector" class="btn">Add an director</button>
+            <button @click="addingDirector(true)" class="btn">Add an director</button>
           </div>
         </div>
       </section>
@@ -276,14 +279,14 @@ export default {
     setSelectedDatepicker (key) {
       this.selectedDatepicker = key
     },
-    addingDirector () {
-      this.adding.director.state = true
+    addingDirector (mode) {
+      this.adding.director.state = mode
     },
-    addingActor () {
-      this.adding.actor.state = true
+    addingActor (mode) {
+      this.adding.actor.state = mode
     },
-    addingProduction () {
-      this.adding.production.state = true
+    addingProduction (mode) {
+      this.adding.production.state = mode
     },
     handleSubmitChange () {
       const payload = Object.assign({}, this.movie)
