@@ -362,7 +362,7 @@ export default {
   align-items: center;
   background: adjust-color($color: $main-gray, $lightness: 40%, $alpha: 1.0);
   transition: 0.4s ease;
-  color: #000;
+  color: rgb(133, 133, 133);
   overflow: hidden;
   label {
     width: 100%;
@@ -380,7 +380,6 @@ export default {
       + label {
         color: $main-blue;
         font-weight: bolder;
-        text-decoration: underline;
       }
     }
   }
