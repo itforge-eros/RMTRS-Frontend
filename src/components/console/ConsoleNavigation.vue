@@ -4,12 +4,13 @@
         <router-link tag="span" active-class="active" :to="{name: menu.path}">{{menu.menu}}</router-link>
     </div>
     <div class="menu">
-      <span>ออกจากระบบ</span>
+      <span @click="logout">ออกจากระบบ</span>
     </div>
   </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 export default {
   name: 'ConsoleNavigation',
   data () {
@@ -22,6 +23,15 @@ export default {
         {menu: 'จัดการบัญชี', role: 4, path: 'Manage Account'}
       ]
     }
+  },
+  methods: {
+    logout () {
+      this.clearAccount()
+      this.$router.replace('login')
+    },
+    ...mapActions([
+      'clearAccount'
+    ])
   }
 }
 </script>

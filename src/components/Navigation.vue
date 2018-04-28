@@ -1,13 +1,21 @@
 <template>
   <nav id="navbar">
-    <router-link to="/" class="brand" href="#">Skydog Cineplex</router-link><span v-if="text !== null">{{text}}</span>
+    <router-link to="/" class="brand" href="#">Skydog Cineplex</router-link>
+    <span v-if="getAccount !== null">
+      <small class="text-muted"> : {{ getAccount.role }}</small>
+    </span>
   </nav>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   name: 'Navigation',
-  props: ['text']
+  computed: {
+    ...mapGetters([
+      'getAccount'
+    ])
+  }
 }
 </script>
 

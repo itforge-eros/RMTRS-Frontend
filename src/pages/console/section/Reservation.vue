@@ -5,8 +5,8 @@
     :css="tableMeta"
     pagination-path="">
     <template slot="action" slot-scope="props">
-      <a class="btn btn-info" target="_blank" :href="'#/reservation/' + props.rowData.id">Detail</a>
-      <button class="btn">พิมพ์ตั๋ว</button>
+      <a class="btn m-1 btn-info" target="_blank" :href="'#/reservation/' + props.rowData.id">Detail</a>
+      <button class="btn m-1">พิมพ์ตั๋ว</button>
     </template>
   </vuetable>
 </template>

@@ -23,6 +23,7 @@
 
 <script>
 import facade from '@/facades/LoginFacade'
+import { mapActions } from 'vuex'
 export default {
   name: 'Login',
   data () {
@@ -35,13 +36,17 @@ export default {
     login () {
       facade.login(this.username, this.password)
         .then(() => {
+          this.fetchAccount()
           this.$router.push({ name: 'Manage Reservation' })
         })
         .catch(err => {
           // Notice user that wrong username or password in here
           console.log(err)
         })
-    }
+    },
+    ...mapActions([
+      'fetchAccount'
+    ])
   }
 }
 </script>
