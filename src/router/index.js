@@ -74,6 +74,10 @@ export default new Router({
           beforeEnter: checkAuth,
           children: [
             {
+              path: '',
+              redirect: 'reservation'
+            },
+            {
               path: 'reservation',
               name: 'Manage Reservation',
               component: ManageReservation
