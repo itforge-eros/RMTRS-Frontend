@@ -12,8 +12,8 @@
         </template>
 
         <template slot="action" slot-scope="props">
-          <router-link tag="button" style="color: blue" class="btn" :to="'account/edit/'+props.rowData.id">Edit</router-link>
-          <router-link tag="button" style="color: red" class="btn" :to="'account/delete/'+props.rowData.id">Delete</router-link>
+          <router-link tag="button" style="color: blue" class="btn m-1" :to="{name: 'AccountEditor', params: {id: props.rowData.id}}">Edit</router-link>
+          <router-link tag="button" style="color: red" class="btn m-1" :to="'account/delete/'+props.rowData.id">Delete</router-link>
         </template>
 
       </vuetable>

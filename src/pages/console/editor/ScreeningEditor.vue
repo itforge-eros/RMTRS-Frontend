@@ -1,8 +1,8 @@
 <template>
-  <div id="editor">
+  <div id="editor" v-if="screening !== null">
     <div class="row">
       <div class="col-12 p-0">
-        <h3 class="header py-2 px-4 mb-3">แก้ไขรอบฉายภาพยนตร์</h3>
+        <h3 class="header py-2 px-4 mb-3">Edit Screening {{ screening.id }}</h3>
       </div>
     </div>
     <form v-if="screening !== null">
@@ -31,7 +31,7 @@
         </div>
         <div v-for="(meta, key) in formMeta" :key="key" v-if="meta[2] === 'read-only'" :class="meta[1]">
           <label :for="key">{{ meta[0] }}</label>
-          <input disabled class="form-control" :id="key" v-model="screening.movie[key]" re/>
+          <input disabled class="form-control" :id="key" v-model="screening.movie[key]"/>
         </div>
       </div>
       <div class="row mb-1 mt-5">
@@ -58,7 +58,7 @@ export default {
         show_time: ['เวลาที่ฉาย', 'form-group col-12 col-md-6', 'time'],
         th_title: ['ชื่อไทย', 'form-group col-12 col-sm-6', 'read-only'],
         en_title: ['English Title', 'form-group col-12 col-sm-6', 'read-only'],
-        release_date: ['Release Date', 'form-group col-12 col-md-3', 'read-onlydate'],
+        release_date: ['Release Date', 'form-group col-12 col-md-3', 'read-only'],
         end_date: ['End Date', 'form-group col-12 col-md-3', 'read-only'],
         duration: ['Duration', 'form-group col-6 col-sm-3', 'read-only'],
         rate: ['Rate', 'form-group col-3', 'read-only']

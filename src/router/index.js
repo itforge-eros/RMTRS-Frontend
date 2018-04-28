@@ -19,6 +19,7 @@ import ManageAccount from '@/pages/console/section/Account'
 import MovieEditor from '@/pages/console/editor/MovieEditor'
 import ScreeningEditor from '@/pages/console/editor/ScreeningEditor'
 import TheatreDetail from '@/pages/console/editor/TheatreDetail'
+import AccountEditor from '@/pages/console/editor/AccountEditor'
 
 import { checkAuth, checkIsLogin } from './checkAuth'
 
@@ -116,6 +117,11 @@ export default new Router({
               path: 'theatre/detail/:id',
               name: 'TheatreDetail',
               component: TheatreDetail
+            },
+            {
+              path: 'account/edit/:id',
+              name: 'AccountEditor',
+              component: AccountEditor
             }
           ]
         }
