@@ -14,9 +14,9 @@
         </div>
         <div class="form-group col-12 col-md-3" v-else-if="key === 'rate'">
           <label for="rate">Rate</label>
-          <select class="form-control" id="rate">
-            <option selected>Choose...</option>
-            <option v-for="(data, key) in formMeta.rate" :key="key" :value="key">{{ data }}</option>
+          <select class="form-control" id="rate" v-model="movie.rate">
+            <option disabled>Choose...</option>
+            <option :selected="data === movie.rate" v-for="(data, key) in formMeta.rate" :key="key" :value="data">{{ data }}</option>
           </select>
         </div>
         <div class="form-group col-12">
