@@ -470,7 +470,7 @@ export default {
       const genreIds = this.movie.genres.map(g => g.id)
       if (genreIds.includes(genre.id)) {
         const idx = genreIds.indexOf(genre.id)
-        this.movie.genres.splice(idx)
+        this.movie.genres.splice(idx, 1)
         return
       }
       this.movie.genres.push(genre)
