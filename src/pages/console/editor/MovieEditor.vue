@@ -434,7 +434,6 @@ export default {
       axios.put(`/movie/${payload.id}`, payload)
         .then(({data}) => {
           console.log(data)
-          location.reload()
         })
         .catch(console.log)
     },

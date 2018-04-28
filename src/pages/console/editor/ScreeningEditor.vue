@@ -2,32 +2,40 @@
   <div id="editor" v-if="screening !== null">
     <div class="row">
       <div class="col-12 p-0">
-        <h3 class="header py-2 px-4 mb-3">Edit Screening {{ screening.id }}</h3>
+        <h3 v-if="isNew" class="header py-2 px-4 mb-3">Add Screening</h3>
+        <h3 v-else class="header py-2 px-4 mb-3">Edit Screening {{ screening.id }}</h3>
       </div>
     </div>
-    <form v-if="screening !== null">
+    <form>
       <div class="row">
         <div :class="formMeta[key][1]" v-if="!exclude.includes(key) && ['date','time'].includes(formMeta[key][2])" v-for="(data, key) in screening" :key="data.id">
           <label :for="key">{{ formMeta[key][0] }} {{ screening[key] }}</label>
           <datepicker v-if="formMeta[key][2] === 'date'" @input="setDateData" :inline="true" wrapper-class="box-datepicker" calendar-class="design mx-auto" input-class="form-control read-only-except" :id="key"
             :value="screening[key]" />
           <div class="timepicker mt-3 row" v-else>
-            <div class="col">
+            <div class="col-6">
               <div @click="hourHandler(true)" class="arrow-up mb-3"></div>
               <input disabled @keypress="validateHour" v-model="hour" type="text">
               <div @click="hourHandler(false)" class="arrow-down mt-3"></div>
             </div>
-            <div class="col">
+            <div class="col-6">
               <div @click="minuteHandler(true)" class="arrow-up mb-3"></div>
               <input disabled @keypress="validateMinute" v-model="minute" type="text">
               <div @click="minuteHandler(false)" class="arrow-down mt-3"></div>
+            </div>
+            <div class="form-group col-12 mt-3">
+              <label for="theatre">Theatre</label>
+              <select class="form-control" id="theatre" v-model="screening.theatre">
+                <option disabled>...</option>
+                <option :selected="data === screening.theatre" v-for="data in theatre" :key="data.id">{{ data.name }}</option>
+              </select>
             </div>
           </div>
         </div>
       </div>
       <div class="row mt-3">
         <div class="col-12 p-0">
-          <h4 class="header py-2 px-4 mb-3">ข้อมูลภาพยนตร์</h4>
+          <h4 class="header py-2 px-4 mb-3">Movie Detail</h4>
         </div>
         <div v-for="(meta, key) in formMeta" :key="key" v-if="meta[2] === 'read-only'" :class="meta[1]">
           <label :for="key">{{ meta[0] }}</label>
@@ -36,7 +44,8 @@
       </div>
       <div class="row mb-1 mt-5">
         <div class="col-12 p-0">
-          <button class="float-right btn btn-block">บันทึก</button>
+          <button v-if="isNew" class="float-right btn btn-block">Add</button>
+          <button v-else class="float-right btn btn-block">Save</button>
         </div>
       </div>
     </form>
@@ -52,6 +61,7 @@ export default {
   components: {Datepicker},
   data () {
     return {
+      isNew: null,
       selectedDatepicker: null,
       formMeta: {
         show_date: ['วันที่ฉาย', 'form-group col-12 col-md-6', 'date'],
@@ -68,11 +78,43 @@ export default {
       time: {
         hour: 0,
         minute: 0
+      },
+      theatre: null
+    }
+  },
+  created () {
+    this.screening = {
+      id: null,
+      show_date: '',
+      show_time: '',
+      active: true,
+      theatre: {
+        id: null,
+        name: ''
+      },
+      movie: {
+        id: null,
+        th_title: '',
+        en_title: '',
+        synopsis: '',
+        duration: 0,
+        poster_url: '',
+        trailer_url: '',
+        release_date: '',
+        end_date: '',
+        rate: '',
+        active: true
       }
     }
   },
   mounted () {
-    this.fetchScreening()
+    if (this.$route.name === 'Add Screening') {
+      this.isNew = true
+    } else {
+      this.isNew = false
+      this.fetchScreening()
+    }
+    this.fetchTheatre()
   },
   methods: {
     fetchScreening () {
@@ -84,6 +126,13 @@ export default {
           this.time.minute = time.minute().toString()
           this.checkTimeFormat('hour', this.time.hour)
           this.checkTimeFormat('minute', this.time.minute)
+        })
+        .catch(console.log)
+    },
+    fetchTheatre () {
+      screeningEditorFacade.getTheatre()
+        .then(({data}) => {
+          this.theatre = data.data
         })
         .catch(console.log)
     },

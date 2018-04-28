@@ -10,19 +10,69 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 export default {
   name: 'ConsoleNavigation',
   data () {
     return {
       menus: [
-        {menu: 'รายการจอง', role: 0, path: 'Manage Reservation'},
-        {menu: 'ข้อมูลภาพยนตร์', role: 1, path: 'Manage Movie Available'},
-        {menu: 'โรงฉายภาพยนตร์', role: 2, path: 'Manage Theatre'},
-        {menu: 'รอบฉายภาพยนตร์', role: 3, path: 'Manage Screening'},
-        {menu: 'จัดการบัญชี', role: 4, path: 'Manage Account'}
+        {
+          menu: 'รายการจอง',
+          rights: {
+            // [read, write]
+            staff: [true, true],
+            manager: [false, false],
+            admin: [false, false]
+          },
+          path: 'Manage Reservation'
+        },
+        {
+          menu: 'ข้อมูลภาพยนตร์',
+          rights: {
+            // [read, write]
+            staff: [true, false],
+            manager: [true, true],
+            admin: [false, false]
+          },
+          path: 'Manage Movie Available'
+        },
+        {
+          menu: 'โรงฉายภาพยนตร์',
+          rights: {
+            // [read, write]
+            staff: [true, true],
+            manager: [false, false],
+            admin: [false, false]
+          },
+          path: 'Manage Theatre'
+        },
+        {
+          menu: 'รอบฉายภาพยนตร์',
+          rights: {
+            // [read, write]
+            staff: [true, false],
+            manager: [true, true],
+            admin: [false, false]
+          },
+          path: 'Manage Screening'
+        },
+        {
+          menu: 'จัดการบัญชี',
+          rights: {
+            // [read, write]
+            staff: [false, false],
+            manager: [true, true],
+            admin: [true, true]
+          },
+          path: 'Manage Account'
+        }
       ]
     }
+  },
+  computed: {
+    ...mapGetters([
+      'getAccount'
+    ])
   },
   methods: {
     logout () {

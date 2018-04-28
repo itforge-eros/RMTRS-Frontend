@@ -113,6 +113,11 @@ export default new Router({
               component: MovieEditor
             },
             {
+              path: 'screening/add',
+              name: 'Add Screening',
+              component: ScreeningEditor
+            },
+            {
               path: 'screening/edit/:id',
               name: 'ScreeningEditor',
               component: ScreeningEditor
