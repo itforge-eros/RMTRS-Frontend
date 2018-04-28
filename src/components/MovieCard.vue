@@ -19,8 +19,9 @@ export default {
 <style lang="scss" scoped>
 
     .movie-card {
-        width: 320px;
-        max-height: 500px;
+        height: 560px;
+        min-width: 320px;
+        max-width: 320px;
         border-radius: $main-round;
         overflow: hidden;
         text-decoration: none!important;
@@ -43,9 +44,7 @@ export default {
             img {
                 display: block;
                 min-width: 100%;
-                min-height: 100%;
-                width: 100%;
-                height: auto;
+                height: 100%;
                 position: relative;
             }
         }

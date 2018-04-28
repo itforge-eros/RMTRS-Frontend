@@ -2,7 +2,7 @@
   <div class="wall">
     <Highlight :movieData="movieData" class="row"></Highlight>
     <div class="container">
-      <div class="row">
+      <div class="row justify-content-center">
         <movie-card v-for="movie in movieData" :key="movie.id" :id="movie.id" :title="movie.en_title" :img="movie.poster_url"/>
       </div>
     </div>
