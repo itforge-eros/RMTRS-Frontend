@@ -118,6 +118,11 @@ export default new Router({
               component: ScreeningEditor
             },
             {
+              path: 'account/add',
+              name: 'Add Account',
+              component: AccountEditor
+            },
+            {
               path: 'screening/edit/:id',
               name: 'ScreeningEditor',
               component: ScreeningEditor

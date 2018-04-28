@@ -2,14 +2,15 @@
   <div id="editor">
     <div class="row">
       <div class="col-12 p-0">
-        <h3 v-if="account !== null" class="header py-2 px-4 mb-3">{{ account.fname }}'s Account</h3>
+        <h3 v-if="isNew" class="header py-2 px-4 mb-3">Add Account</h3>
+        <h3 v-else class="header py-2 px-4 mb-3">{{ account.fname }}'s Account</h3>
       </div>
     </div>
-    <form v-if="account !== null">
+    <form>
       <div class="row">
         <div :class="formMeta[key][1]" v-for="(meta, key, index) in formMeta" :key="index">
           <label :for="key">{{ meta[0] }}</label>
-          <input :disabled="key === 'username'" class="form-control" :id="key" v-model="account[key]"/>
+          <input :disabled="key === 'username' && !isNew" class="form-control" :id="key" v-model="account[key]"/>
         </div>
         <div class="form-group col-12 col-md-4">
           <label for="role">Role</label>
@@ -21,7 +22,8 @@
       </div>
       <div class="row mb-1 mt-5">
         <div class="col-12 p-2">
-          <button class="float-right btn btn-block">Save</button>
+          <button v-if="isNew" class="float-right btn btn-block">Add</button>
+          <button v-else class="float-right btn btn-block">Save</button>
         </div>
       </div>
     </form>
@@ -34,6 +36,7 @@ export default {
   name: 'AccountEditor',
   data () {
     return {
+      isNew: null,
       account: null,
       formMeta: {
         username: ['Username', 'form-group col-12 col-md-6'],
@@ -45,8 +48,26 @@ export default {
       roles: ['STAFF', 'MANAGER', 'ADMIN']
     }
   },
+  created () {
+    this.account = {
+      id: null,
+      username: '',
+      password: '',
+      title: '',
+      fname: '',
+      lname: '',
+      phone: '',
+      role: '',
+      active: true
+    }
+  },
   mounted () {
-    this.fetchAccount()
+    if (this.$route.name === 'Add Account') {
+      this.isNew = true
+    } else {
+      this.isNew = false
+      this.fetchAccount()
+    }
   },
   methods: {
     fetchAccount () {

@@ -27,7 +27,7 @@
               <label for="theatre">Theatre</label>
               <select class="form-control" id="theatre" v-model="screening.theatre">
                 <option disabled>...</option>
-                <option :selected="data === screening.theatre" v-for="data in theatre" :key="data.id">{{ data.name }}</option>
+                <option :selected="data.id === screening.theatre.id" :value="data" v-for="data in theatre" :key="data.id">{{ data.name }}</option>
               </select>
             </div>
           </div>
@@ -79,7 +79,7 @@ export default {
         hour: 0,
         minute: 0
       },
-      theatre: null
+      theatre: {}
     }
   },
   created () {

@@ -20,8 +20,7 @@
 
     <template slot="action" slot-scope="props">
       <div class="text-center">
-        <router-link tag="button" class="btn m-1 center-row" style="color: blue" :to="'theatre/detail/'+props.rowData.id">Detail</router-link>
-        <button @click="activeMode" class="btn m-1 center-row" style="color: red">{{ activeText }}</button>
+        <button @click="activeMode(props.rowData.id)" class="btn m-1 center-row" style="color: red">{{ activeText }}</button>
       </div>
     </template>
 
