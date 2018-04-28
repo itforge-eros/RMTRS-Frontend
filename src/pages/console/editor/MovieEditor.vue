@@ -467,9 +467,9 @@ export default {
         .catch(console.log)
     },
     handleSelectGenre (genre) {
-      console.log(genre)
-      if (this.movie.genres.includes(genre)) {
-        const idx = this.movie.genres.indexOf(genre)
+      const genreIds = this.movie.genres.map(g => g.id)
+      if (genreIds.includes(genre.id)) {
+        const idx = genreIds.indexOf(genre.id)
         this.movie.genres.splice(idx)
         return
       }
