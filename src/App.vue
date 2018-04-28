@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <navigation :text="onNavText" :ref="'navigation'"/>
+    <navigation :ref="'navigation'"/>
     <div id="space-main" :ref="'space'"></div>
     <router-view />
   </div>
@@ -8,21 +8,11 @@
 
 <script>
 import Navigation from '@/components/Navigation.vue'
-
 export default {
   name: 'App',
   components: {Navigation},
   mounted () {
     this.$refs.space.style.height = (this.$refs.navigation.$el.scrollHeight - 1) + 'px'
-  },
-  computed: {
-    onNavText () {
-      if (this.$route.path.indexOf('/console') !== -1) {
-        return ' : Console'
-      } else {
-        return null
-      }
-    }
   }
 }
 
