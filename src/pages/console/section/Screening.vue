@@ -13,6 +13,7 @@
 
     <template slot="action" slot-scope="props">
       <router-link tag="button" style="color: blue" class="btn" :to="'screening/edit/'+props.rowData.id">Edit</router-link>
+      <router-link tag="button" style="color: red" class="btn" :to="'screening/delete/'+props.rowData.id">Delete</router-link>
     </template>
   </vuetable>
   </div>

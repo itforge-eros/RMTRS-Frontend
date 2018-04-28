@@ -2,10 +2,10 @@
   <div id="editor">
     <div class="row">
       <div class="col-12 p-0">
-        <h3 v-if="movie !== null" class="header py-2 px-4">Editing : {{movie.en_title}}</h3>
+        <h3 v-if="movie !== null || isNew" class="header py-2 px-4">{{ mode }} : {{movie.en_title}}</h3>
       </div>
     </div>
-    <form v-if="movie !== null">
+    <form>
       <div class="row">
         <div v-if="!exclude.includes(key)" :class="formMeta[key][1]" v-for="(meta, key) in formMeta" :key="key">
           <label :for="key">{{ formMeta[key][0] }}</label>
@@ -14,201 +14,208 @@
         </div>
         <div class="form-group col-12 col-md-3" v-else-if="key === 'rate'">
           <label for="rate">Rate</label>
-          <select class="form-control" id="rate">
-            <option selected>Choose...</option>
-            <option v-for="(data, key) in formMeta.rate" :key="key" :value="key">{{ data }}</option>
+          <select class="form-control" id="rate" v-model="movie.rate">
+            <option disabled>Choose...</option>
+            <option :selected="data === movie.rate" v-for="(data, key) in formMeta.rate" :key="key" :value="data">{{ data }}</option>
           </select>
         </div>
         <div class="form-group col-12">
           <label for="synopsis">Synopsis</label>
-          <textarea type="text" class="form-control" id="synopsis" rows="5" :value="movie.synopsis"></textarea>
+          <textarea type="text" class="form-control" id="synopsis" rows="5" v-model="movie.synopsis"></textarea>
         </div>
       </div>
-      <hr>
-      <section id="actor">
-        <div class="row">
-          <div class="col-12 p-0">
-            <h4 class="header py-2 px-4">Actor</h4>
-          </div>
+      <hr :class="{'data-protect': isNew}">
+      <div :class="{'disallow': isNew}">
+        <div v-if="isNew" class="above-text">
+          <h3>Editing this section requires saving the basic infomation first!</h3>
+          <p>Finish filling the basic information then hit save button.</p>
         </div>
-        <div class="row actor my-2" v-for="(actor, key, index) in movie.actors" :key="index">
-          <div class="form-group col-12 col-md-3 pt-2" v-for="(meta, inKey) in formMeta.actors" :key="inKey">
-            <label :for="actor.id+inKey">{{ formMeta.actors[inKey] }}</label>
-            <input :disabled="editing.actor.id !== actor.id" type="text" class="form-control" :id="actor.id+inKey" v-model="actor[inKey]">
-          </div>
-          <div class="col-12 col-md-3 pt-2 mb-3">
-            <label>Action</label>
-            <div class="row">
-              <div v-if="editing.actor.id !== actor.id" class="col">
-                <button @click="editMode('actor', actor, true)" class="btn" style="color: blue">Edit</button>
-                <button class="btn" style="color: red">Delete</button>
-              </div>
-              <div v-else class="col">
-                <button class="btn" style="color: green">Save</button>
-                <button @click="editMode('actor', director, false)" class="btn" style="color: blue">Cancel</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row actor my-2 add" v-if="adding.actor.state">
-          <div class="form-group col-12 col-md-3 pt-2" v-for="(meta, inKey) in formMeta.actors" :key="inKey">
-            <label :for="'add-actor-'+inKey">{{ formMeta.actors[inKey] }}</label>
-            <input :disabled="adding.actor.id !== null" type="text" class="form-control" :id="'add-actor-'+inKey" v-model="adding.actor[inKey]">
-          </div>
-          <div class="col-12 col-md-3 pt-2 mb-3">
-            <label>Action</label>
-            <div class="row">
-              <div class="col">
-                <button class="btn" style="color: green" @click="persistActor">Add</button>
-                <button class="btn" style="color: red" @click="addingActor(false)">Cancel</button>
-              </div>
-            </div>
-          </div>
-          <div class="form-group col-12">
-            <label for="actor-suggestion">Existing Actors</label>
-            <select size="6" class="form-control" id="actor-suggestion">
-              <option @click="clearAdding('actor')">Create new one</option>
-              <option @click="setExistedActor(data)" v-for="data in actor" :key="data.id">{{ data.fname }} {{ data.mname }} {{ data.lname }}</option>
-            </select>
-          </div>
-        </div>
-        <div class="actor-add" v-show="!adding.actor.state">
+        <section :class="{'data-protect': isNew}" id="actor">
           <div class="row">
             <div class="col-12 p-0">
-              <button @click="addingActor(true)" class="btn">Add an actor</button>
+              <h4 class="header py-2 px-4">Actor</h4>
             </div>
           </div>
-        </div>
-      </section>
-      <hr>
-      <section id="production">
-        <div class="row">
-          <div class="col-12 p-0">
-            <h4 class="header py-2 px-4">Production</h4>
+          <div class="row actor my-2" v-for="(actor, key, index) in movie.actors" :key="index">
+            <div class="form-group col-12 col-md-3 pt-2" v-for="(meta, inKey) in formMeta.actors" :key="inKey">
+              <label :for="actor.id+inKey">{{ formMeta.actors[inKey] }}</label>
+              <input :disabled="editing.actor.id !== actor.id" type="text" class="form-control" :id="actor.id+inKey" v-model="actor[inKey]">
+            </div>
+            <div class="col-12 col-md-3 pt-2 mb-3">
+              <label>Action</label>
+              <div class="row">
+                <div v-if="editing.actor.id !== actor.id" class="col">
+                  <button @click="editMode('actor', actor, true)" class="btn" style="color: blue">Edit</button>
+                  <button class="btn" style="color: red">Delete</button>
+                </div>
+                <div v-else class="col">
+                  <button class="btn" style="color: green">Save</button>
+                  <button @click="editMode('actor', director, false)" class="btn" style="color: blue">Cancel</button>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="row production my-2" v-for="(production, index) in movie.productions" :key="index">
-          <div class="form-group col-12 col-md-9 pt-2">
-            <label :for="'production-'+production.key">{{ formMeta.productions.name }} : {{index+1}}</label>
-            <input :disabled="editing.production.id !== production.id" type="text" class="form-control" :id="'production-'+production.key" v-model="production.name">
+          <div class="row actor my-2 add" v-if="adding.actor.state">
+            <div class="form-group col-12 col-md-3 pt-2" v-for="(meta, inKey) in formMeta.actors" :key="inKey">
+              <label :for="'add-actor-'+inKey">{{ formMeta.actors[inKey] }}</label>
+              <input :disabled="adding.actor.id !== null" type="text" class="form-control" :id="'add-actor-'+inKey" v-model="adding.actor[inKey]">
+            </div>
+            <div class="col-12 col-md-3 pt-2 mb-3">
+              <label>Action</label>
+              <div class="row">
+                <div class="col">
+                  <button class="btn" style="color: green" @click="persistActor">Add</button>
+                  <button class="btn" style="color: red" @click="addingActor(false)">Cancel</button>
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-12">
+              <label for="actor-suggestion">Existing Actors</label>
+              <select size="6" class="form-control" id="actor-suggestion">
+                <option @click="clearAdding('actor')">Create new one</option>
+                <option @click="setExistedActor(data)" v-for="data in actor" :key="data.id">{{ data.fname }} {{ data.mname }} {{ data.lname }}</option>
+              </select>
+            </div>
           </div>
-          <div class="col-12 col-md-3 pt-2 mb-3">
-            <label>Action</label>
+          <div class="actor-add" v-show="!adding.actor.state">
             <div class="row">
-              <div v-if="editing.production.id !== production.id" class="col">
-                <button @click="editMode('production', production, true)" class="btn" style="color: blue">Edit</button>
-                <button class="btn" style="color: red">Delete</button>
-              </div>
-              <div v-else class="col">
-                <button class="btn" style="color: green">Save</button>
-                <button @click="editMode('production', director, false)" class="btn" style="color: blue">Cancel</button>
+              <div class="col-12 p-0">
+                <button :disabled="isNew" @click="addingActor(true)" class="btn">Add an actor</button>
               </div>
             </div>
           </div>
-        </div>
-        <div class="row director my-2 add" v-if="adding.production.state">
-          <div class="form-group col-12 col-md-9 pt-2">
-            <label for="add-production">{{ formMeta.productions.name }}</label>
-            <input type="text" :disabled="adding.production.id !== null" class="form-control" id="add-production" v-model="adding.production.name">
+        </section>
+        <hr :class="{'data-protect': isNew}">
+        <section :class="{'data-protect': isNew}" id="production">
+          <div class="row">
+            <div class="col-12 p-0">
+              <h4 class="header py-2 px-4">Production</h4>
+            </div>
           </div>
-          <div class="col-12 col-md-3 pt-2 mb-3">
-            <label>Action</label>
-            <div class="row">
-              <div class="col">
-                <button class="btn" style="color: green">Add</button>
-                <button @click="addingProduction(false)" class="btn" style="color: red">Cancel</button>
+          <div class="row production my-2" v-for="(production, index) in movie.productions" :key="index">
+            <div class="form-group col-12 col-md-9 pt-2">
+              <label :for="'production-'+production.key">{{ formMeta.productions.name }} : {{index+1}}</label>
+              <input :disabled="editing.production.id !== production.id" type="text" class="form-control" :id="'production-'+production.key" v-model="production.name">
+            </div>
+            <div class="col-12 col-md-3 pt-2 mb-3">
+              <label>Action</label>
+              <div class="row">
+                <div v-if="editing.production.id !== production.id" class="col">
+                  <button @click="editMode('production', production, true)" class="btn" style="color: blue">Edit</button>
+                  <button class="btn" style="color: red">Delete</button>
+                </div>
+                <div v-else class="col">
+                  <button class="btn" style="color: green">Save</button>
+                  <button @click="editMode('production', director, false)" class="btn" style="color: blue">Cancel</button>
+                </div>
               </div>
             </div>
           </div>
-          <div class="form-group col-12">
-            <label for="production-suggestion">Existing Production</label>
-            <select size="6" class="form-control" id="production-suggestion">
-              <option @click="clearAdding('production')">Create new one</option>
-              <option @click="setExistedProduction(data)" v-for="data in production" :key="data.id">{{ data.name }}</option>
-            </select>
-          </div>
-        </div>
-        <div v-show="!adding.production.state" class="row">
-          <div class="col-12 p-0">
-            <button @click="addingProduction(true)" class="btn">Add an director</button>
-          </div>
-        </div>
-      </section>
-      <hr>
-      <section id="director">
-        <div class="row">
-          <div class="col-12 p-0">
-            <h4 class="header py-2 px-4">Director</h4>
-          </div>
-        </div>
-        <div class="row director my-2" v-for="(director, key, index) in movie.directors" :key="index">
-          <div class="form-group col-12 col-md-3 pt-2" v-for="(meta, inKey) in formMeta.directors" :key="inKey">
-            <label :for="director.id+inKey">{{ formMeta.directors[inKey] }}</label>
-            <input :disabled="editing.director.id !== director.id" type="text" class="form-control" :id="director.id+inKey" :value="director[inKey]">
-          </div>
-          <div class="col-12 col-md-3 pt-2 mb-3">
-            <label>Action</label>
-            <div class="row">
-              <div v-if="editing.director.id !== director.id" class="col">
-                <button @click="editMode('director', director, true)" class="btn" style="color: blue">Edit</button>
-                <button class="btn" style="color: red">Delete</button>
+          <div class="row director my-2 add" v-if="adding.production.state">
+            <div class="form-group col-12 col-md-9 pt-2">
+              <label for="add-production">{{ formMeta.productions.name }}</label>
+              <input type="text" :disabled="adding.production.id !== null" class="form-control" id="add-production" v-model="adding.production.name">
+            </div>
+            <div class="col-12 col-md-3 pt-2 mb-3">
+              <label>Action</label>
+              <div class="row">
+                <div class="col">
+                  <button class="btn" style="color: green">Add</button>
+                  <button :disabled="isNew" @click="addingProduction(false)" class="btn" style="color: red">Cancel</button>
+                </div>
               </div>
-              <div v-else class="col">
-                <button class="btn" style="color: green">Save</button>
-                <button @click="editMode('director', director, false)" class="btn" style="color: blue">Cancel</button>
+            </div>
+            <div class="form-group col-12">
+              <label for="production-suggestion">Existing Production</label>
+              <select size="6" class="form-control" id="production-suggestion">
+                <option @click="clearAdding('production')">Create new one</option>
+                <option @click="setExistedProduction(data)" v-for="data in production" :key="data.id">{{ data.name }}</option>
+              </select>
+            </div>
+          </div>
+          <div v-show="!adding.production.state" class="row">
+            <div class="col-12 p-0">
+              <button @click="addingProduction(true)" class="btn">Add an director</button>
+            </div>
+          </div>
+        </section>
+        <hr :class="{'data-protect': isNew}">
+        <section :class="{'data-protect': isNew}" id="director">
+          <div class="row">
+            <div class="col-12 p-0">
+              <h4 class="header py-2 px-4">Director</h4>
+            </div>
+          </div>
+          <div class="row director my-2" v-for="(director, key, index) in movie.directors" :key="index">
+            <div class="form-group col-12 col-md-3 pt-2" v-for="(meta, inKey) in formMeta.directors" :key="inKey">
+              <label :for="director.id+inKey">{{ formMeta.directors[inKey] }}</label>
+              <input :disabled="editing.director.id !== director.id" type="text" class="form-control" :id="director.id+inKey" :value="director[inKey]">
+            </div>
+            <div class="col-12 col-md-3 pt-2 mb-3">
+              <label>Action</label>
+              <div class="row">
+                <div v-if="editing.director.id !== director.id" class="col">
+                  <button @click="editMode('director', director, true)" class="btn" style="color: blue">Edit</button>
+                  <button class="btn" style="color: red">Delete</button>
+                </div>
+                <div v-else class="col">
+                  <button class="btn" style="color: green">Save</button>
+                  <button @click="editMode('director', director, false)" class="btn" style="color: blue">Cancel</button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="row director my-2 add" v-if="adding.director.state">
-          <div class="form-group col-12 col-md-3 pt-2" v-for="(meta, inKey) in formMeta.directors" :key="inKey">
-            <label :for="'add-director-'+inKey">{{ formMeta.directors[inKey] }}</label>
-            <input type="text" class="form-control" :id="'add-director-'+inKey" v-model="adding.director[inKey]">
+          <div class="row director my-2 add" v-if="adding.director.state">
+            <div class="form-group col-12 col-md-3 pt-2" v-for="(meta, inKey) in formMeta.directors" :key="inKey">
+              <label :for="'add-director-'+inKey">{{ formMeta.directors[inKey] }}</label>
+              <input type="text" class="form-control" :id="'add-director-'+inKey" v-model="adding.director[inKey]">
+            </div>
+            <div class="col-12 col-md-3 pt-2 mb-3">
+              <label>Action</label>
+              <div class="row">
+                <div class="col">
+                  <button class="btn" style="color: green" @click="persistDirector">Add</button>
+                  <button class="btn" style="color: red" @click="addingDirector(false)">Cancel</button>
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-12">
+              <label for="director-suggestion">Existing Directors</label>
+              <select size="6" class="form-control" id="director-suggestion">
+                <option @click="clearAdding('director')">Create new one</option>
+                <option @click="setExistedDirector(data)" v-for="data in director" :key="data.id">{{ data.fname }} {{ data.mname }} {{ data.lname }}</option>
+              </select>
+            </div>
           </div>
-          <div class="col-12 col-md-3 pt-2 mb-3">
-            <label>Action</label>
-            <div class="row">
-              <div class="col">
-                <button class="btn" style="color: green" @click="persistDirector">Add</button>
-                <button class="btn" style="color: red" @click="addingDirector(false)">Cancel</button>
+          <div v-show="!adding.director.state" class="row">
+            <div class="col-12 p-0">
+              <button :disabled="isNew" @click="addingDirector(true)" class="btn">Add an director</button>
+            </div>
+          </div>
+        </section>
+        <hr :class="{'data-protect': isNew}">
+        <section :class="{'data-protect': isNew}" id="genre">
+          <div class="row">
+            <div class="col-12 p-0">
+              <h4 class="header py-2 px-4">Genre</h4>
+            </div>
+          </div>
+          <div class="row">
+            <div :class="['p-2', 'col-6', 'col-md-2']" v-for="item in genre" :key="item.id">
+              <div class="btn form-check p-0">
+                <input :disabled="isNew" class="form-check-input" :checked="genreAssigned.includes(item.id)" @change="handleSelectGenre(item)" type="checkbox" value="" :id="item.name">
+                <label class="p-2" :for="item.name">
+                  {{ item.name }}
+                </label>
               </div>
             </div>
           </div>
-          <div class="form-group col-12">
-            <label for="director-suggestion">Existing Directors</label>
-            <select size="6" class="form-control" id="director-suggestion">
-              <option @click="clearAdding('director')">Create new one</option>
-              <option @click="setExistedDirector(data)" v-for="data in director" :key="data.id">{{ data.fname }} {{ data.mname }} {{ data.lname }}</option>
-            </select>
-          </div>
-        </div>
-        <div v-show="!adding.director.state" class="row">
-          <div class="col-12 p-0">
-            <button @click="addingDirector(true)" class="btn">Add an director</button>
-          </div>
-        </div>
-      </section>
-      <hr>
-      <section id="genre">
-        <div class="row">
-          <div class="col-12 p-0">
-            <h4 class="header py-2 px-4">Genre</h4>
-          </div>
-        </div>
-        <div class="row">
-          <div :class="['p-2', 'col-6', 'col-md-2']" v-for="item in genre" :key="item.id">
-            <div class="btn form-check p-0">
-              <input class="form-check-input" :checked="genreAssigned.includes(item.id)" @change="handleSelectGenre(item)" type="checkbox" value="" :id="item.name">
-              <label class="p-2" :for="item.name">
-                {{ item.name }}
-              </label>
-            </div>
-          </div>
-        </div>
-      </section>
+        </section>
+      </div>
       <div class="row mb-1 mt-5">
         <div class="col-12 p-2">
-          <button class="float-right btn btn-block" @click="handleSubmitChange">บันทึก</button>
+          <button v-if="!isNew" class="float-right btn btn-block" @click="handleSubmitChange">Save</button>
+          <button v-else class="float-right btn btn-block" @click="addNew">Add</button>
         </div>
       </div>
     </form>
@@ -227,6 +234,7 @@ export default {
   components: {Datepicker},
   data () {
     return {
+      isNew: null,
       selectedDatepicker: null,
       movie: null,
       genre: null,
@@ -234,15 +242,9 @@ export default {
       actor: null,
       director: null,
       editing: {
-        actor: {
-          id: null
-        },
-        director: {
-          id: null
-        },
-        production: {
-          id: null
-        }
+        actor: {id: null},
+        director: {id: null},
+        production: {id: null}
       },
       adding: {
         actor: {
@@ -297,11 +299,35 @@ export default {
       }
     }
   },
+  created () {
+    this.movie = {
+      id: null,
+      th_title: '',
+      en_title: '',
+      synopsis: '',
+      duration: 0,
+      poster_url: '',
+      trailer_url: '',
+      release_date: '',
+      end_date: '',
+      rate: '',
+      active: true,
+      actors: [],
+      directors: [],
+      genres: [],
+      productions: []
+    }
+  },
   mounted () {
+    if (this.$route.name === 'Add Movie') {
+      this.isNew = true
+    } else {
+      this.isNew = false
+      this.fetchMovie()
+    }
     this.fetchActor()
     this.fetchDirector()
     this.fetchProduction()
-    this.fetchMovie()
     this.fetchGenre()
   },
   methods: {
@@ -456,6 +482,16 @@ export default {
         this.fetchMovie()
         this.editing[section].id = null
       }
+    },
+    addNew () {
+      axios.post('/movie', this.movie)
+        .then(({data}) => {
+          console.log(data)
+          this.$router.replace('edit/' + data.id)
+          this.fetchMovie()
+          this.isNew = false
+        })
+        .catch(console.log)
     }
   },
   computed: {
@@ -463,6 +499,12 @@ export default {
       return this.movie.genres.map((genre) => {
         return genre.id
       })
+    },
+    mode () {
+      if (this.isNew) {
+        return 'Adding'
+      }
+      return 'Editing'
     }
   }
 }
@@ -511,5 +553,25 @@ export default {
 .actor, .director, .production {
   background: adjust-color($color: $main-gray, $lightness: 50%, $alpha: 1.0);
   border-radius: $main-round;
+}
+
+.disallow {
+  cursor: not-allowed;
+  position: relative;
+}
+
+.data-protect {
+  opacity: 0.2;
+  filter: blur(5px) grayscale(1);
+}
+.above-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 10px;
+  border: 5px solid $main-blue;
+  border-radius: $main-round;
+  min-width: 300px;
 }
 </style>
