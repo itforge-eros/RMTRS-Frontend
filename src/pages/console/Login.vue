@@ -35,7 +35,7 @@ export default {
     login () {
       facade.login(this.username, this.password)
         .then(() => {
-          this.$router.push({ name: 'Dashboard' })
+          this.$router.push({ name: 'Manage Reservation' })
         })
         .catch(err => {
           // Notice user that wrong username or password in here

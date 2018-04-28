@@ -31,7 +31,7 @@ export default {
   },
   methods: {
     fetchMovie () {
-      facade.getMovie(this.movieId)
+      facade.getMovieAvailable(this.movieId)
         .then(({data}) => {
           this.movie = data
           console.log(this.movie)

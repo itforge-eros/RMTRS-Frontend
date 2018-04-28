@@ -20,6 +20,8 @@ import MovieEditor from '@/pages/console/editor/MovieEditor'
 import ScreeningEditor from '@/pages/console/editor/ScreeningEditor'
 import TheatreDetail from '@/pages/console/editor/TheatreDetail'
 
+import { checkAuth, checkIsLogin } from './checkAuth'
+
 Vue.use(Router)
 
 export default new Router({
@@ -62,11 +64,13 @@ export default new Router({
         {
           path: 'login',
           name: 'Login',
-          component: Login
+          component: Login,
+          beforeEnter: checkIsLogin
         },
         {
           path: '',
           component: Dashboard,
+          beforeEnter: checkAuth,
           children: [
             {
               path: 'reservation',
