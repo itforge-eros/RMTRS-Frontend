@@ -111,7 +111,7 @@
               </div>
             </div>
           </div>
-          <div class="row director my-2 add" v-if="adding.production.state">
+          <div class="row production my-2 add" v-if="adding.production.state">
             <div class="form-group col-12 col-md-9 pt-2">
               <label for="add-production">{{ formMeta.productions.name }}</label>
               <input type="text" :disabled="adding.production.id !== null" class="form-control" id="add-production" v-model="adding.production.name">
@@ -120,7 +120,7 @@
               <label>Action</label>
               <div class="row">
                 <div class="col">
-                  <button class="btn" style="color: green">Add</button>
+                  <button @click="persistProduction" class="btn" style="color: green">Add</button>
                   <button :disabled="isNew" @click="addingProduction(false)" class="btn" style="color: red">Cancel</button>
                 </div>
               </div>
@@ -448,6 +448,18 @@ export default {
             fname: '',
             mname: '',
             lname: ''
+          }
+        })
+        .catch(console.log)
+    },
+    persistProduction () {
+      axios.post('/production', this.adding.production)
+        .then(({data}) => {
+          this.movie.productions.push(data)
+          this.adding.production = {
+            id: null,
+            state: false,
+            name: ''
           }
         })
         .catch(console.log)
