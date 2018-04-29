@@ -52,6 +52,8 @@ export default {
   methods: {
     setDate (date) {
       this.datetime = moment(date)
+      this.fetchScreenings()
+      this.timeSelector = false
     },
     // str of datetime
     formatTime (datetime) {
