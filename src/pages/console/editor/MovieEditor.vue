@@ -220,10 +220,12 @@
         </div>
       </div>
     </form>
+    <alert :mode="alert.mode" :header="alert.header" :message="alert.message" :open="alert.open" @close="alert.open = false"/>
   </div>
 </template>
 
 <script>
+import Alert from '@/components/Alert'
 import screeningFacade from '@/facades/ScreeningFacade'
 import movieEditorFacade from '@/facades/MovieEditorFacade'
 import genreFacade from '@/facades/GenreFacade'
@@ -233,9 +235,15 @@ import moment from 'moment'
 import { mapGetters } from 'vuex'
 export default {
   name: 'MovieEditor',
-  components: {Datepicker},
+  components: {Datepicker, Alert},
   data () {
     return {
+      alert: {
+        header: '',
+        message: '',
+        open: false,
+        mode: ''
+      },
       accountRights: null,
       isNew: null,
       selectedDatepicker: null,
@@ -438,6 +446,7 @@ export default {
       axios.put(`/movie/${payload.id}`, payload)
         .then(({data}) => {
           console.log(data)
+          this.alertBox('Done', 'The change has been saved', 'info')
         })
         .catch(console.log)
     },
@@ -507,6 +516,12 @@ export default {
           this.isNew = false
         })
         .catch(console.log)
+    },
+    alertBox (header, msg, mode) {
+      this.alert.header = header
+      this.alert.message = msg
+      this.alert.mode = mode
+      this.alert.open = true
     },
     deleteActor (id) {
       console.log('deleting Actor id: ' + id)

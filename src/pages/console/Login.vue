@@ -104,13 +104,18 @@ export default {
   margin-top: 20px;
   display: block;
   input[type=submit] {
-    padding: 1em;
+    padding: 0.5em 1em;
     background-color: #ffffff;
     border-radius: $main-round;
     border: 1px solid #000000;
     text-align: center;
     margin: 20px auto;
     display: block;
+    cursor: pointer;
+    transition: 0.3s ease;
+    &:hover {
+      transform: scale(1.1)
+    }
   }
 }
 </style>

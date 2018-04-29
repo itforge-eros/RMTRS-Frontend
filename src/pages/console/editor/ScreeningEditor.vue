@@ -62,10 +62,12 @@
         </div>
       </div>
     </form>
+    <alert :mode="alert.mode" :header="alert.header" :message="alert.message" :open="alert.open" @close="alert.open = false"/>
   </div>
 </template>
 
 <script>
+import Alert from '@/components/Alert'
 import screeningEditorFacade from '@/facades/ScreeningEditorFacade'
 import Datepicker from 'vuejs-datepicker'
 import moment from 'moment'
@@ -73,9 +75,15 @@ import axios from '@/config/axios.config'
 import { mapGetters } from 'vuex'
 export default {
   name: 'ScreeningEditor',
-  components: {Datepicker},
+  components: {Datepicker, Alert},
   data () {
     return {
+      alert: {
+        header: '',
+        message: '',
+        open: false,
+        mode: ''
+      },
       accountRights: null,
       isNew: null,
       movie: null,
@@ -232,9 +240,11 @@ export default {
       axios.post('/screening', payload)
         .then(({data}) => {
           console.log(data)
-          this.$router.push({ name: 'Manage Screening' })
+          this.alertBox('Done', 'The change has been saved', 'info')
+          this.fetchScreening()
         })
         .catch(err => {
+          this.alertBox('Conflict', 'The option you have selected is conflict to existing screening. Please choose other option.', 'info')
           console.log(err.response.data) // Conflict Screening Object
         })
     },
@@ -248,11 +258,19 @@ export default {
       axios.put(`/screening/${this.screening.id}`, payload)
         .then(({data}) => {
           console.log(data)
-          location.reload()
+          this.alertBox('Done', 'The change has been saved', 'info')
+          this.fetchScreening()
         })
         .catch(err => {
+          this.alertBox('Conflict', 'The option you have selected is conflict to existing screening. Please choose other option.', 'info')
           console.log(err.response.data) // Conflict Screening Object
         })
+    },
+    alertBox (header, msg, mode) {
+      this.alert.header = header
+      this.alert.message = msg
+      this.alert.mode = mode
+      this.alert.open = true
     }
   },
   computed: {
