@@ -10,7 +10,8 @@
         <div v-if="!exclude.includes(key)" :class="formMeta[key][1]" v-for="(meta, key) in formMeta" :key="key">
           <label :for="key">{{ formMeta[key][0] }}</label>
           <input :disabled="!accountRights.write" v-model="movie[key]" v-if="formMeta[key][2] === 'text'" type="text" class="form-control" :id="key">
-          <datepicker :disable="!accountRights.write" @opened="setSelectedDatepicker(key)" @selected="setDateData" wrapper-class="box-datepicker" calendar-class="design" input-class="form-control read-only-except" v-else-if="formMeta[key][2] === 'date'" :value="movie[key]"></datepicker>
+          <datepicker :disable="!accountRights.write" @opened="setSelectedDatepicker(key)" @selected="setDateData" wrapper-class="box-datepicker" calendar-class="design" :input-class="timeClass" v-else-if="formMeta[key][2] === 'date'" :value="movie[key]"></datepicker>
+          <div v-if="!accountRights.write && formMeta[key][2] === 'date'" class="protected"></div>
         </div>
         <div class="form-group col-12 col-md-3" v-else-if="key === 'rate'">
           <label for="rate">Rate</label>
@@ -532,7 +533,11 @@ export default {
     ...mapGetters([
       'getAccount',
       'getRights'
-    ])
+    ]),
+    timeClass () {
+      if (this.accountRights.write) return 'form-control read-only-except'
+      else return 'form-control'
+    }
   }
 }
 </script>
@@ -600,5 +605,13 @@ export default {
   border: 5px solid $main-blue;
   border-radius: $main-round;
   min-width: 300px;
+}
+.protected {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
 }
 </style>

@@ -38,7 +38,7 @@ export default {
     return {
       accountRights: null,
       tableMeta: {
-        tableClass: 'table table-striped'
+        tableClass: 'table table-striped table-spread'
       },
       columns: [
         {
@@ -65,7 +65,9 @@ export default {
         },
         {
           name: '__slot:action',
-          title: 'Action'
+          title: 'Action',
+          titleClass: 'table-action text-center',
+          dataClass: 'text-center'
         }
       ]
     }

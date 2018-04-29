@@ -66,7 +66,7 @@ export default {
         {
           name: '__slot:action',
           title: 'Action',
-          titleClass: 'table-action',
+          titleClass: 'table-action text-center',
           dataClass: 'text-right'
         }
       ]

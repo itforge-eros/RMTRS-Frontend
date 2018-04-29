@@ -1,7 +1,7 @@
 <template>
   <div class="container-fluid">
       <div class="row">
-        <div class="d-none d-sm-block col-2" id="c-navigation" :ref="'cNavigation'">
+        <div class="col-2" id="c-navigation" :ref="'cNavigation'">
           <console-navigation />
         </div>
         <div class="col" id="displayer" :ref="'displayer'">

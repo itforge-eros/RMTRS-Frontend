@@ -45,7 +45,7 @@ export default {
     position: absolute;
     z-index: 7;
     border: 2px solid $main-blue;
-    padding: 2em;
+    padding: 1.5em 3em;
     background-color: #fff;
     border-radius: $main-round;
   }
