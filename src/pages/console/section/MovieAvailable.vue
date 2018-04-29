@@ -1,5 +1,5 @@
 <template>
-<div>
+<div v-if="accountRights !== null">
   <div class="row">
     <div class="col-12">
       <vuetable ref="vuetable"
