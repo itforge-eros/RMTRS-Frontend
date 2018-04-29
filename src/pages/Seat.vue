@@ -55,7 +55,7 @@ export default {
       next() // No selected seat, you are free to go!
       return
     }
-    if (to.name === 'Payment') {
+    if (to.name === 'reservation') {
       next()
       return
     }
@@ -90,6 +90,7 @@ export default {
     handleChairClick (row, column) {
       const seat = this.seats[row + column]
       if (!this.mySelectedSeats.includes(seat)) {
+        if (this.allSelectedSeatsIdList.includes(seat.id)) return
         this.mySelectedSeats.push(seat)
         const ref = this.$firebaseRefs.allSelectedSeats.push() // push in firebase
         ref.set(seat.id)
