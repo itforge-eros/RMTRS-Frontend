@@ -37,7 +37,7 @@ export default {
     reserve () {
       facade.reserve(this.screeningId, this.selectedSeats)
         .then(({data}) => {
-          this.$router.push({ name: 'Payment', params: { reserveId: data.id } })
+          this.$router.push({ name: 'reservation', params: { reserveId: data.id } })
         })
     }
   },
