@@ -437,6 +437,7 @@ export default {
       axios.put(`/movie/${payload.id}`, payload)
         .then(({data}) => {
           console.log(data)
+          this.$router.push({ name: 'Manage Movie Available' })
         })
         .catch(console.log)
     },
