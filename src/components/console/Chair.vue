@@ -2,6 +2,7 @@
   <div @click="extend = !extend" class="wall">
     <v-popover @hide="disposeCSS" offset="5">
       <div :class="['chair tooltip-target b3', {'focus': extend}]">
+        <span :class="['type text-muted', {'huge': extend}]">{{ seat.seat_type.name }}</span>
         <img src="../../assets/chair.png" alt="">
         <p>{{ seatKey }}</p>
       </div>
@@ -64,6 +65,13 @@ export default {
     margin: 0.25rem;
     filter: brightness(0.6);
     transition: 0.1s ease;
+    .type {
+      font-size: 0.7em;
+      text-align: center;
+      width: 100%;
+      display: block;
+      transition: 0.5 ease;
+    }
     &.focus {
       filter: brightness(1);
       transform: scale(1.1);
@@ -75,5 +83,11 @@ export default {
       text-align: center
     }
   }
+}
+.huge {
+  transform: scale(1.4) translateY(-10px);
+  background-color: $main-blue;
+  color: $main-yellow!important;
+  border-radius: $main-round;
 }
 </style>
