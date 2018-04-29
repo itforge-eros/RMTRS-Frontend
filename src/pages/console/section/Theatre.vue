@@ -77,7 +77,7 @@ export default {
   computed: {
     activeText (state) {
       if (state) {
-        return 'Suspect'
+        return 'Close'
       } else {
         return 'Active'
       }
