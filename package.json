@@ -20,6 +20,7 @@
     "moment": "^2.21.0",
     "popper.js": "^1.12.9",
     "printd": "^0.0.11",
+    "v-tooltip": "^2.0.0-rc.31",
     "vue": "^2.5.2",
     "vue-carousel": "^0.6.9",
     "vue-qrcode-component": "^2.1.1",

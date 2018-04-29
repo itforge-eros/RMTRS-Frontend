@@ -20,6 +20,7 @@
 
     <template slot="action" slot-scope="props">
       <div class="text-center">
+        <router-link tag="button" :to="{name: 'TheatreEditor', params: {id: props.rowData.id}}" class="btn m-1 center-row" style="color: blue">Edit</router-link>
         <button @click="activeMode(props.rowData.id)" class="btn m-1 center-row" style="color: red">{{ activeText }}</button>
       </div>
     </template>

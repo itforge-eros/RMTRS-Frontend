@@ -18,7 +18,7 @@ import ManageScreening from '@/pages/console/section/Screening'
 import ManageAccount from '@/pages/console/section/Account'
 import MovieEditor from '@/pages/console/editor/MovieEditor'
 import ScreeningEditor from '@/pages/console/editor/ScreeningEditor'
-import TheatreDetail from '@/pages/console/editor/TheatreDetail'
+import TheatreEditor from '@/pages/console/editor/TheatreEditor'
 import AccountEditor from '@/pages/console/editor/AccountEditor'
 
 import { checkAuth, checkIsLogin } from './checkAuth'
@@ -128,9 +128,9 @@ export default new Router({
               component: ScreeningEditor
             },
             {
-              path: 'theatre/detail/:id',
-              name: 'TheatreDetail',
-              component: TheatreDetail
+              path: 'theatre/edit/:id',
+              name: 'TheatreEditor',
+              component: TheatreEditor
             },
             {
               path: 'account/edit/:id',
