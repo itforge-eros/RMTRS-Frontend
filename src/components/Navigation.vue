@@ -1,8 +1,9 @@
 <template>
   <nav id="navbar">
-    <router-link to="/" class="brand" href="#">Skydog Cineplex</router-link>
+    <router-link to="/" class="brand">Skydog Cineplex</router-link>
     <span v-if="getAccount !== null">
       <small class="text-muted"> : {{ getAccount.role }}</small>
+      <router-link id="console-link" tag="span" class="float-right" :to="getPath">Console</router-link>
     </span>
   </nav>
 </template>
@@ -17,7 +18,17 @@ export default {
   computed: {
     ...mapGetters([
       'getAccount'
-    ])
+    ]),
+    getPath () {
+      const role = this.getAccount.role
+      if (role === 'STAFF') {
+        return {name: 'Manage Reservation'}
+      } else if (role === 'MANAGER') {
+        return {name: 'Manage Movie Available'}
+      } else {
+        return {name: 'Manage Account'}
+      }
+    }
   },
   methods: {
     ...mapActions([
@@ -46,5 +57,10 @@ nav {
   span {
     color: #ffffff;
   }
+}
+#console-link {
+  cursor: pointer;
+  border-left: 3px solid #fff;
+  padding-left: 10px;
 }
 </style>
