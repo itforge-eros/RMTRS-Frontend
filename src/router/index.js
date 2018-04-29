@@ -123,6 +123,11 @@ export default new Router({
               component: AccountEditor
             },
             {
+              path: 'theatre/add',
+              name: 'Add Theatre',
+              component: TheatreEditor
+            },
+            {
               path: 'screening/edit/:id',
               name: 'ScreeningEditor',
               component: ScreeningEditor

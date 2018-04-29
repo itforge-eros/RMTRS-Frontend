@@ -27,9 +27,9 @@
 
   </vuetable>
   </div>
-  <div class="add-btn">
+  <router-link tag="div" :to="{name: 'Add Theatre'}" class="add-btn">
     <span>+</span>
-  </div>
+  </router-link>
 </div>
 </template>
 
