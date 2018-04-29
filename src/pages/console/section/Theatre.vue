@@ -1,5 +1,5 @@
 <template>
-<div class="row">
+<div class="row" v-if="accountRights !== null">
   <div class="col-12">
     <vuetable ref="vuetable"
     api-url="http://rmtrs.itforge.io:8888/theatre/paged?page=0"
@@ -19,15 +19,18 @@
     </template>
 
     <template slot="action" slot-scope="props">
-      <div class="text-center">
+      <div v-if="accountRights.write" class="text-center">
         <router-link tag="button" :to="{name: 'TheatreEditor', params: {id: props.rowData.id}}" class="btn m-1 center-row" style="color: blue">Edit</router-link>
         <button @click="activeMode(props.rowData.id)" class="btn m-1 center-row" style="color: red">{{ activeText }}</button>
+      </div>
+      <div v-else class="text-center">
+        <router-link tag="button" :to="'theatre/view/'+props.rowData.id" class="btn m-1 center-row" style="color: green">View</router-link>
       </div>
     </template>
 
   </vuetable>
   </div>
-  <router-link tag="div" :to="{name: 'Add Theatre'}" class="add-btn">
+  <router-link v-if="accountRights.write" tag="div" :to="{name: 'Add Theatre'}" class="add-btn">
     <span>+</span>
   </router-link>
 </div>
@@ -35,11 +38,13 @@
 
 <script>
 import Vuetable from 'vuetable-2/src/components/Vuetable'
+import { mapGetters } from 'vuex'
 export default {
   name: 'Theatre',
   components: {Vuetable},
   data () {
     return {
+      accountRights: null,
       tableMeta: {
         tableClass: 'table table-striped table-spread'
       },
@@ -66,6 +71,9 @@ export default {
       ]
     }
   },
+  mounted () {
+    this.accountRights = this.getRights(this.getAccount.role.toLowerCase()).theatre
+  },
   methods: {
     seatCapacity (seats) {
       return seats.rowData.seats.length
@@ -81,7 +89,11 @@ export default {
       } else {
         return 'Active'
       }
-    }
+    },
+    ...mapGetters([
+      'getAccount',
+      'getRights'
+    ])
   }
 }
 </script>

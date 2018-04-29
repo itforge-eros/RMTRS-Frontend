@@ -26,7 +26,9 @@ const state = {
 }
 const mutations = {
   GETACCOUNT (state) {
-    state.account = JSON.parse(localStorage.currentAccount)
+    if (localStorage.currentAccount !== undefined) {
+      state.account = JSON.parse(localStorage.currentAccount)
+    }
   },
   CLEARACCOUNT (state) {
     localStorage.clear()
