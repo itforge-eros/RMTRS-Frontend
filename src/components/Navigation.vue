@@ -8,12 +8,20 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 export default {
   name: 'Navigation',
+  mounted () {
+    this.fetchAccount()
+  },
   computed: {
     ...mapGetters([
       'getAccount'
+    ])
+  },
+  methods: {
+    ...mapActions([
+      'fetchAccount'
     ])
   }
 }
