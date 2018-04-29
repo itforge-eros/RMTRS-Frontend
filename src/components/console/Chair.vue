@@ -71,6 +71,7 @@ export default {
       width: 100%;
       display: block;
       transition: 0.5 ease;
+      border: 1px solid rgba(255, 255, 255, 0);
     }
     &.focus {
       filter: brightness(1);
@@ -88,6 +89,7 @@ export default {
   transform: scale(1.4) translateY(-10px);
   background-color: $main-blue;
   color: $main-yellow!important;
+  border: 1px solid #fff!important;
   border-radius: $main-round;
 }
 </style>
