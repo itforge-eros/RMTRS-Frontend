@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import axios from '@/config/axios.config'
 import Vuetable from 'vuetable-2/src/components/Vuetable'
 import moment from 'moment'
 export default {
@@ -96,7 +97,11 @@ export default {
     handleCheckin (data) {
       console.log(data.id)
       console.log(data.is_checked_in)
-      // save to db -- do things
+      axios.get(`/reserve/checkin/${data.id}`)
+        .then(({data}) => {
+          console.log(data)
+        })
+        .catch(console.log)
       data.is_checked_in = !data.is_checked_in
     }
   }
