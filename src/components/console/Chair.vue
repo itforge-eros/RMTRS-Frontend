@@ -63,7 +63,6 @@ export default {
       axios.put(`/seat/${this.seat.id}`, payload)
         .then(({data}) => {
           console.log(data)
-
         })
         .catch(err => {
           console.log(err.response.data)
