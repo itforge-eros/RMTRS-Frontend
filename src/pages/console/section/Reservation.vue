@@ -6,7 +6,7 @@
     pagination-path="">
     <template slot="action" slot-scope="props">
       <a class="btn m-1 btn-info" target="_blank" :href="'#/reservation/' + props.rowData.id">Detail</a>
-      <button class="btn m-1">พิมพ์ตั๋ว</button>
+      <button @click="handleCheckin(props.rowData)" class="btn m-1">{{ checkinText(props.rowData.is_checked_in) }}</button>
     </template>
   </vuetable>
 </template>
@@ -85,6 +85,18 @@ export default {
     },
     formatTime (datetime) {
       return moment(datetime).format('dddd, MMMM Do YYYY HH:mm')
+    },
+    checkinText (state) {
+      if (state) {
+        return 'Un-Checkin'
+      }
+      return 'Checkin'
+    },
+    handleCheckin (data) {
+      console.log(data.id)
+      console.log(data.is_checked_in)
+      // save to db -- do things
+      data.is_checked_in = !data.is_checked_in
     }
   }
 }
