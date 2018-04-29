@@ -1,5 +1,5 @@
 <template>
-<div class="row">
+<div class="row" v-if="accountRights !== null">
   <div class="col-12">
     <vuetable ref="vuetable"
     api-url="http://rmtrs.itforge.io:8888/screening/paged?page=0"
@@ -12,12 +12,17 @@
     </template>
 
     <template slot="action" slot-scope="props">
-      <router-link tag="button" style="color: blue" class="btn" :to="'screening/edit/'+props.rowData.id">Edit</router-link>
-      <router-link tag="button" style="color: red" class="btn" :to="'screening/delete/'+props.rowData.id">Delete</router-link>
+      <div v-if="accountRights.write">
+        <router-link tag="button" style="color: blue" class="btn" :to="'screening/edit/'+props.rowData.id">Edit</router-link>
+        <router-link tag="button" style="color: red" class="btn" :to="'screening/delete/'+props.rowData.id">Delete</router-link>
+      </div>
+      <div v-else>
+        <router-link tag="button" style="color: green" class="btn" :to="'screening/view/'+props.rowData.id">View</router-link>
+      </div>
     </template>
   </vuetable>
   </div>
-  <router-link tag="div" :to="{name: 'Add Screening'}" class="add-btn">
+  <router-link v-if="accountRights.write" tag="div" :to="{name: 'Add Screening'}" class="add-btn">
     <span>+</span>
   </router-link>
 </div>
@@ -26,11 +31,13 @@
 <script>
 import Vuetable from 'vuetable-2/src/components/Vuetable'
 import moment from 'moment'
+import { mapGetters } from 'vuex'
 export default {
   name: 'Screening',
   components: {Vuetable},
   data () {
     return {
+      accountRights: null,
       tableMeta: {
         tableClass: 'table table-striped'
       },
@@ -61,10 +68,19 @@ export default {
       ]
     }
   },
+  mounted () {
+    this.accountRights = this.getRights(this.getAccount.role.toLowerCase()).screening
+  },
   methods: {
     formatShowtime (datetime) {
-      return moment(datetime).format('dddd, MMMM Do YYYY HH:MM')
+      return moment(datetime).format('dddd, MMMM Do YYYY HH:mm')
     }
+  },
+  computed: {
+    ...mapGetters([
+      'getAccount',
+      'getRights'
+    ])
   }
 }
 </script>

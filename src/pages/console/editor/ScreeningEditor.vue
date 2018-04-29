@@ -1,5 +1,5 @@
 <template>
-  <div id="editor" v-if="screening !== null">
+  <div id="editor" v-if="accountRights !== null">
     <div class="row">
       <div class="col-12 p-0">
         <h3 v-if="isNew" class="header py-2 px-4 mb-3">Add Screening</h3>
@@ -7,8 +7,14 @@
       </div>
     </div>
     <form>
-      <div class="row">
-        <div :class="formMeta[key][1]" v-if="!exclude.includes(key) && ['date','time'].includes(formMeta[key][2])" v-for="(data, key) in screening" :key="data.id">
+      <div :class="['row']" style="position: relative">
+        <div class="prevent" v-if="!accountRights.write">
+          <div class="pack">
+            <h2>{{ readableTime }}</h2>
+            <h3>{{ readableDate }}</h3>
+          </div>
+        </div>
+        <div :class="[formMeta[key][1], {'blur': !accountRights.write}]" v-if="!exclude.includes(key) && ['date','time'].includes(formMeta[key][2])" v-for="(data, key) in screening" :key="data.id">
           <label :for="key">{{ formMeta[key][0] }} {{ screening[key] }}</label>
           <datepicker v-if="formMeta[key][2] === 'date'" @input="setDateData" :inline="true" wrapper-class="box-datepicker" calendar-class="design mx-auto" input-class="form-control read-only-except" :id="key"
             :value="screening[key]" />
@@ -37,8 +43,8 @@
         <div class="col-12 p-0">
           <h4 class="header py-2 px-4 mb-3">Movie Detail</h4>
         </div>
-        <div class="form-group col-12 mt-3">
-          <label for="movie">Theatre</label>
+        <div v-if="accountRights.write" class="form-group col-12 mt-3">
+          <label for="movie">Movie</label>
           <select class="form-control" id="movie" v-model="screening.movie">
             <option disabled>...</option>
             <option :selected="data.id === screening.movie.id" :value="data" v-for="data in movie" :key="data.id">{{ data.en_title }}</option>
@@ -49,7 +55,7 @@
           <input disabled class="form-control" :id="key" v-model="screening.movie[key]"/>
         </div>
       </div>
-      <div class="row mb-1 mt-5">
+      <div v-if="accountRights.write" class="row mb-1 mt-5">
         <div class="col-12 p-0">
           <button @click="handleAdd" v-if="isNew" class="float-right btn btn-block">Add</button>
           <button @click="handleSubmitChange" v-else class="float-right btn btn-block">Save</button>
@@ -64,11 +70,13 @@ import screeningEditorFacade from '@/facades/ScreeningEditorFacade'
 import Datepicker from 'vuejs-datepicker'
 import moment from 'moment'
 import axios from '@/config/axios.config'
+import { mapGetters } from 'vuex'
 export default {
   name: 'ScreeningEditor',
   components: {Datepicker},
   data () {
     return {
+      accountRights: null,
       isNew: null,
       movie: null,
       selectedDatepicker: null,
@@ -125,6 +133,7 @@ export default {
     }
     this.fetchTheatre()
     this.fetchMovie()
+    this.accountRights = this.getRights(this.getAccount.role.toLowerCase()).screening
   },
   methods: {
     fetchScreening () {
@@ -251,6 +260,16 @@ export default {
     },
     minute () {
       return parseInt(this.time.minute)
+    },
+    ...mapGetters([
+      'getAccount',
+      'getRights'
+    ]),
+    readableDate () {
+      return moment(this.screening.show_date).format('dddd, MMMM Do YYYY')
+    },
+    readableTime () {
+      return moment(this.screening.show_time).format('HH:mm')
     }
   }
 }
@@ -284,5 +303,26 @@ export default {
     border-right: 30px solid transparent;
     border-top: 30px solid $main-blue;
   }
+}
+.prevent {
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #ffffffc9;
+}
+.pack {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 1px solid #000;
+  padding: 10px 25px;
+  border-radius: $main-round;
+}
+.blur {
+  filter: blur(4px);
 }
 </style>

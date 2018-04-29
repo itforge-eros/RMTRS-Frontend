@@ -130,7 +130,8 @@ export default new Router({
             {
               path: 'screening/edit/:id',
               name: 'ScreeningEditor',
-              component: ScreeningEditor
+              component: ScreeningEditor,
+              alias: 'screening/view/:id'
             },
             {
               path: 'theatre/edit/:id',
