@@ -8,20 +8,25 @@
         <div class="container">
           <div class="row">
             <div class="col-12 col-md-7 text-left" id="reservation-msg">
-              <h3 class="header px-3 py-2 text-center">We have reserved your seat{{ pluralControl }}!</h3>
+              <h3 class="header px-3 py-2 text-center">We have reserved your seat{{ pluralControl }}</h3>
+              <hr>
               <p class="msg px-3 py-2 mt-1">Please contact our staff to process the payment by showing this page</p>
+              <hr>
               <div class="col-12 px-3 py-2 theatre mt-3">
                 <h5 class="text-muted text-center ">Your theatre is
                   <b>{{ theatre.name }}</b>
                 </h5>
                 <p class="mt-1 text-center">At {{ formatTime(screening.show_time) }}</p>
               </div>
+              <hr>
+              <div class="col-12 mt-3 d-print-none">
+                <button class="mx-auto btn btn-block" @click="print">Print the ticket{{ pluralControl }}</button>
+              </div>
             </div>
             <div class="mt-5 mt-md-0 col-12 col-md-5">
-              <div id="qr-code">
-                <qrcode :text="`http://rmtrs.itforge.io:8888/reserve/checkin/${$route.params.reserveId}`" :size="300"></qrcode>
+              <div>
+                <qrcode id="qr-code" :text="`http://rmtrs.itforge.io:8888/reserve/checkin/${$route.params.reserveId}`" :size="300"></qrcode>
               </div>
-              <button class="mx-md-0 mx-auto btn btn-block" style="width: 300px;" @click="print">Print</button>
             </div>
           </div>
           <div class="row mt-5">
@@ -110,7 +115,6 @@ export default {
     border-radius: $main-round;
   }
   .msg, .theatre {
-    background-color: adjust-color($color: $main-gray, $lightness: 40%, $alpha: 1.0);
     border-radius: $main-round;
   }
   p {
@@ -123,7 +127,6 @@ export default {
 }
 .seat {
   padding: 1em;
-  background-color: adjust-color($color: $main-blue, $lightness: 70%, $alpha: 1.0);
   border-radius: $main-round;
   img {
     display: block;
