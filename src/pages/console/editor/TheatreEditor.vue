@@ -31,6 +31,7 @@
 </template>
 
 <script>
+import axios from '@/config/axios.config'
 import seatFacade from '@/facades/SeatFacade'
 import Chair from '@/components/console/Chair'
 import { mapGetters } from 'vuex'
@@ -76,7 +77,22 @@ export default {
         })
     },
     addNewTheatre () {
-      // do things
+      const payload = {
+        name: this.theatre,
+        seats: Object.values(this.seats).map(seat => {
+          seat.seat_type_id = seat.seat_type.id
+          return seat
+        })
+      }
+      console.log(payload)
+      axios.post(`/theatre`, payload)
+        .then(({data}) => {
+          console.log(data)
+          this.$router.push({ name: 'Manage Theatre' })
+        })
+        .catch(err => {
+          console.log(err.response.data)
+        })
     }
   }
 }
