@@ -16,7 +16,7 @@
             <option :selected="data.id === seat.seat_type.id" :value="data" v-for="data in seatType" :key="data.id">{{ data.name }}</option>
           </select>
         </div>
-        <button v-if="!mode && accountRights.write" class="btn btn-info">Commit</button>
+        <button v-close-popover v-if="!mode && accountRights.write" @click="changeType" class="btn btn-info">Commit</button>
       </template>
 
     </v-popover>
@@ -26,6 +26,7 @@
 <script>
 import theatreEditorFacade from '@/facades/TheatreEditorFacade'
 import { mapGetters } from 'vuex'
+import axios from '@/config/axios.config'
 export default {
   name: 'Chair',
   props: ['seat', 'mode'],
@@ -33,7 +34,8 @@ export default {
     return {
       extend: false,
       seatType: null,
-      accountRights: null
+      accountRights: null,
+      open: true
     }
   },
   mounted () {
@@ -58,6 +60,20 @@ export default {
     },
     disposeCSS () {
       this.extend = false
+    },
+    changeType () {
+      const payload = {
+        seat_type_id: this.seat.seat_type.id,
+        row: this.seat.row,
+        number: this.seat.number
+      }
+      axios.put(`/seat/${this.seat.id}`, payload)
+        .then(({data}) => {
+          console.log(data)
+        })
+        .catch(err => {
+          console.log(err.response.data)
+        })
     }
   }
 }
