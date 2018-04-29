@@ -55,7 +55,7 @@ export default {
       next() // No selected seat, you are free to go!
       return
     }
-    if (to.name === 'Payment') {
+    if (to.name === 'reservation') {
       next()
       return
     }
