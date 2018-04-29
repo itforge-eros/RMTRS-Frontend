@@ -46,7 +46,7 @@
               <div class="row">
                 <div v-if="editing.actor.id !== actor.id" class="col">
                   <button @click="editMode('actor', actor, true)" class="btn" style="color: blue">Edit</button>
-                  <button class="btn" style="color: red">Delete</button>
+                  <button @click="deleteActor(actor.id)" class="btn" style="color: red">Delete</button>
                 </div>
                 <div v-else class="col">
                   <button class="btn" style="color: green">Save</button>
@@ -102,7 +102,7 @@
               <div class="row">
                 <div v-if="editing.production.id !== production.id" class="col">
                   <button @click="editMode('production', production, true)" class="btn" style="color: blue">Edit</button>
-                  <button class="btn" style="color: red">Delete</button>
+                  <button @click="deleteProduction(production.id)" class="btn" style="color: red">Delete</button>
                 </div>
                 <div v-else class="col">
                   <button class="btn" style="color: green">Save</button>
@@ -156,7 +156,7 @@
               <div class="row">
                 <div v-if="editing.director.id !== director.id" class="col">
                   <button @click="editMode('director', director, true)" class="btn" style="color: blue">Edit</button>
-                  <button class="btn" style="color: red">Delete</button>
+                  <button @click="deleteDirector(director.id)" class="btn" style="color: red">Delete</button>
                 </div>
                 <div v-else class="col">
                   <button class="btn" style="color: green">Save</button>
@@ -506,6 +506,15 @@ export default {
           this.isNew = false
         })
         .catch(console.log)
+    },
+    deleteActor (id) {
+      console.log('deleting Actor id: ' + id)
+    },
+    deleteProduction (id) {
+      console.log('deleting Production id: ' + id)
+    },
+    deleteDirector (id) {
+      console.log('deleting Director id: ' + id)
     }
   },
   computed: {
