@@ -7,4 +7,13 @@ export default new class ScreeningEditorFacade {
   getTheatre () {
     return axios.get(`/theatre/paged?page=0`)
   }
+  getTheareWithoutSeats = () => {
+    return axios.get(`/theatre/paged?page=0`)
+      .then(({data}) => {
+        data.data.forEach((theatre) => {
+          delete theatre.seats
+        })
+        return data
+      })
+  }
 }()
