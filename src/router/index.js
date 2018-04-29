@@ -105,7 +105,8 @@ export default new Router({
             {
               path: 'movie/edit/:id',
               name: 'MovieEditor',
-              component: MovieEditor
+              component: MovieEditor,
+              alias: 'movie/view/:id'
             },
             {
               path: 'movie/add',
@@ -130,7 +131,8 @@ export default new Router({
             {
               path: 'screening/edit/:id',
               name: 'ScreeningEditor',
-              component: ScreeningEditor
+              component: ScreeningEditor,
+              alias: 'screening/view/:id'
             },
             {
               path: 'theatre/edit/:id',

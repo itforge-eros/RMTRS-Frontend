@@ -5,23 +5,23 @@
         <h3 v-if="movie !== null || isNew" class="header py-2 px-4">{{ mode }} : {{movie.en_title}}</h3>
       </div>
     </div>
-    <form>
+    <form v-if="accountRights !== null">
       <div class="row">
         <div v-if="!exclude.includes(key)" :class="formMeta[key][1]" v-for="(meta, key) in formMeta" :key="key">
           <label :for="key">{{ formMeta[key][0] }}</label>
-          <input v-model="movie[key]" v-if="formMeta[key][2] === 'text'" type="text" class="form-control" :id="key">
-          <datepicker @opened="setSelectedDatepicker(key)" @selected="setDateData" wrapper-class="box-datepicker" calendar-class="design" input-class="form-control read-only-except" v-else-if="formMeta[key][2] === 'date'" :value="movie[key]"></datepicker>
+          <input :disabled="!accountRights.write" v-model="movie[key]" v-if="formMeta[key][2] === 'text'" type="text" class="form-control" :id="key">
+          <datepicker :disable="!accountRights.write" @opened="setSelectedDatepicker(key)" @selected="setDateData" wrapper-class="box-datepicker" calendar-class="design" input-class="form-control read-only-except" v-else-if="formMeta[key][2] === 'date'" :value="movie[key]"></datepicker>
         </div>
         <div class="form-group col-12 col-md-3" v-else-if="key === 'rate'">
           <label for="rate">Rate</label>
-          <select class="form-control" id="rate" v-model="movie.rate">
+          <select :disabled="!accountRights.write" class="form-control" id="rate" v-model="movie.rate">
             <option disabled>Choose...</option>
             <option :selected="data === movie.rate" v-for="(data, key) in formMeta.rate" :key="key" :value="data">{{ data }}</option>
           </select>
         </div>
         <div class="form-group col-12">
           <label for="synopsis">Synopsis</label>
-          <textarea type="text" class="form-control" id="synopsis" rows="5" v-model="movie.synopsis"></textarea>
+          <textarea :disabled="!accountRights.write" type="text" class="form-control" id="synopsis" rows="5" v-model="movie.synopsis"></textarea>
         </div>
       </div>
       <hr :class="{'data-protect': isNew}">
@@ -41,7 +41,7 @@
               <label :for="actor.id+inKey">{{ formMeta.actors[inKey] }}</label>
               <input :disabled="editing.actor.id !== actor.id" type="text" class="form-control" :id="actor.id+inKey" v-model="actor[inKey]">
             </div>
-            <div class="col-12 col-md-3 pt-2 mb-3">
+            <div v-if="accountRights.write" class="col-12 col-md-3 pt-2 mb-3">
               <label>Action</label>
               <div class="row">
                 <div v-if="editing.actor.id !== actor.id" class="col">
@@ -80,7 +80,7 @@
           <div class="actor-add" v-show="!adding.actor.state">
             <div class="row">
               <div class="col-12 p-0">
-                <button :disabled="isNew" @click="addingActor(true)" class="btn">Add an actor</button>
+                <button v-if="accountRights.write" :disabled="isNew" @click="addingActor(true)" class="btn">Add an actor</button>
               </div>
             </div>
           </div>
@@ -97,7 +97,7 @@
               <label :for="'production-'+production.key">{{ formMeta.productions.name }} : {{index+1}}</label>
               <input :disabled="editing.production.id !== production.id" type="text" class="form-control" :id="'production-'+production.key" v-model="production.name">
             </div>
-            <div class="col-12 col-md-3 pt-2 mb-3">
+            <div v-if="accountRights.write" class="col-12 col-md-3 pt-2 mb-3">
               <label>Action</label>
               <div class="row">
                 <div v-if="editing.production.id !== production.id" class="col">
@@ -116,7 +116,7 @@
               <label for="add-production">{{ formMeta.productions.name }}</label>
               <input type="text" :disabled="adding.production.id !== null" class="form-control" id="add-production" v-model="adding.production.name">
             </div>
-            <div class="col-12 col-md-3 pt-2 mb-3">
+            <div v-if="accountRights.write" class="col-12 col-md-3 pt-2 mb-3">
               <label>Action</label>
               <div class="row">
                 <div class="col">
@@ -135,7 +135,7 @@
           </div>
           <div v-show="!adding.production.state" class="row">
             <div class="col-12 p-0">
-              <button @click="addingProduction(true)" class="btn">Add an director</button>
+              <button v-if="accountRights.write" @click="addingProduction(true)" class="btn">Add an director</button>
             </div>
           </div>
         </section>
@@ -151,7 +151,7 @@
               <label :for="director.id+inKey">{{ formMeta.directors[inKey] }}</label>
               <input :disabled="editing.director.id !== director.id" type="text" class="form-control" :id="director.id+inKey" :value="director[inKey]">
             </div>
-            <div class="col-12 col-md-3 pt-2 mb-3">
+            <div v-if="accountRights.write" class="col-12 col-md-3 pt-2 mb-3">
               <label>Action</label>
               <div class="row">
                 <div v-if="editing.director.id !== director.id" class="col">
@@ -189,7 +189,7 @@
           </div>
           <div v-show="!adding.director.state" class="row">
             <div class="col-12 p-0">
-              <button :disabled="isNew" @click="addingDirector(true)" class="btn">Add an director</button>
+              <button v-if="accountRights.write" :disabled="isNew" @click="addingDirector(true)" class="btn">Add an director</button>
             </div>
           </div>
         </section>
@@ -203,7 +203,7 @@
           <div class="row">
             <div :class="['p-2', 'col-6', 'col-md-2']" v-for="item in genre" :key="item.id">
               <div class="btn form-check p-0">
-                <input :disabled="isNew" class="form-check-input" :checked="genreAssigned.includes(item.id)" @change="handleSelectGenre(item)" type="checkbox" value="" :id="item.name">
+                <input :disabled="isNew || !accountRights.write" class="form-check-input" :checked="genreAssigned.includes(item.id)" @change="handleSelectGenre(item)" type="checkbox" value="" :id="item.name">
                 <label class="p-2" :for="item.name">
                   {{ item.name }}
                 </label>
@@ -212,7 +212,7 @@
           </div>
         </section>
       </div>
-      <div class="row mb-1 mt-5">
+      <div v-if="accountRights.write" class="row mb-1 mt-5">
         <div class="col-12 p-2">
           <button v-if="!isNew" class="float-right btn btn-block" @click="handleSubmitChange">Save</button>
           <button v-else class="float-right btn btn-block" @click="addNew">Add</button>
@@ -229,11 +229,13 @@ import genreFacade from '@/facades/GenreFacade'
 import axios from '@/config/axios.config'
 import Datepicker from 'vuejs-datepicker'
 import moment from 'moment'
+import { mapGetters } from 'vuex'
 export default {
   name: 'MovieEditor',
   components: {Datepicker},
   data () {
     return {
+      accountRights: null,
       isNew: null,
       selectedDatepicker: null,
       movie: null,
@@ -329,6 +331,7 @@ export default {
     this.fetchDirector()
     this.fetchProduction()
     this.fetchGenre()
+    this.accountRights = this.getRights(this.getAccount.role.toLowerCase()).movie
   },
   methods: {
     fetchMovie () {
@@ -516,7 +519,11 @@ export default {
         return 'Adding'
       }
       return 'Editing'
-    }
+    },
+    ...mapGetters([
+      'getAccount',
+      'getRights'
+    ])
   }
 }
 </script>
