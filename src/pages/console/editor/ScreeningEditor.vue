@@ -214,11 +214,19 @@ export default {
       this.screening.show_time = this.screening.show_date + 'T' + this.time.hour + ':' + this.time.minute + ':00'
     },
     handleSubmitChange () {
-      axios.put(`/screening/${this.screening.id}`, this.payload)
+      const payload = {
+        theatre_id: this.screening.theatre.id,
+        movie_id: this.screening.movie.id,
+        show_date: this.screening.show_date,
+        show_time: this.screening.show_time
+      }
+      axios.put(`/screening/${this.screening.id}`, payload)
         .then(({data}) => {
           console.log(data)
         })
-        .catch(console.log)
+        .catch(err => {
+          console.log(err.response.data) // Conflict Screening Object
+        })
     }
   },
   computed: {
