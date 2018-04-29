@@ -37,7 +37,15 @@ export default {
       facade.login(this.username, this.password)
         .then(() => {
           this.fetchAccount()
-          this.$router.push({ name: 'Manage Reservation' })
+          const user = JSON.parse(localStorage.currentAccount)
+          console.log(user)
+          if (user.role === 'STAFF') {
+            this.$router.push({ name: 'Manage Reservation' })
+          } else if (user.role === 'MANAGER') {
+            this.$router.push({ name: 'Manage Movie Available' })
+          } else {
+            this.$router.push({ name: 'Manage Account' })
+          }
         })
         .catch(err => {
           // Notice user that wrong username or password in here
