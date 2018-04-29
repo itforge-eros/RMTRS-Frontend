@@ -35,7 +35,7 @@ export default {
   },
   methods: {
     reserve () {
-      if (!this.isPaymentAvailable()) {
+      if (!this.isPaymentAvailable) {
         return
       }
       facade.reserve(this.screeningId, this.selectedSeats)
