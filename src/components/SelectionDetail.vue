@@ -11,7 +11,7 @@
       <p>Total Seats : {{ selectedSeats.length }}</p>
     </div>
     <div class="payment col-12">
-      <div class="row">
+      <div class="row clickable">
         <div class="text col-10" @click="reserve" :disabled="isPaymentAvailable">
           <p>Process the payment</p>
         </div>
