@@ -232,7 +232,7 @@ export default {
       axios.post('/screening', payload)
         .then(({data}) => {
           console.log(data)
-          location.reload()
+          this.$router.push({ name: 'Manage Screening' })
         })
         .catch(err => {
           console.log(err.response.data) // Conflict Screening Object
@@ -248,6 +248,7 @@ export default {
       axios.put(`/screening/${this.screening.id}`, payload)
         .then(({data}) => {
           console.log(data)
+          location.reload()
         })
         .catch(err => {
           console.log(err.response.data) // Conflict Screening Object
