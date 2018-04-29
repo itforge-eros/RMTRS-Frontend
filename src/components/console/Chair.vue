@@ -1,5 +1,5 @@
 <template>
-  <div @click="extend = !extend" class="wall">
+  <div @click="extend = !extend" v-if="accountRights !== null" class="wall">
     <v-popover @hide="disposeCSS" offset="5">
       <div :class="['chair tooltip-target b3', {'focus': extend}]">
         <span :class="['type text-muted', {'huge': extend}]">{{ seat.seat_type.name }}</span>
@@ -11,12 +11,12 @@
         <h5>{{ seatKey }}'s config</h5>
         <div class="form-group col-12 mt-3">
           <label for="type">Seat Type</label>
-          <select class="form-control" id="type" v-model="seat.seat_type">
+          <select :disabled="!accountRights.write" class="form-control" id="type" v-model="seat.seat_type">
             <option disabled>...</option>
             <option :selected="data.id === seat.seat_type.id" :value="data" v-for="data in seatType" :key="data.id">{{ data.name }}</option>
           </select>
         </div>
-        <button v-if="!mode" class="btn btn-info">Commit</button>
+        <button v-if="!mode && accountRights.write" class="btn btn-info">Commit</button>
       </template>
 
     </v-popover>
@@ -25,22 +25,29 @@
 
 <script>
 import theatreEditorFacade from '@/facades/TheatreEditorFacade'
+import { mapGetters } from 'vuex'
 export default {
   name: 'Chair',
   props: ['seat', 'mode'],
   data () {
     return {
       extend: false,
-      seatType: null
+      seatType: null,
+      accountRights: null
     }
   },
   mounted () {
     this.fetchSeatType()
+    this.accountRights = this.getRights(this.getAccount.role.toLowerCase()).theatre
   },
   computed: {
     seatKey () {
       return this.seat.row + this.seat.number
-    }
+    },
+    ...mapGetters([
+      'getAccount',
+      'getRights'
+    ])
   },
   methods: {
     fetchSeatType () {

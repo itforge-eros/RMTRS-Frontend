@@ -1,5 +1,5 @@
 <template>
-<div id='editor' v-if='theatre !== null'>
+<div id='editor' v-if='accountRights !== null'>
   <div class='row'>
     <div class='col p-0'>
       <div v-if="isNew">
@@ -13,7 +13,8 @@
         </div>
         <hr>
       </div>
-      <h3 v-else class='header py-2 px-4'>Manage Theatre <span class='float-right'>{{ theatre }}</span></h3>
+      <h3 v-else-if="accountRights.write" class='header py-2 px-4'>Manage Theatre <span class='float-right'>{{ theatre }}</span></h3>
+      <h3 v-else class='header py-2 px-4'>Viewing Theatre <span class='float-right'>{{ theatre }}</span></h3>
     </div>
   </div>
   <div id='chair-place mt-3'>
@@ -32,6 +33,7 @@
 <script>
 import seatFacade from '@/facades/SeatFacade'
 import Chair from '@/components/console/Chair'
+import { mapGetters } from 'vuex'
 export default {
   name: 'TheatreEditor',
   components: {Chair},
@@ -40,7 +42,8 @@ export default {
       isNew: null,
       rows: null,
       theatre: null,
-      seats: null
+      seats: null,
+      accountRights: null
     }
   },
   created () {
@@ -55,6 +58,13 @@ export default {
       this.isNew = false
       this.fetchTheatre()
     }
+    this.accountRights = this.getRights(this.getAccount.role.toLowerCase()).theatre
+  },
+  computed: {
+    ...mapGetters([
+      'getAccount',
+      'getRights'
+    ])
   },
   methods: {
     fetchTheatre (id) {

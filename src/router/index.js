@@ -135,7 +135,8 @@ export default new Router({
             {
               path: 'theatre/edit/:id',
               name: 'TheatreEditor',
-              component: TheatreEditor
+              component: TheatreEditor,
+              alias: 'theatre/view/:id'
             },
             {
               path: 'account/edit/:id',

@@ -57,7 +57,7 @@ export default {
   methods: {
     logout () {
       this.clearAccount()
-      this.$router.replace('login')
+      this.$router.go({name: 'Login'})
     },
     ...mapActions([
       'clearAccount'
