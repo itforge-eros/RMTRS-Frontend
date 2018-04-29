@@ -3,13 +3,12 @@
   <div class='row'>
     <div class='col p-0'>
       <div v-if="isNew">
-        <h3 class='header py-2 px-4 mb-3'>Add Theatre <span class='float-right'>{{ theatre }}</span></h3>
-        <div class="row">
-          <div class="col">
-            <div class="form-inline col-12 mb-2">
-              <label for="theatre-name">Theatre Name : </label>
-              <input class="form-control ml-2" id="theatre-name" type="text" v-model="theatre" placeholder="Enter this theatre name">
-            </div>
+        <h3 class='header py-2 px-4 mb-3 col-12'>Add Theatre <span class='float-right'>{{ theatre }}</span>
+        </h3>
+        <div class="col-12">
+          <div class="form-inline col-12 mb-2">
+            <label for="theatre-name">Theatre Name : </label>
+            <input class="form-control ml-2" id="theatre-name" type="text" v-model="theatre" placeholder="Enter this theatre name">
           </div>
         </div>
         <hr>
