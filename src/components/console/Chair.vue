@@ -16,7 +16,7 @@
             <option :selected="data.id === seat.seat_type.id" :value="data" v-for="data in seatType" :key="data.id">{{ data.name }}</option>
           </select>
         </div>
-        <button v-if="!mode" class="btn btn-info">Commit</button>
+        <button v-close-popover v-if="!mode" @click="changeType" class="btn btn-info">Commit</button>
       </template>
 
     </v-popover>
@@ -25,13 +25,15 @@
 
 <script>
 import theatreEditorFacade from '@/facades/TheatreEditorFacade'
+import axios from '@/config/axios.config'
 export default {
   name: 'Chair',
   props: ['seat', 'mode'],
   data () {
     return {
       extend: false,
-      seatType: null
+      seatType: null,
+      open: true
     }
   },
   mounted () {
@@ -51,6 +53,21 @@ export default {
     },
     disposeCSS () {
       this.extend = false
+    },
+    changeType () {
+      const payload = {
+        seat_type_id: this.seat.seat_type.id,
+        row: this.seat.row,
+        number: this.seat.number
+      }
+      axios.put(`/seat/${this.seat.id}`, payload)
+        .then(({data}) => {
+          console.log(data)
+
+        })
+        .catch(err => {
+          console.log(err.response.data)
+        })
     }
   }
 }
