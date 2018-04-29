@@ -30,9 +30,14 @@ export default {
             background-color: adjust-color($color: $main-gray, $lightness: 50%, $alpha: 1.0);
             border-radius: $main-card-down-round;
             overflow: hidden;
+            min-height: 80px;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
             p {
                 margin: 0;
                 padding: 1em 10px;
+                text-align: center;
             }
         }
         .img-wall {
