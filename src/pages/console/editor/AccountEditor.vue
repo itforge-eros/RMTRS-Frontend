@@ -23,19 +23,19 @@
           <div class="row px-4 py-2 password">
             <div class="form-group col-12 col-sm-6">
               <label for="pass-1">Password</label>
-              <input class="form-control" type="password" id="pass-1">
+              <input class="form-control" type="password" id="pass-1" v-model="account.password">
             </div>
             <div class="form-group col-12 col-sm-6">
               <label for="pass-2">Ensure you password again</label>
-              <input class="form-control" type="password" id="pass-2">
+              <input class="form-control" type="password" id="pass-2" v-model="account.confirmPassword">
             </div>
           </div>
         </div>
       </div>
       <div class="row mb-1 mt-2">
         <div class="col-12 p-0">
-          <button v-if="isNew" class="float-right btn btn-block">Add</button>
-          <button v-else class="float-right btn btn-block">Save</button>
+          <button v-if="isNew" class="float-right btn btn-block" @click="handleAdd">Add</button>
+          <button v-else class="float-right btn btn-block" @click="handleUpdate">Save</button>
         </div>
       </div>
     </form>
@@ -44,6 +44,7 @@
 
 <script>
 import accountEditorFacade from '@/facades/AccountEditorFacade'
+import axios from '@/config/axios.config'
 import { mapGetters } from 'vuex'
 export default {
   name: 'AccountEditor',
@@ -67,6 +68,7 @@ export default {
       id: null,
       username: '',
       password: '',
+      confirmPassword: '',
       title: '',
       fname: '',
       lname: '',
@@ -89,6 +91,24 @@ export default {
       accountEditorFacade.getAccount(this.$route.params.id)
         .then(({data}) => {
           this.account = data
+        })
+        .catch(console.log)
+    },
+    handleAdd () {
+      if (this.password !== this.confirmPassword) {
+        alert('Password and Confirm Password is not the same!!')
+        return
+      }
+      axios.post('/account/register', this.account)
+        .then(({data}) => {
+          this.$router.push({ name: 'Manage Account' })
+        })
+        .catch(console.log)
+    },
+    handleUpdate () {
+      axios.put(`/account/${this.account.id}`, this.account)
+        .then(({data}) => {
+          this.$router.push({ name: 'Manage Account' })
         })
         .catch(console.log)
     }
