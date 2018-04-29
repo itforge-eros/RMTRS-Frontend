@@ -196,3 +196,10 @@ body {
 .text-c-black {
   color: #000;
 }
+
+.clickable {
+  cursor: pointer;
+  &:hover {
+    filter: brightness(1.2)
+  }
+}
