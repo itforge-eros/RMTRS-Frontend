@@ -160,6 +160,10 @@ export default {
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  border-radius: 0 0.25rem 0.25rem 0;
+  border-right: 5px solid $main-blue;
+  border-top: 5px solid $main-blue;
+  border-bottom: 5px solid $main-blue;
   p {
     margin: 0;
     font-weight: bolder;
