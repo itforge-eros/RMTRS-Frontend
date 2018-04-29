@@ -18,7 +18,12 @@
   </div>
   <div id='chair-place mt-3'>
     <div class='row my-2 justify-content-center mb-3 chair-row' v-for='(row, index) in rows' :key='index'>
-      <chair v-for='column in 10' :key='column' :seat='seats[row+column]'/>
+      <chair v-for='column in 10' :key='column' :seat='seats[row+column]' :mode="isNew"/>
+    </div>
+  </div>
+  <div v-if="isNew" class="row">
+    <div class="col p-0">
+      <button @click="addNewTheatre" class="float-right btn btn-block mb-3">Add</button>
     </div>
   </div>
 </div>
@@ -59,6 +64,9 @@ export default {
           this.theatre = theatre
           this.seats = seats
         })
+    },
+    addNewTheatre () {
+      // do things
     }
   }
 }

@@ -20,7 +20,7 @@ export default {
   data () {
     return {
       tableMeta: {
-        tableClass: 'table table-striped'
+        tableClass: 'table table-striped table-spread'
       },
       columns: [
         {
@@ -57,6 +57,7 @@ export default {
         {
           name: '__slot:action',
           title: 'Action',
+          titleClass: 'table-action',
           dataClass: 'center-row'
         }
       ]

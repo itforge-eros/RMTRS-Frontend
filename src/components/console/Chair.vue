@@ -16,7 +16,7 @@
             <option :selected="data.id === seat.seat_type.id" :value="data" v-for="data in seatType" :key="data.id">{{ data.name }}</option>
           </select>
         </div>
-        <button class="btn btn-info">Commit</button>
+        <button v-if="!mode" class="btn btn-info">Commit</button>
       </template>
 
     </v-popover>
@@ -27,7 +27,7 @@
 import theatreEditorFacade from '@/facades/TheatreEditorFacade'
 export default {
   name: 'Chair',
-  props: ['seat'],
+  props: ['seat', 'mode'],
   data () {
     return {
       extend: false,
