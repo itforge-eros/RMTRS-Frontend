@@ -7636,6 +7636,10 @@ vue-loader@^13.3.0:
     vue-style-loader "^3.0.0"
     vue-template-es2015-compiler "^1.6.0"
 
+vue-material-design-icons@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/vue-material-design-icons/-/vue-material-design-icons-1.4.0.tgz#617451233af8095dfcdb90f7bfe6743a79ed2fbf"
+
 vue-qrcode-component@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/vue-qrcode-component/-/vue-qrcode-component-2.1.1.tgz#72c37567ad90bca2a9372456bd2884f0f43edf38"

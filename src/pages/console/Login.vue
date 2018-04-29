@@ -1,19 +1,20 @@
 <template>
 <div id="login" class="container">
+  <alert mode="info" @close="loginFailed = false" header="Login Failed!" message="Make sure about your username and password. Then try again" :open="loginFailed" />
   <div class="row">
     <div id="header" class="col-12 col-md">
       <h1>Console Login</h1>
     </div>
     <div class="col-12 col-md">
       <div id="login-form">
-        <form v-on:click.prevent="login" action="#" method="post">
+        <form>
           <div class="aform">
             <span class="title">Username</span><input v-model.trim="username" type="text">
           </div>
           <div class="aform">
             <span class="title">Password</span><input v-model.trim="password" type="password">
           </div>
-          <input type="submit" value="Login">
+          <input type="submit" @click="login" value="Login">
         </form>
       </div>
     </div>
@@ -23,13 +24,16 @@
 
 <script>
 import facade from '@/facades/LoginFacade'
+import Alert from '@/components/Alert'
 import { mapActions } from 'vuex'
 export default {
   name: 'Login',
+  components: {Alert},
   data () {
     return {
       username: '',
-      password: ''
+      password: '',
+      loginFailed: false
     }
   },
   methods: {
@@ -50,6 +54,7 @@ export default {
         .catch(err => {
           // Notice user that wrong username or password in here
           console.log(err)
+          this.loginFailed = true
         })
     },
     ...mapActions([
