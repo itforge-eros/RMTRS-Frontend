@@ -1,8 +1,17 @@
 <template>
   <div id="screening">
+    <div id="time-wrapper" v-if="timeSelector">
+      <div class="bg"></div>
+      <datepicker @selected="setDate" :value="date" wrapper-class="box-datepicker" calendar-class="design mx-auto text-c-black" input-class="form-control read-only-except" :inline="true"></datepicker>
+      <button @click="timeSelector = false" class="btn mx-auto mt-2">Close</button>
+    </div>
     <div class="row">
       <div class="day-detail col-12">
-          <h3 class="col-12">{{ formatDate(datetime) }}</h3>
+          <h3 class="col-12">{{ formatDate(datetime) }}
+            <span @click="timeSelector = true" class="time-trigger float-right">
+              <p>Change date</p>
+            </span>
+          </h3>
           <div class="theater">
             <div class="row a-theater" v-for="({theatre, screenings}) in data" :key="theatre.id">
               <div class="id col-2">
@@ -24,11 +33,14 @@
 
 <script>
 import moment from 'moment'
+import Datepicker from 'vuejs-datepicker'
 import facade from '@/facades/ScreeningDetailFacade'
 export default {
   name: 'ScreeningDetail',
+  components: {Datepicker},
   data () {
     return {
+      timeSelector: false,
       movieId: this.$route.params.id,
       datetime: this.$route.query.date ? moment(this.$route.query.date) : moment(),
       data: []
@@ -38,6 +50,9 @@ export default {
     this.fetchScreenings()
   },
   methods: {
+    setDate (date) {
+      this.datetime = moment(date)
+    },
     // str of datetime
     formatTime (datetime) {
       return moment(datetime).format('HH:mm')
@@ -50,6 +65,11 @@ export default {
       facade
         .getAvailableScreenings(this.datetime.format('YYYY-MM-DD'), this.movieId)
         .then(({data}) => { this.data = data }) // data is list of theatres with screenings
+    }
+  },
+  computed: {
+    date () {
+      return this.datetime.format('YYYY-MM-DD')
     }
   }
 }
@@ -98,6 +118,51 @@ export default {
         font-weight: bold;
       }
     }
+  }
+}
+#time-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  .bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.678);
+  }
+  button {
+    position: relative;
+    width: 100px;
+    color: #fff;
+    background: $main-blue;
+  }
+}
+.blur {
+  filter: blur(4px);
+}
+.time-trigger {
+  background-color: #ffffff;
+  color: #000;
+  padding: 5px 10px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  p {
+    margin: 0;
+    font-weight: bolder;
   }
 }
 </style>
