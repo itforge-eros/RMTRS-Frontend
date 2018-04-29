@@ -51,7 +51,7 @@
       </div>
       <div class="row mb-1 mt-5">
         <div class="col-12 p-0">
-          <button v-if="isNew" class="float-right btn btn-block">Add</button>
+          <button @click="handleAdd" v-if="isNew" class="float-right btn btn-block">Add</button>
           <button @click="handleSubmitChange" v-else class="float-right btn btn-block">Save</button>
         </div>
       </div>
@@ -212,6 +212,22 @@ export default {
     },
     updateTime () {
       this.screening.show_time = this.screening.show_date + 'T' + this.time.hour + ':' + this.time.minute + ':00'
+    },
+    handleAdd () {
+      const payload = {
+        theatre_id: this.screening.theatre.id,
+        movie_id: this.screening.movie.id,
+        show_date: this.screening.show_date,
+        show_time: this.screening.show_time
+      }
+      axios.post('/screening', payload)
+        .then(({data}) => {
+          console.log(data)
+          location.reload()
+        })
+        .catch(err => {
+          console.log(err.response.data) // Conflict Screening Object
+        })
     },
     handleSubmitChange () {
       const payload = {
