@@ -6,6 +6,11 @@
           <div class="date col-12">
             Please select your seats.
           </div>
+          <div class="col-12 ex-type text-center mt-2">
+            <small>C: Comfort</small> |
+            <small>L : Luxury</small> |
+            <small>S : Suite</small>
+          </div>
           <div class="screen col-12">
             Screen
           </div>
@@ -13,6 +18,7 @@
             <div class="row chair-place" v-for="(row, index) in rows" :key="index">
               <span class="row-letter">{{ row }}</span>
               <div class="chairs" v-for="column in 10" :key="column">
+                <small class="d-block text-center">{{ seats[row + column].seat_type.name.slice(0,1) }}</small>
                 <img @click="handleChairClick(row, column)"
                 :class="['chair', seatClass(seats[row + column])]" src="../assets/chair.png" alt="">
               </div>
@@ -217,5 +223,10 @@ export default {
   border-radius: $main-round;
   margin-top: 10px;
   margin-bottom: 40px;
+}
+.ex-type {
+  padding: 10px;
+  border: 1px solid #000;
+  border-radius: $main-round;
 }
 </style>
