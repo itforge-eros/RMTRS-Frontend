@@ -45,7 +45,7 @@
       <div class="row mb-1 mt-5">
         <div class="col-12 p-0">
           <button v-if="isNew" class="float-right btn btn-block">Add</button>
-          <button v-else class="float-right btn btn-block">Save</button>
+          <button @click="handleSubmitChange" v-else class="float-right btn btn-block">Save</button>
         </div>
       </div>
     </form>
@@ -56,6 +56,7 @@
 import screeningEditorFacade from '@/facades/ScreeningEditorFacade'
 import Datepicker from 'vuejs-datepicker'
 import moment from 'moment'
+import axios from '@/config/axios.config'
 export default {
   name: 'ScreeningEditor',
   components: {Datepicker},
@@ -130,9 +131,9 @@ export default {
         .catch(console.log)
     },
     fetchTheatre () {
-      screeningEditorFacade.getTheatre()
+      screeningEditorFacade.getTheareWithoutSeats()
         .then(({data}) => {
-          this.theatre = data.data
+          this.theatre = data
         })
         .catch(console.log)
     },
@@ -195,6 +196,13 @@ export default {
     },
     updateTime () {
       this.screening.show_time = this.screening.show_date + 'T' + this.time.hour + ':' + this.time.minute + ':00'
+    },
+    handleSubmitChange () {
+      axios.put(`/screening/${this.screening.id}`, this.payload)
+        .then(({data}) => {
+          console.log(data)
+        })
+        .catch(console.log)
     }
   },
   computed: {

@@ -12,6 +12,7 @@ export default new class ScreeningEditorFacade {
       .then(({data}) => {
         data.data.forEach((theatre) => {
           delete theatre.seats
+          delete theatre.active
         })
         return data
       })
