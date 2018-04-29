@@ -37,6 +37,13 @@
         <div class="col-12 p-0">
           <h4 class="header py-2 px-4 mb-3">Movie Detail</h4>
         </div>
+        <div class="form-group col-12 mt-3">
+          <label for="movie">Theatre</label>
+          <select class="form-control" id="movie" v-model="screening.movie">
+            <option disabled>...</option>
+            <option :selected="data.id === screening.movie.id" :value="data" v-for="data in movie" :key="data.id">{{ data.en_title }}</option>
+          </select>
+        </div>
         <div v-for="(meta, key) in formMeta" :key="key" v-if="meta[2] === 'read-only'" :class="meta[1]">
           <label :for="key">{{ meta[0] }}</label>
           <input disabled class="form-control" :id="key" v-model="screening.movie[key]"/>
@@ -63,6 +70,7 @@ export default {
   data () {
     return {
       isNew: null,
+      movie: null,
       selectedDatepicker: null,
       formMeta: {
         show_date: ['วันที่ฉาย', 'form-group col-12 col-md-6', 'date'],
@@ -77,8 +85,8 @@ export default {
       exclude: ['active', 'movie', 'theatre', 'id'],
       screening: null,
       time: {
-        hour: 0,
-        minute: 0
+        hour: '00',
+        minute: '00'
       },
       theatre: {}
     }
@@ -116,6 +124,7 @@ export default {
       this.fetchScreening()
     }
     this.fetchTheatre()
+    this.fetchMovie()
   },
   methods: {
     fetchScreening () {
@@ -134,6 +143,13 @@ export default {
       screeningEditorFacade.getTheareWithoutSeats()
         .then(({data}) => {
           this.theatre = data
+        })
+        .catch(console.log)
+    },
+    fetchMovie () {
+      screeningEditorFacade.getMovie()
+        .then(({data}) => {
+          this.movie = data.data
         })
         .catch(console.log)
     },
