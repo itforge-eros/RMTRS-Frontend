@@ -132,8 +132,8 @@ export default {
     seatClass (seat) {
       if (this.isSelectable(seat)) return 'selectable'
       else if (this.isSelfSelected(seat)) return 'this-reserving'
-      else if (this.isOtherSelected(seat)) return 'others-reserving'
-      else if (this.isReserved) return 'reserved'
+      else if (this.isOtherSelected(seat) && !this.isReserved(seat)) return 'others-reserving'
+      else if (this.isReserved(seat)) return 'reserved'
       else {
         console.log('You failed')
       }

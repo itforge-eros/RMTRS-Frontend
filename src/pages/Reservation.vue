@@ -19,7 +19,7 @@
                 <p class="mt-1 text-center">At {{ formatTime(screening.show_time) }}</p>
               </div>
               <hr>
-              <div class="col-12 mt-3 d-print-none">
+              <div class="col-12 mt-3 print">
                 <button class="mx-auto btn btn-block" @click="print">Print the ticket{{ pluralControl }}</button>
               </div>
             </div>
@@ -29,7 +29,7 @@
               </div>
             </div>
           </div>
-          <div class="row mt-5">
+          <div class="row mt-5 chair-dp">
             <div class="col-12 col-md-3 seat m-1" v-for="(seat, index) in seats" :key="index">
               <div class="row">
                 <div class="col-6">
@@ -89,9 +89,23 @@ export default {
       const d = new Printd()
       d.print(document.getElementById('message'),
         `.row {
-        display: flex;
-        justify-content: center;
-      }`)
+          display: flex;
+          justify-content: center;
+        }
+        .print {
+          display: none;
+        }
+        .seat {
+          filter: grayscale(1);
+          margin: 20px;
+        }
+        .id {
+          margin-left: 7px;
+        }
+        .chair-dp {
+          margin-top: 10px;
+        }
+      `)
     }
   },
   computed: {
@@ -128,6 +142,7 @@ export default {
 .seat {
   padding: 1em;
   border-radius: $main-round;
+  background-color: rgba($color: $main-white, $alpha: 0.18);
   img {
     display: block;
     width: 100%;
