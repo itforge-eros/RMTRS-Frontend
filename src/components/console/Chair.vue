@@ -10,7 +10,7 @@
       <template slot="popover">
         <h5>{{ seatKey }}'s config</h5>
         <div class="form-group col-12 mt-3">
-          <label for="type">Theatre</label>
+          <label for="type">Seat Type</label>
           <select class="form-control" id="type" v-model="seat.seat_type">
             <option disabled>...</option>
             <option :selected="data.id === seat.seat_type.id" :value="data" v-for="data in seatType" :key="data.id">{{ data.name }}</option>
