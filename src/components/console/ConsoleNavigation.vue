@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div v-if="accountRights !== null">
     <div class="menu" v-for="(menu, index) in menus" :key="index">
-        <router-link tag="span" active-class="active" :to="{name: menu.path}">{{menu.menu}}</router-link>
+        <router-link v-if="accountRights[menu.name].read" tag="span" active-class="active" :to="{name: menu.path}">{{menu.menu}}</router-link>
     </div>
     <div class="menu">
       <span @click="logout">ออกจากระบบ</span>
@@ -15,63 +15,43 @@ export default {
   name: 'ConsoleNavigation',
   data () {
     return {
+      accountRights: null,
       menus: [
         {
+          name: 'reservation',
           menu: 'รายการจอง',
-          rights: {
-            // [read, write]
-            staff: [true, true],
-            manager: [false, false],
-            admin: [false, false]
-          },
           path: 'Manage Reservation'
         },
         {
+          name: 'movie',
           menu: 'ข้อมูลภาพยนตร์',
-          rights: {
-            // [read, write]
-            staff: [true, false],
-            manager: [true, true],
-            admin: [false, false]
-          },
           path: 'Manage Movie Available'
         },
         {
+          name: 'theatre',
           menu: 'โรงฉายภาพยนตร์',
-          rights: {
-            // [read, write]
-            staff: [true, true],
-            manager: [false, false],
-            admin: [false, false]
-          },
           path: 'Manage Theatre'
         },
         {
+          name: 'screening',
           menu: 'รอบฉายภาพยนตร์',
-          rights: {
-            // [read, write]
-            staff: [true, false],
-            manager: [true, true],
-            admin: [false, false]
-          },
           path: 'Manage Screening'
         },
         {
+          name: 'account',
           menu: 'จัดการบัญชี',
-          rights: {
-            // [read, write]
-            staff: [false, false],
-            manager: [true, true],
-            admin: [true, true]
-          },
           path: 'Manage Account'
         }
       ]
     }
   },
+  mounted () {
+    this.accountRights = this.getRights(this.getAccount.role.toLowerCase())
+  },
   computed: {
     ...mapGetters([
-      'getAccount'
+      'getAccount',
+      'getRights'
     ])
   },
   methods: {
