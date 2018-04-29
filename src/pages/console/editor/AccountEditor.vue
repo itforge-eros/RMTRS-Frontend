@@ -95,7 +95,7 @@ export default {
   },
   computed: {
     roleControl () {
-      return this.roles.filter(x => this.roles.indexOf(x) <= this.accountRights.write )
+      return this.roles.filter(x => this.roles.indexOf(x) <= this.accountRights.write)
     },
     ...mapGetters([
       'getAccount',
