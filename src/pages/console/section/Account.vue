@@ -14,7 +14,7 @@
         <template slot="action" slot-scope="props">
           <div v-if="accountRights.write >= getRoleLevel(props.rowData.role.toLowerCase())">
             <router-link tag="button" style="color: blue" class="btn m-1" :to="{name: 'AccountEditor', params: {id: props.rowData.id}}">Edit</router-link>
-            <router-link tag="button" style="color: red" class="btn m-1" :to="'account/delete/'+props.rowData.id">Delete</router-link>
+            <!-- <router-link tag="button" style="color: red" class="btn m-1" :to="'account/delete/'+props.rowData.id">Delete</router-link> -->
           </div>
           <div v-else>
             <p>No rights to manage this account</p>

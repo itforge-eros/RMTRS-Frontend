@@ -14,7 +14,7 @@
     <template slot="action" slot-scope="props">
       <div v-if="accountRights.write">
         <router-link tag="button" style="color: blue" class="btn m-1" :to="'screening/edit/'+props.rowData.id">Edit</router-link>
-        <router-link tag="button" style="color: red" class="btn m-1" :to="'screening/delete/'+props.rowData.id">Delete</router-link>
+        <!-- <router-link tag="button" style="color: red" class="btn m-1" :to="'screening/delete/'+props.rowData.id">Delete</router-link> -->
       </div>
       <div v-else>
         <router-link tag="button" style="color: green" class="btn" :to="'screening/view/'+props.rowData.id">View</router-link>
