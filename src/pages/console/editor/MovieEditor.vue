@@ -47,7 +47,7 @@
               <div class="row">
                 <div v-if="editing.actor.id !== actor.id" class="col">
                   <button @click="editMode('actor', actor, true)" class="btn" style="color: blue">Edit</button>
-                  <button @click="deleteActor(actor.id)" class="btn" style="color: red">Delete</button>
+                  <button @click="unlinkActor(actor.id)" class="btn" style="color: red">Delete</button>
                 </div>
                 <div v-else class="col">
                   <button class="btn" style="color: green">Save</button>
@@ -103,7 +103,7 @@
               <div class="row">
                 <div v-if="editing.production.id !== production.id" class="col">
                   <button @click="editMode('production', production, true)" class="btn" style="color: blue">Edit</button>
-                  <button @click="deleteProduction(production.id)" class="btn" style="color: red">Delete</button>
+                  <button @click="unlinkProduction(production.id)" class="btn" style="color: red">Delete</button>
                 </div>
                 <div v-else class="col">
                   <button class="btn" style="color: green">Save</button>
@@ -157,7 +157,7 @@
               <div class="row">
                 <div v-if="editing.director.id !== director.id" class="col">
                   <button @click="editMode('director', director, true)" class="btn" style="color: blue">Edit</button>
-                  <button @click="deleteDirector(director.id)" class="btn" style="color: red">Delete</button>
+                  <button @click="unlinkDirector(director.id)" class="btn" style="color: red">Delete</button>
                 </div>
                 <div v-else class="col">
                   <button class="btn" style="color: green">Save</button>
@@ -523,14 +523,14 @@ export default {
       this.alert.mode = mode
       this.alert.open = true
     },
-    deleteActor (id) {
-      console.log('deleting Actor id: ' + id)
+    unlinkActor (id) {
+      this.movie.actors = this.movie.actors.filter(x => x.id !== id)
     },
-    deleteProduction (id) {
-      console.log('deleting Production id: ' + id)
+    unlinkProduction (id) {
+      this.movie.productions = this.movie.productions.filter(x => x.id !== id)
     },
-    deleteDirector (id) {
-      console.log('deleting Director id: ' + id)
+    unlinkDirector (id) {
+      this.movie.directors = this.movie.directors.filter(x => x.id !== id)
     }
   },
   computed: {
