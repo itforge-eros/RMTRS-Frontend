@@ -1,6 +1,5 @@
 import axios from 'axios'
-
-const API_URL = 'http://rmtrs.itforge.io:8888'
+import { API_URL } from './constants'
 
 export default axios.create({
   baseURL: API_URL,

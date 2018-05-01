@@ -2,7 +2,7 @@
 <div class="row" v-if="accountRights !== null">
   <div class="col-12">
     <vuetable ref="vuetable"
-    api-url="http://rmtrs.itforge.io:8888/theatre/paged?page=0"
+    :api-url="`${API_URL}/theatre/paged?page=0`"
     :fields="columns"
     :css="tableMeta"
     pagination-path="">
@@ -39,11 +39,13 @@
 <script>
 import Vuetable from 'vuetable-2/src/components/Vuetable'
 import { mapGetters } from 'vuex'
+import { API_URL } from '@/config/constants'
 export default {
   name: 'Theatre',
   components: {Vuetable},
   data () {
     return {
+      API_URL,
       accountRights: null,
       tableMeta: {
         tableClass: 'table table-striped table-spread'

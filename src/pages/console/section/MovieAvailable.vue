@@ -3,7 +3,7 @@
   <div class="row">
     <div class="col-12">
       <vuetable ref="vuetable"
-        api-url="http://rmtrs.itforge.io:8888/movie/paged?page=0"
+        :api-url="`${API_URL}/movie/paged?page=0`"
         :fields="columns"
         :css="tableMeta"
         pagination-path="">
@@ -31,11 +31,13 @@
 import Vuetable from 'vuetable-2/src/components/Vuetable'
 import moment from 'moment'
 import { mapGetters } from 'vuex'
+import { API_URL } from '@/config/constants'
 export default {
   name: 'MovieAvailable',
   components: {Vuetable},
   data () {
     return {
+      API_URL,
       accountRights: null,
       tableMeta: {
         tableClass: 'table table-striped table-spread'

@@ -2,7 +2,7 @@
 <div class="row" v-if="accountRights !== null">
   <div class="col-12">
     <vuetable ref="vuetable"
-    api-url="http://rmtrs.itforge.io:8888/screening/paged?page=0"
+    :api-url="`${API_URL}/screening/paged?page=0`"
     :fields="columns"
     :css="tableMeta"
     pagination-path="">
@@ -32,11 +32,13 @@
 import Vuetable from 'vuetable-2/src/components/Vuetable'
 import moment from 'moment'
 import { mapGetters } from 'vuex'
+import { API_URL } from '@/config/constants'
 export default {
   name: 'Screening',
   components: {Vuetable},
   data () {
     return {
+      API_URL,
       accountRights: null,
       tableMeta: {
         tableClass: 'table table-striped'

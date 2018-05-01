@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-12">
       <vuetable ref="vuetable"
-        api-url="http://rmtrs.itforge.io:8888/account/paged?page=0"
+        :api-url="`${API_URL}/account/paged?page=0`"
         :fields="columns"
         :css="tableMeta"
         pagination-path="">
@@ -32,11 +32,13 @@
 <script>
 import Vuetable from 'vuetable-2/src/components/Vuetable'
 import { mapGetters } from 'vuex'
+import { API_URL } from '@/config/constants'
 export default {
   name: 'Account',
   components: {Vuetable},
   data () {
     return {
+      API_URL,
       accountRights: null,
       tableMeta: {
         tableClass: 'table table-striped table-spread'

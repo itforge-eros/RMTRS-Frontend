@@ -1,6 +1,6 @@
 <template>
   <vuetable ref="vuetable"
-    api-url="http://rmtrs.itforge.io:8888/reserve/paged?page=0"
+    :api-url="`${API_URL}/reserve/paged?page=0`"
     :fields="columns"
     :css="tableMeta"
     pagination-path="">
@@ -15,11 +15,13 @@
 import axios from '@/config/axios.config'
 import Vuetable from 'vuetable-2/src/components/Vuetable'
 import moment from 'moment'
+import { API_URL } from '@/config/constants'
 export default {
   name: 'Payment',
   components: {Vuetable},
   data () {
     return {
+      API_URL,
       tableMeta: {
         tableClass: 'table table-striped table-spread'
       },
