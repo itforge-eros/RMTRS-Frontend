@@ -541,8 +541,12 @@ export default {
       })
     },
     mode () {
-      if (this.isNew) {
+      if (this.isNew && this.accountRights.write) {
         return 'Adding'
+      } else {
+        if (!this.accountRights) {
+          return 'Viewing'
+        }
       }
       return 'Editing'
     },

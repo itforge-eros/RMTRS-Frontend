@@ -2,7 +2,8 @@
   <div id="editor" v-if="accountRights !== null">
     <div class="row">
       <div class="col-12 p-0">
-        <h3 v-if="isNew" class="header py-2 px-4 mb-3">Add Screening</h3>
+        <h3 v-if="isNew && accountRights.write" class="header py-2 px-4 mb-3">Add Screening</h3>
+        <h3 v-else-if="!accountRights.write" class="header py-2 px-4 mb-3">Viewing Screening {{ screening.id }}</h3>
         <h3 v-else class="header py-2 px-4 mb-3">Edit Screening {{ screening.id }}</h3>
       </div>
     </div>
