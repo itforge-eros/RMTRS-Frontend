@@ -26,7 +26,7 @@ export default {
   created () {
     HomeFacade.getAvailableMovies(this.date)
       .then(({data}) => {
-        this.movieData = data
+        this.movieData = data.sort((a, b) => Math.random() > 0.5 ? -1 : 1)
         console.log(data)
       })
       .catch(err => {

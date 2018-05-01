@@ -28,8 +28,8 @@ export default {
 #movie-hero {
     transition: all 0.3 ease;
     position: relative;
-    width: 100%;
-    height: auto;
+    min-width: 100%;
+    min-height: 100%;
     overflow: hidden;
     .movie-hero-bg {
         min-width: 100%;
@@ -61,7 +61,7 @@ export default {
     margin: 5vh 3em;
 }
 
-@media screen and (max-width:576px) {
+@media screen and (max-width:420px) {
     #movie-hero-content {
         margin: 1.5vh 1vw;
     }

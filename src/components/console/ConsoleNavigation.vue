@@ -4,42 +4,48 @@
         <router-link v-if="accountRights[menu.name].read" tag="span" active-class="active" :to="{name: menu.path}">{{menu.menu}}</router-link>
     </div>
     <div class="menu">
-      <span @click="logout">ออกจากระบบ</span>
+      <span @click="alert.logout = true">Logout</span>
     </div>
+    <alert @yes="logout" @no="alert.logout = false" mode="confirm" header="Are you sure?" message="You're about to logout" :open="alert.logout"/>
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import Alert from '@/components/Alert'
 export default {
   name: 'ConsoleNavigation',
+  components: {Alert},
   data () {
     return {
+      alert: {
+        logout: false
+      },
       accountRights: null,
       menus: [
         {
           name: 'reservation',
-          menu: 'รายการจอง',
+          menu: 'Reservation',
           path: 'Manage Reservation'
         },
         {
           name: 'movie',
-          menu: 'ข้อมูลภาพยนตร์',
+          menu: 'Movie',
           path: 'Manage Movie Available'
         },
         {
           name: 'theatre',
-          menu: 'โรงฉายภาพยนตร์',
+          menu: 'Theatre',
           path: 'Manage Theatre'
         },
         {
           name: 'screening',
-          menu: 'รอบฉายภาพยนตร์',
+          menu: 'Screening',
           path: 'Manage Screening'
         },
         {
           name: 'account',
-          menu: 'จัดการบัญชี',
+          menu: 'Account',
           path: 'Manage Account'
         }
       ]
@@ -56,6 +62,7 @@ export default {
   },
   methods: {
     logout () {
+      this.alert.logout = true
       this.clearAccount()
       this.$router.go({name: 'Login'})
     },

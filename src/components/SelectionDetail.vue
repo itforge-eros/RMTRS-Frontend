@@ -11,8 +11,8 @@
       <p>Total Seats : {{ selectedSeats.length }}</p>
     </div>
     <div class="payment col-12">
-      <div class="row clickable">
-        <div class="text col-10" @click="reserve" :disabled="isPaymentAvailable">
+      <div :class="['row clickable', {'grayed-out': !isPaymentAvailable}]">
+        <div :class="['text col-10']" @click="reserve">
           <p>Process the payment</p>
         </div>
         <div class="arrow col-2">
@@ -35,6 +35,9 @@ export default {
   },
   methods: {
     reserve () {
+      if (!this.isPaymentAvailable) {
+        return
+      }
       facade.reserve(this.screeningId, this.selectedSeats)
         .then(({data}) => {
           this.$router.push({ name: 'reservation', params: { reserveId: data.id } })
@@ -97,6 +100,13 @@ export default {
     justify-content: center;
     align-items: center;
     font-size: 2em;
+  }
+}
+.grayed-out {
+  filter: brightness(0.6);
+  cursor: not-allowed;
+  &:hover {
+    filter: brightness(0.6)!important;
   }
 }
 </style>

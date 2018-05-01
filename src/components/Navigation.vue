@@ -3,15 +3,17 @@
     <router-link to="/" class="brand">Skydog Cineplex</router-link>
     <span v-if="getAccount !== null">
       <small class="text-muted"> : {{ getAccount.role }}</small>
-      <router-link id="console-link" tag="span" class="float-right" :to="getPath">Console</router-link>
+      <router-link id="console-link" tag="span" class="float-right" :to="getPath"><console class="middle" fillColor="#fff"/></router-link>
     </span>
   </nav>
 </template>
 
 <script>
+import Console from 'vue-material-design-icons/console.vue'
 import { mapGetters, mapActions } from 'vuex'
 export default {
   name: 'Navigation',
+  components: {Console},
   mounted () {
     this.fetchAccount()
   },
@@ -60,7 +62,11 @@ nav {
 }
 #console-link {
   cursor: pointer;
-  border-left: 3px solid #fff;
+  border: 1px solid #fff;
+  border-radius: $main-round;
   padding-left: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 </style>

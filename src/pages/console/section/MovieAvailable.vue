@@ -11,7 +11,7 @@
         <template slot="action" slot-scope="props">
           <div v-if="accountRights.write">
             <router-link tag="button" class="btn m-1" style="color: blue" :to="'movie/edit/'+props.rowData.id">Edit</router-link>
-            <router-link tag="button" class="btn m-1" style="color: red" :to="'movie/delete/'+props.rowData.id">Delete</router-link>
+            <!-- <router-link tag="button" class="btn m-1" style="color: red" :to="'movie/delete/'+props.rowData.id">Delete</router-link> -->
           </div>
           <div v-else>
             <router-link tag="button" class="btn m-1" style="color: green" :to="'movie/view/'+props.rowData.id">View</router-link>
@@ -38,7 +38,7 @@ export default {
     return {
       accountRights: null,
       tableMeta: {
-        tableClass: 'table table-striped'
+        tableClass: 'table table-striped table-spread'
       },
       columns: [
         {
@@ -65,7 +65,9 @@ export default {
         },
         {
           name: '__slot:action',
-          title: 'Action'
+          title: 'Action',
+          titleClass: 'table-action text-center',
+          dataClass: 'text-center'
         }
       ]
     }

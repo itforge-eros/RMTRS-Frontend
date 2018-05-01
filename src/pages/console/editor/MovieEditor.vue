@@ -10,7 +10,8 @@
         <div v-if="!exclude.includes(key)" :class="formMeta[key][1]" v-for="(meta, key) in formMeta" :key="key">
           <label :for="key">{{ formMeta[key][0] }}</label>
           <input :disabled="!accountRights.write" v-model="movie[key]" v-if="formMeta[key][2] === 'text'" type="text" class="form-control" :id="key">
-          <datepicker :disable="!accountRights.write" @opened="setSelectedDatepicker(key)" @selected="setDateData" wrapper-class="box-datepicker" calendar-class="design" input-class="form-control read-only-except" v-else-if="formMeta[key][2] === 'date'" :value="movie[key]"></datepicker>
+          <datepicker :disable="!accountRights.write" @opened="setSelectedDatepicker(key)" @selected="setDateData" wrapper-class="box-datepicker" calendar-class="design" :input-class="timeClass" v-else-if="formMeta[key][2] === 'date'" :value="movie[key]"></datepicker>
+          <div v-if="!accountRights.write && formMeta[key][2] === 'date'" class="protected"></div>
         </div>
         <div class="form-group col-12 col-md-3" v-else-if="key === 'rate'">
           <label for="rate">Rate</label>
@@ -46,7 +47,7 @@
               <div class="row">
                 <div v-if="editing.actor.id !== actor.id" class="col">
                   <button @click="editMode('actor', actor, true)" class="btn" style="color: blue">Edit</button>
-                  <button class="btn" style="color: red">Delete</button>
+                  <button @click="unlinkActor(actor.id)" class="btn" style="color: red">Delete</button>
                 </div>
                 <div v-else class="col">
                   <button class="btn" style="color: green">Save</button>
@@ -102,7 +103,7 @@
               <div class="row">
                 <div v-if="editing.production.id !== production.id" class="col">
                   <button @click="editMode('production', production, true)" class="btn" style="color: blue">Edit</button>
-                  <button class="btn" style="color: red">Delete</button>
+                  <button @click="unlinkProduction(production.id)" class="btn" style="color: red">Delete</button>
                 </div>
                 <div v-else class="col">
                   <button class="btn" style="color: green">Save</button>
@@ -156,7 +157,7 @@
               <div class="row">
                 <div v-if="editing.director.id !== director.id" class="col">
                   <button @click="editMode('director', director, true)" class="btn" style="color: blue">Edit</button>
-                  <button class="btn" style="color: red">Delete</button>
+                  <button @click="unlinkDirector(director.id)" class="btn" style="color: red">Delete</button>
                 </div>
                 <div v-else class="col">
                   <button class="btn" style="color: green">Save</button>
@@ -219,10 +220,12 @@
         </div>
       </div>
     </form>
+    <alert :mode="alert.mode" :header="alert.header" :message="alert.message" :open="alert.open" @close="alert.open = false"/>
   </div>
 </template>
 
 <script>
+import Alert from '@/components/Alert'
 import screeningFacade from '@/facades/ScreeningFacade'
 import movieEditorFacade from '@/facades/MovieEditorFacade'
 import genreFacade from '@/facades/GenreFacade'
@@ -232,9 +235,15 @@ import moment from 'moment'
 import { mapGetters } from 'vuex'
 export default {
   name: 'MovieEditor',
-  components: {Datepicker},
+  components: {Datepicker, Alert},
   data () {
     return {
+      alert: {
+        header: '',
+        message: '',
+        open: false,
+        mode: ''
+      },
       accountRights: null,
       isNew: null,
       selectedDatepicker: null,
@@ -437,7 +446,8 @@ export default {
       axios.put(`/movie/${payload.id}`, payload)
         .then(({data}) => {
           console.log(data)
-          this.$router.push({ name: 'Manage Movie Available' })
+          this.alertBox('Done', 'The change has been saved', 'info')
+          this.fetchMovie()
         })
         .catch(console.log)
     },
@@ -507,6 +517,21 @@ export default {
           this.isNew = false
         })
         .catch(console.log)
+    },
+    alertBox (header, msg, mode) {
+      this.alert.header = header
+      this.alert.message = msg
+      this.alert.mode = mode
+      this.alert.open = true
+    },
+    unlinkActor (id) {
+      this.movie.actors = this.movie.actors.filter(x => x.id !== id)
+    },
+    unlinkProduction (id) {
+      this.movie.productions = this.movie.productions.filter(x => x.id !== id)
+    },
+    unlinkDirector (id) {
+      this.movie.directors = this.movie.directors.filter(x => x.id !== id)
     }
   },
   computed: {
@@ -516,15 +541,23 @@ export default {
       })
     },
     mode () {
-      if (this.isNew) {
+      if (this.isNew && this.accountRights.write) {
         return 'Adding'
+      } else {
+        if (!this.accountRights) {
+          return 'Viewing'
+        }
       }
       return 'Editing'
     },
     ...mapGetters([
       'getAccount',
       'getRights'
-    ])
+    ]),
+    timeClass () {
+      if (this.accountRights.write) return 'form-control read-only-except'
+      else return 'form-control'
+    }
   }
 }
 </script>
@@ -592,5 +625,13 @@ export default {
   border: 5px solid $main-blue;
   border-radius: $main-round;
   min-width: 300px;
+}
+.protected {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
 }
 </style>
