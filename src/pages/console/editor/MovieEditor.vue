@@ -136,7 +136,7 @@
           </div>
           <div v-show="!adding.production.state" class="row">
             <div class="col-12 p-0">
-              <button v-if="accountRights.write" @click="addingProduction(true)" class="btn">Add an director</button>
+              <button v-if="accountRights.write" @click="addingProduction(true)" class="btn">Add an production</button>
             </div>
           </div>
         </section>
