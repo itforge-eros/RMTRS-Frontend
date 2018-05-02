@@ -13,7 +13,7 @@
             <div v-else class="col seat-type text-center">
               <input class="form-control" type="text" v-model="data.name">
               <input class="form-control" type="text" v-model="data.price">
-              <input class="form-control" type="text" v-model="data.description">
+              <!-- <input class="form-control" type="text" v-model="data.description"> -->
             </div>
           </div>
         </div>
@@ -22,10 +22,10 @@
           <div class="row">
             <div v-if="editing.id !== data.id" class="col">
               <button @click="editMode(data, true)" class="btn" style="color: blue">Edit</button>
-              <button @click="deleteSeat(data.id)" class="btn" style="color: red">Delete</button>
+              <!-- <button @click="deleteSeat(data.id)" class="btn" style="color: red">Delete</button> -->
             </div>
             <div v-else class="col">
-              <button class="btn" style="color: green">Save</button>
+              <button @click="update(data)" class="btn" style="color: green">Save</button>
               <button @click="editMode(data, false)" class="btn" style="color: blue">Cancel</button>
             </div>
           </div>
@@ -47,17 +47,17 @@
             <label for="price">Price</label>
             <input type="text" class="form-control" id="price" v-model="adding.price">
           </div>
-          <div class="form-group col-12">
+          <!-- <div class="form-group col-12">
             <label for="desc" class="mt-2 mb-0">Description</label>
             <textarea class="form-control mt-1" id="desc" cols="30" rows="10" v-model="adding.description"></textarea>
-          </div>
+          </div> -->
         </div>
       </div>
       <div class="col-12 col-md-3 pt-2">
         <label>Action</label>
         <div class="row">
           <div class="col">
-            <button class="btn" style="color: green">Add</button>
+            <button @click="add" class="btn" style="color: green">Add</button>
             <button @click="addingProduction(false)" class="btn" style="color: red">Cancel</button>
           </div>
         </div>
@@ -69,6 +69,7 @@
 <script>
 import seatTypeFacade from '@/facades/SeatTypeFacade'
 import { mapGetters } from 'vuex'
+import axios from '@/config/axios.config'
 export default {
   name: 'SeatType',
   data () {
@@ -80,7 +81,7 @@ export default {
         id: null,
         name: null,
         price: null,
-        description: null,
+        description: '',
         state: false
       }
     }
@@ -103,8 +104,31 @@ export default {
       if (mode) this.editing.id = data.id
       else this.editing.id = null
     },
-    deleteSeat (id) {
-      console.log(id)
+    add () {
+      if (this.adding.price < 1) {
+        alert('Price must be higher than zero!!')
+        return
+      }
+      axios.post('/seattype', this.adding)
+        .then(() => {
+          this.fetchSeatType()
+          this.editing.id = null
+          this.adding.state = false
+        })
+        .catch(console.log)
+    },
+    update (seatType) {
+      if (seatType.price < 1) {
+        alert('Price must be higher than zero!!')
+        return
+      }
+      console.log(seatType)
+      axios.put(`/seattype/${seatType.id}`, seatType)
+        .then(() => {
+          this.fetchSeatType()
+          this.editing.id = null
+        })
+        .catch(console.log)
     }
   },
   computed: {
