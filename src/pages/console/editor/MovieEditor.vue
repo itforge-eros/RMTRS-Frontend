@@ -136,7 +136,7 @@
           </div>
           <div v-show="!adding.production.state" class="row">
             <div class="col-12 p-0">
-              <button v-if="accountRights.write" @click="addingProduction(true)" class="btn">Add an production</button>
+              <button v-if="accountRights.write" @click="addingProduction(true)" class="btn">Add a production</button>
             </div>
           </div>
         </section>
@@ -190,7 +190,7 @@
           </div>
           <div v-show="!adding.director.state" class="row">
             <div class="col-12 p-0">
-              <button v-if="accountRights.write" :disabled="isNew" @click="addingDirector(true)" class="btn">Add an director</button>
+              <button v-if="accountRights.write" :disabled="isNew" @click="addingDirector(true)" class="btn">Add a director</button>
             </div>
           </div>
         </section>

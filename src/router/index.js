@@ -16,6 +16,7 @@ import ManageReservation from '@/pages/console/section/Reservation'
 import ManageTheatre from '@/pages/console/section/Theatre'
 import ManageScreening from '@/pages/console/section/Screening'
 import ManageAccount from '@/pages/console/section/Account'
+import ManageSeatType from '@/pages/console/section/SeatType'
 import MovieEditor from '@/pages/console/editor/MovieEditor'
 import ScreeningEditor from '@/pages/console/editor/ScreeningEditor'
 import TheatreEditor from '@/pages/console/editor/TheatreEditor'
@@ -101,6 +102,11 @@ export default new Router({
               path: 'account',
               name: 'Manage Account',
               component: ManageAccount
+            },
+            {
+              path: 'seat-type',
+              name: 'Manage Seat Type',
+              component: ManageSeatType
             },
             {
               path: 'movie/edit/:id',

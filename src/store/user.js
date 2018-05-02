@@ -6,21 +6,24 @@ const state = {
       movie: {read: true, write: false},
       theatre: {read: true, write: false},
       screening: {read: true, write: false},
-      account: {read: 0, write: 0}
+      account: {read: 0, write: 0},
+      seattype: {read: false, write: false}
     },
     manager: {
       reservation: {read: false, write: false},
       movie: {read: true, write: true},
       theatre: {read: true, write: true},
       screening: {read: true, write: true},
-      account: {read: 1, write: 1}
+      account: {read: 1, write: 1},
+      seattype: {read: true, write: true}
     },
     admin: {
       reservation: {read: false, write: false},
       movie: {read: false, write: false},
       theatre: {read: false, write: false},
       screening: {read: false, write: false},
-      account: {read: 2, write: 2}
+      account: {read: 2, write: 2},
+      seattype: {read: false, write: false}
     }
   }
 }

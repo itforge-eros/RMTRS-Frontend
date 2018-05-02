@@ -47,6 +47,11 @@ export default {
           name: 'account',
           menu: 'Account',
           path: 'Manage Account'
+        },
+        {
+          name: 'seattype',
+          menu: 'Seat Type',
+          path: 'Manage Seat Type'
         }
       ]
     }
