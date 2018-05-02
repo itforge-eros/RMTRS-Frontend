@@ -19,9 +19,12 @@
               </div>
               <div class="detail col-10">
                 <div class="row">
-                  <router-link :to="'/movie/'+movieId+'/screening/'+screening.id" class="col-6 col-sm-3 col-lg-2 time-wrap" v-for="screening in screenings" :key="screening.id">
-                    <p class="time">{{formatTime(screening.show_time)}}</p>
-                  </router-link>
+                  <div v-for="screening in screenings" :key="screening.id" class="col-6 col-sm-3 col-lg-2 time-wrap">
+                    <router-link :to="'/movie/'+movieId+'/screening/'+screening.id" v-if="isFuture(screening.show_time)">
+                      <p class="time">{{formatTime(screening.show_time)}}</p>
+                    </router-link>
+                    <p class="time" style="filter: grayscale(100%);" v-else disabled>{{formatTime(screening.show_time)}}</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -50,6 +53,9 @@ export default {
     this.fetchScreenings()
   },
   methods: {
+    isFuture (time) {
+      return moment().diff(moment(time)) <= 0
+    },
     setDate (date) {
       this.datetime = moment(date)
       this.fetchScreenings()
