@@ -7,9 +7,9 @@
             Please select your seats.
           </div>
           <div class="col-12 ex-type text-center mt-2">
-            <small>C: Comfort</small> |
-            <small>L : Luxury</small> |
-            <small>S : Suite</small>
+            <small>
+              {{ seatTypes.map(t => (`${t.name[0].toUpperCase()}: ${t.name}`)).join(' | ') }}
+            </small>
           </div>
           <div class="screen col-12">
             Screen
@@ -43,6 +43,7 @@ import MovieHero from '../components/MovieHero'
 import SelectionDetail from '../components/SelectionDetail'
 import facade from '../facades/SeatFacade'
 import { db } from '../config/firebase.config'
+import axios from '@/config/axios.config'
 export default {
   name: 'Seat',
   components: {MovieHero, SelectionDetail},
@@ -51,6 +52,7 @@ export default {
       mySelectedSeats: [],
       mySelectedSeatsFbKeys: {},
       rows: [],
+      seatTypes: [],
       theatre: null,
       seats: {},
       screeningId: this.$route.params.screeningId
@@ -91,6 +93,7 @@ export default {
   },
   mounted () {
     this.fetchSeats()
+    this.fetchSeatTypes()
   },
   methods: {
     handleChairClick (row, column) {
@@ -114,6 +117,13 @@ export default {
           this.theatre = theatre
           this.seats = seats
         })
+    },
+    fetchSeatTypes () {
+      axios.get('/seattype')
+        .then(({data}) => {
+          this.seatTypes = data
+        })
+        .catch(console.log)
     },
     isSelectable (seat) {
       return !this.allReservedSeatsIdList.includes(seat.id) &&
