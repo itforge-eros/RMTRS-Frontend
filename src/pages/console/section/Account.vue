@@ -14,7 +14,7 @@
         <template slot="action" slot-scope="props">
           <div v-if="accountRights.write >= getRoleLevel(props.rowData.role.toLowerCase())">
             <router-link tag="button" style="color: blue" class="btn m-1" :to="{name: 'AccountEditor', params: {id: props.rowData.id}}">Edit</router-link>
-            <!-- <router-link tag="button" style="color: red" class="btn m-1" :to="'account/delete/'+props.rowData.id">Delete</router-link> -->
+            <button tag="button" style="color: red" class="btn m-1" @click="handleDelete(props.rowData.id)">Delete</button>
           </div>
           <div v-else>
             <p>No rights to manage this account</p>
@@ -33,6 +33,7 @@
 import Vuetable from 'vuetable-2/src/components/Vuetable'
 import { mapGetters } from 'vuex'
 import { API_URL } from '@/config/constants'
+import axios from '@/config/axios.config'
 export default {
   name: 'Account',
   components: {Vuetable},
@@ -85,6 +86,14 @@ export default {
           return 2
         }
       }
+    },
+    handleDelete (id) {
+      axios.delete(`/account/${id}`)
+        .then(({data}) => {
+          console.log(data)
+          location.reload()
+        })
+        .catch(console.log)
     }
   }
 }
