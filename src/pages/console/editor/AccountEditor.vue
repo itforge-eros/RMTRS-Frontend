@@ -106,7 +106,9 @@ export default {
         .catch(console.log)
     },
     handleUpdate () {
-      axios.put(`/account/${this.account.id}`, this.account)
+      const { password, ...payload } = this.account
+      payload.password = ''
+      axios.put(`/account/${this.account.id}`, payload)
         .then(({data}) => {
           this.$router.push({ name: 'Manage Account' })
         })
