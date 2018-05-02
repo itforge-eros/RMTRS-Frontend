@@ -32,7 +32,7 @@
 
 <script>
 import axios from '@/config/axios.config'
-import seatFacade from '@/facades/SeatFacade'
+import facade from '@/facades/TheatreEditorFacade'
 import Chair from '@/components/console/Chair'
 import { mapGetters } from 'vuex'
 export default {
@@ -57,7 +57,7 @@ export default {
       this.isNew = true
     } else {
       this.isNew = false
-      this.fetchTheatre()
+      this.fetchTheatre(this.$route.params.id)
     }
     this.accountRights = this.getRights(this.getAccount.role.toLowerCase()).theatre
   },
@@ -69,7 +69,8 @@ export default {
   },
   methods: {
     fetchTheatre (id) {
-      seatFacade.getSeatsAndTheatre(this.$route.params.id)
+      console.log(id)
+      facade.getTheatreAndSeats(id)
         .then(({rows, theatre, seats}) => {
           this.rows = rows
           this.theatre = theatre
